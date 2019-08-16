@@ -1,0 +1,19 @@
+package com.zs.adminservice.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * @Auther: zs
+ * @Date: 2019/8/16 10:50
+ * @Description:
+ */
+@Controller
+public class IndexController {
+
+
+    @RequestMapping(path={"/","/index"})
+    public String index(){
+        return "forward:models/modelList";
+    }
+}
