@@ -32,16 +32,14 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/models")
-public class ActivitiController {
+public class ActivitiModelController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActivitiController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActivitiModelController.class);
 
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private IActivitiService activitiService;
 
     @RequestMapping("/modelList")
     public String modelList(org.springframework.ui.Model model,HttpServletRequest request){
@@ -133,26 +131,5 @@ public class ActivitiController {
         repositoryService.saveModel(modelData);
         return "流程发布成功";
     }
-
-    @RequestMapping("/start/{id}")
-    public @ResponseBody String startProcess(@PathVariable("id") String id,@RequestParam(name = "startUser",defaultValue = "员工") String startUser){
-        try {
-            if(StringUtils.isNotBlank(id)){
-                Map<String,Object> map = new HashMap<>();
-                map.put("subUser",startUser);
-                ProcessInstance processInstance = activitiService.startProcess(id,map);
-                if(processInstance == null){
-                    return "流程启动失败！";
-                }
-            }else{
-                return "ID不能为空";
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return "流程启动失败！";
-        }
-        return "流程启动成功";
-    }
-
 
 }

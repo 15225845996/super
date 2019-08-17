@@ -31,19 +31,6 @@
           });
 
       }
-
-      function start(obj){
-          var id=obj.attributes['objectid'].nodeValue;
-          $.ajax({
-              url:'/models/start/'+id,
-              type:'GET',
-              success:function(res){
-                  alert(res);
-              }
-          });
-
-
-      }
   </script>
 </head>
 <body>
@@ -72,7 +59,7 @@
     <td th:text="${data.createTime}"> 2018-02-25 17:28:35</td>
     <td th:text="${data.lastUpdateTime}"> 2018-02-25 17:28:35</td>
     <td><a href="javascript:void(0);" onclick="deployment(this);" th:attrappend="objectId=${data.id}" lass="font-blue deployBtn">发布</a>
-      <a th:href="${'/activiti/start/'+data.key}" th:attrappend="objectId=${data.id}" lass="font-blue deployBtn">发起流程</a>
+      <a th:if="${data.deploymentId != null}" th:href="${'/process/start/'+data.deploymentId}" th:attrappend="objectId=${data.id}" lass="font-blue deployBtn">发起流程</a>
       <a th:href="@{/crm/model/export/{modelId}(modelId=${data.id})}" class="font-blue">导出</a>
       <a href="javascript:void(0);" onclick="deleteProcess(this);" th:attrappend="objectId=${data.id}" class="font-blue delBtn">删除</a></td>
   </tr>
