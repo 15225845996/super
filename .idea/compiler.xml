@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="super" />
         <module name="super-admin-service" />
+        <module name="super-admin-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
