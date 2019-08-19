@@ -3,6 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>超级系统</title>
+    <style>
+        .cursor{
+            cursor:pointer;
+        }
+        .indexMenu:hover{
+            background-color: #ccc!important;
+        }
+        .overflow{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+        }
+    </style>
 
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -14,35 +28,11 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">菜鸟教程</a>
+            <a class="navbar-brand" href="#">超级系统</a>
         </div>
         <div>
-            <!--向左对齐-->
-            <ul class="nav navbar-nav navbar-left">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        Java
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">jmeter</a></li>
-                        <li><a href="#">EJB</a></li>
-                        <li><a href="#">Jasper Report</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">分离的链接</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">另一个分离的链接</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <form class="navbar-form navbar-left" role="search">
-                <button type="submit" class="btn btn-default">
-                    向左对齐-提交按钮
-                </button>
-            </form>
-            <p class="navbar-text navbar-left">向左对齐-文本</p>
             <!--向右对齐-->
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" th:if="${user != null}">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         Java <b class="caret"></b>
@@ -58,74 +48,131 @@
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-right" role="search">
-                <button type="submit" class="btn btn-default">
-                    向右对齐-提交按钮
-                </button>
-            </form>
-            <p class="navbar-text navbar-right">向右对齐-文本</p>
+            <p class="navbar-text navbar-right cursor" data-toggle="modal" data-target="#loginModal" th:if="${user == null}">要不先登录？</p>
         </div>
     </div>
 </nav>
 
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3">
-            <div class="thumbnail">
-                <!--<img src="./image/aaa.jpg"  alt="缩略图">-->
+            <div class="thumbnail cursor indexMenu">
                 <div class="caption">
-                    <h3>缩略图标签</h3>
-                    <p>一些示例文本。</p>
-                    <p>
-                        <a href="#" class="btn btn-primary" role="button"> 按钮1</a>
-                        <a href="#" class="btn btn-primary" role="button"> 按钮2</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="thumbnail">
-                <!--<img src="./image/abc123.jpg"  alt="缩略图">-->
-                <div class="caption">
-                    <h3>缩略图标签</h3>
-                    <p>一些示例文本。</p>
-                    <p>
-                        <a href="#" class="btn btn-primary" role="button"> 按钮1</a>
-                        <a href="#" class="btn btn-primary" role="button"> 按钮2</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="thumbnail">
-                <!--<img src="./image/abc123.jpg"  alt="缩略图">-->
-                <div class="caption">
-                    <h3>缩略图标签</h3>
-                    <p>一些示例文本。</p>
-                    <p>
-                        <a href="#" class="btn btn-primary" role="button"> 按钮1</a>
-                        <a href="#" class="btn btn-primary" role="button"> 按钮2</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="thumbnail">
-                <!--<img src="./image/abc123.jpg"  alt="缩略图">-->
-                <div class="caption">
-                    <h3>缩略图标签</h3>
-                    <p>一些示例文本。</p>
-                    <p>
-                        <a href="#" class="btn btn-primary" role="button"> 按钮1</a>
-                        <a href="#" class="btn btn-primary" role="button"> 按钮2</a>
+                    <h3 class="overflow">菜单名</h3>
+                    <p class="overflow" title="应是天仙狂醉，乱把白云揉碎。">应是天仙狂醉，乱把白云揉碎。应是天仙狂醉，乱把白云揉碎。</p>
+                    <p class="overflow" style="font-size: 20px">
+                        <span>
+                            <span class="glyphicon glyphicon-bullhorn"></span> ：<font color="gray">功能更新提醒！！！</font>
+                        </span>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
+</div>
 
+<!-- loginModal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">账号登录</a></li>
+                        <li role="presentation"><a href="#region" aria-controls="region" role="tab" data-toggle="tab">申请账号</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="login">
+                            <form class="form-signin" id="loginForm" action="/login">
+                                <h2 style="color: #dddddd;">用户登录</h2>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" >账号</span>
+                                        <input type="text" class="form-control" name="loginAccount" placeholder="请输入账号/用户名" aria-describedby="basic-addon1">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" >密码</span>
+                                        <input type="password" class="form-control" name="password" placeholder="请输入密码" aria-describedby="basic-addon1">
+                                    </div>
+                                </div>
+                                <br>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" >登录</button>
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="region">
+                            <form class="form-signin" id="regionForm" action="/region">
+                                <h2  style="color: #dddddd;">用户申请</h2>
+                                <div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"  >名称</span>
+                                                <input type="text" class="form-control" name="loginName" placeholder="请输入用户名" aria-describedby="basic-addon1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="color: red" >账号</span>
+                                                <input type="number" class="form-control" name="loginAccount" placeholder="请输入登录账号" aria-describedby="basic-addon1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="color: red" >密码</span>
+                                                <input type="password" class="form-control" name="password" placeholder="请输入登录密码" aria-describedby="basic-addon1">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" >年龄</span>
+                                                        <input type="number" class="form-control"  name="age"  min="0" max="120"/>
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" >性别</span>
+                                                        <input type="text" id="sex" class="form-control" placeholder="请选择性别" readonly="readonly" aria-label="...">
+                                                        <input type="hidden" name="sex"/>
+                                                        <div class="input-group-btn">
+                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">请选择 <span class="caret"></span></button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a sex="true" οnclick="$('input[name=sex]').val('true');$('#sex').val('男')">男</a></li>
+                                                                <li role="separator" class="divider"></li>
+                                                                <li><a sex="false" οnclick="$('input[name=sex]').val('false');$('#sex').val('女')">女</a></li>
+                                                            </ul>
+                                                        </div><!-- /btn-group -->
+                                                    </div><!-- /input-group -->
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-lg-12" >
+                                                    <textarea name="infoContent" rows="5" style="width: 100%;" placeholder="注册申请消息，管理员看到后会尽快给您审批通过的！！！"></textarea>
+                                                </div><!-- /.col-lg-6 -->
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit" >提交</button>
+                                        <br><br>
+                                        <br><br>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
@@ -134,4 +181,10 @@
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+    $(function () {
+        
+    })
+</script>
 </html>
