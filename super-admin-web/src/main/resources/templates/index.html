@@ -102,6 +102,7 @@
                                 </div>
                                 <br>
                                 <button class="btn btn-lg btn-primary btn-block" type="submit" >登录</button>
+                                <br>
                             </form>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="region">
@@ -139,14 +140,13 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-addon" >性别</span>
-                                                        <input type="text" id="sex" class="form-control" placeholder="请选择性别" readonly="readonly" aria-label="...">
-                                                        <input type="hidden" name="sex"/>
+                                                        <input type="text" name="sex" class="form-control" placeholder="请选择性别" readonly="readonly" aria-label="...">
                                                         <div class="input-group-btn">
                                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">请选择 <span class="caret"></span></button>
                                                             <ul class="dropdown-menu dropdown-menu-right">
-                                                                <li><a sex="true" οnclick="$('input[name=sex]').val('true');$('#sex').val('男')">男</a></li>
+                                                                <li class="sexLi"><a sex="true" >男</a></li>
                                                                 <li role="separator" class="divider"></li>
-                                                                <li><a sex="false" οnclick="$('input[name=sex]').val('false');$('#sex').val('女')">女</a></li>
+                                                                <li class="sexLi"><a sex="false" >女</a></li>
                                                             </ul>
                                                         </div><!-- /btn-group -->
                                                     </div><!-- /input-group -->
@@ -163,8 +163,7 @@
 
                                         <br>
                                         <button class="btn btn-lg btn-primary btn-block" type="submit" >提交</button>
-                                        <br><br>
-                                        <br><br>
+                                        <br>
                                     </div>
                             </form>
                         </div>
@@ -184,7 +183,10 @@
 
 <script>
     $(function () {
-        
+        $(".sexLi").click(function () {
+            var sex = $(this).find("a").text();
+            $('input[name=sex]').val(sex)
+        })
     })
 </script>
 </html>

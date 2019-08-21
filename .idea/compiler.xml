@@ -6,15 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="super" />
+        <module name="super-admin-api" />
         <module name="super-admin-service" />
         <module name="super-admin-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="super" target="1.5" />
+      <module name="super-admin-api" target="1.7" />
       <module name="super-admin-service" target="1.8" />
       <module name="super-admin-web" target="1.8" />
+      <module name="super-bean" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
