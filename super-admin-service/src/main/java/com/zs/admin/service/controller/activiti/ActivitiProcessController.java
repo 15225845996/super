@@ -1,6 +1,6 @@
 package com.zs.admin.service.controller.activiti;
 
-import com.zs.admin.service.service.IActivitiService;
+import com.zs.admin.api.service.IActivitiService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;

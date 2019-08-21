@@ -1,6 +1,6 @@
 package com.zs.admin.service.service.impl;
 
-import com.zs.admin.service.service.IActivitiService;
+import com.zs.admin.api.service.IActivitiService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.SequenceFlow;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * @Description: {服务实现类}
  * @date 2019/8/15 12:00
  */
-@Service
+@Service("activitiService")
 @Transactional(rollbackFor = Exception.class)
 public class ActivitiServiceImpl implements IActivitiService {
 

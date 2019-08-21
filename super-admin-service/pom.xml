@@ -16,6 +16,8 @@
 	<packaging>war</packaging>
 	<properties>
 		<java.version>1.8</java.version>
+		<dubbo.version>2.5.5</dubbo.version>
+		<zkclient.version>0.10</zkclient.version>
 	</properties>
 
 	<dependencies>
@@ -25,6 +27,7 @@
 			<artifactId>super-admin-api</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -113,6 +116,26 @@
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-svggen</artifactId>
 			<version>1.7</version>
+		</dependency>
+
+		<!-- Dubbo依赖 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>${dubbo.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!--zookeeper的客户端依赖-->
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>${zkclient.version}</version>
 		</dependency>
 
 	</dependencies>
