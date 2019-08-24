@@ -34,10 +34,10 @@ public class ActivitiProcessController {
 
                     Map<String,Object> map = new HashMap<>();
                     map.put("subUser",startUser);
-                    ProcessInstance processInstance = activitiService.startProcess(processKey,map);
+                    /*ProcessInstance processInstance = activitiService.startProcess(processKey,map);
                     if(processInstance != null){
                         return "流程启动成功！";
-                    }
+                    }*/
                 }
 
 

@@ -1,9 +1,17 @@
 package com.zs.admin.service.service.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.service.IActivitiService;
+import com.zs.admin.api.vo.ResultVo;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.SequenceFlow;
+import org.activiti.editor.constants.ModelDataJsonConstants;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -12,12 +20,14 @@ import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.persistence.entity.HistoricProcessInstanceEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,70 +50,23 @@ public class ActivitiServiceImpl implements IActivitiService {
 
     private Logger logger = LoggerFactory.getLogger(ActivitiServiceImpl.class);
 
-    /**
-     * 工作流运行服务
-     */
     @Autowired
     private RuntimeService runtimeService;
-    /**
-     * 工作流任务服务
-     */
+
     @Autowired
     private TaskService taskService;
 
-
-    /**
-     * 工作流历史数据服务
-     */
     @Autowired
     private HistoryService historyService;
 
-    /**
-     * 用户服务
-     */
     @Autowired
     private IdentityService identityService;
 
     @Autowired
     private RepositoryService repositoryService;
 
-    /**
-     * 启动流程
-     *
-     * @param processDefinitionKey 流程定义id
-     * @param paramsMap            参数
-     * @return 流程实例
-     * @throws Exception
-     */
-    @Override
-    public ProcessInstance startProcess(String processDefinitionKey, Map<String, Object> paramsMap) throws Exception {
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, paramsMap);
-        return processInstance;
-    }
-
-
-    @Override
-    public Object queryVariables(String taskId, String varName) {
-        HistoricVariableInstance variableInstance =
-                historyService.createHistoricVariableInstanceQuery().taskId(taskId).variableName(varName).singleResult();
-        return variableInstance.getValue();
-    }
-
-    @Override
-    public HistoricProcessInstanceEntity queryProcessInstance(String processId) {
-        return null;
-    }
-
-    /**
-     * 查找流程申请人
-     *
-     * @param processId
-     * @return
-     */
-    private String getProcessStartUserId(String processId) {
-        HistoricProcessInstance historicProcessInstance = queryHistoricProcessInstance(processId);
-        return historicProcessInstance.getStartUserId();
-    }
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     /**
@@ -116,53 +79,32 @@ public class ActivitiServiceImpl implements IActivitiService {
         return historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
     }
 
-
     @Override
-    public void complete(String taskId, Map<String, Object> paramsMap) {
-        Map<String, Object> filterMap = paramsMap.entrySet().stream().filter(map -> map.getValue() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        // 存储下个节点权限组，以及当前审核说明
-        //设置任务完成时间
-        taskService.setVariableLocal(taskId, "reason", paramsMap.get("reason"));
-        taskService.setVariableLocal(taskId, "auditUserId", paramsMap.get("userId"));
-        taskService.setVariableLocal(taskId, "createDate", new Date());
-        taskService.complete(taskId, filterMap);
+    public ProcessInstance startByKey(String key, Map<String, Object> map) {
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(key, map);
+        return processInstance;
     }
 
+    /**
+     * 查看 定义的流程图
+     *
+     * @param processDefinitionId 流程id
+     * @return
+     */
     @Override
-    public void complete(String taskId) {
-        //设置任务完成时间
-        taskService.setVariableLocal(taskId, "createDate", new Date());
-        taskService.complete(taskId);
+    public byte[] definitionImage(String processDefinitionId) throws IOException {
+        BpmnModel model = repositoryService.getBpmnModel(processDefinitionId);
+        if (model != null && model.getLocationMap().size() > 0) {
+            ProcessDiagramGenerator generator = new DefaultProcessDiagramGenerator();
+            InputStream imageStream = generator.generateDiagram(model, "png", new ArrayList<>());
+            byte[] buffer = new byte[imageStream.available()];
+            imageStream.read(buffer);
+            imageStream.close();
+            return buffer;
+        }
+        return null;
     }
 
-    @Override
-    public Task queryTaskByProcessId(String processInstanceId) {
-        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-        return task;
-    }
-
-    @Override
-    public Task queryTaskById(String taskId) {
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        return task;
-    }
-
-    @Override
-    public void addCandidateGroup(String taskId, String groupId) {
-        taskService.addCandidateGroup(taskId, groupId);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void claim(String taskId, String userId) {
-        taskService.claim(taskId, userId);
-    }
-
-    @Override
-    public void setAuthUser(String userId) {
-        identityService.setAuthenticatedUserId(userId);
-    }
 
     /**
      * 获取流程图像，已执行节点和流程线高亮显示
@@ -205,190 +147,84 @@ public class ActivitiServiceImpl implements IActivitiService {
         }
     }
 
-    /**
-     * 查看 定义的流程图
-     *
-     * @param processDefinitionId 流程id
-     * @return
-     */
     @Override
-    public byte[] definitionImage(String processDefinitionId) throws IOException {
-        BpmnModel model = repositoryService.getBpmnModel(processDefinitionId);
-        if (model != null && model.getLocationMap().size() > 0) {
-            ProcessDiagramGenerator generator = new DefaultProcessDiagramGenerator();
-            InputStream imageStream = generator.generateDiagram(model, "png", new ArrayList<>());
-            byte[] buffer = new byte[imageStream.available()];
-            imageStream.read(buffer);
-            imageStream.close();
-            return buffer;
+    public List<Model> findModels() {
+        return repositoryService.createModelQuery().orderByCreateTime().desc().list();
+    }
+
+    @Override
+    public Model createModel(String modelName, String modelKey, String description) {
+        //初始化一个空模型
+        Model model = repositoryService.newModel();
+        ObjectNode modelNode = objectMapper.createObjectNode();
+        modelNode.put(ModelDataJsonConstants.MODEL_NAME, modelName);
+        modelNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, description);
+        modelNode.put(ModelDataJsonConstants.MODEL_REVISION, Constant.MODEL_DEFAULT_REVISION);
+        //设置参数
+        model.setMetaInfo(modelNode.toString());
+        model.setName(modelName);
+        model.setKey(modelKey);
+        //保存模型
+        repositoryService.saveModel(model);
+        //完善ModelEditorSource
+        ObjectNode editorNode = objectMapper.createObjectNode();
+        editorNode.put("id", "canvas");
+        editorNode.put("resourceId", "canvas");
+        ObjectNode stencilSetNode = objectMapper.createObjectNode();
+        stencilSetNode.put("namespace","http://b3mn.org/stencilset/bpmn2.0#");
+        editorNode.put("stencilset", stencilSetNode);
+        try{
+            repositoryService.addModelEditorSource(model.getId(), editorNode.toString().getBytes("utf-8"));
+            return repositoryService.createModelQuery().modelId(model.getId()).singleResult();
+        }catch (Exception e){
+
         }
         return null;
     }
 
     @Override
-    public void deleteProcessInstance(String processInstanceId, String deleteReason) throws Exception {
-        runtimeService.deleteProcessInstance(processInstanceId, deleteReason);
-    }
-
-    /**
-     * 此方法为手动部署，传入/resource/processes目录下的流程问卷名称即可
-     *
-     * @param fileName
-     * @return
-     */
-    @Override
-    public Deployment deploy(String fileName, String category) {
-        Deployment deploy = repositoryService.createDeployment().addClasspathResource("processes/" + fileName)
-                .category(category).deploy();
-        List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().deploymentId(deploy.getId())
-                .list();
-
-        // 设置流程分类
-        for (ProcessDefinition processDefinition : list) {
-            repositoryService.setProcessDefinitionCategory(processDefinition.getId(), category);
-            logger.info("部署成功，流程ID=" + processDefinition.getId());
+    public boolean delModelById(String modelId) {
+        if(StringUtils.isNotBlank(modelId)){
+            repositoryService.deleteModel(modelId);
+            return true;
         }
-        long count = repositoryService.createProcessDefinitionQuery().count();
-        logger.debug("deploy name:{},id:{},definition count:{} ", deploy.getName(), deploy.getId(), count);
-        return deploy;
+        return false;
     }
 
     @Override
-    public void deleteDeployment(String deploymentId) {
-        repositoryService.deleteDeployment(deploymentId, true);
-    }
+    public ResultVo deploymentModel(String modelId) {
+        if(StringUtils.isNotBlank(modelId)){
+            //获取模型
+            Model modelData = repositoryService.getModel(modelId);
+            byte[] bytes = repositoryService.getModelEditorSource(modelData.getId());
+            if (bytes == null) {
+                return ResultVo.fail("模型数据为空，请先设计流程并成功保存，再进行发布！");
+            }
+            try{
+                JsonNode modelNode = new ObjectMapper().readTree(bytes);
 
-    @Override
-    public List<Deployment> deployList() {
-        List<Deployment> list = repositoryService.createDeploymentQuery().list();
-        return list;
-    }
+                BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+                if(model.getProcesses().size()==0){
+                    return ResultVo.fail("数据模型不符要求，请至少设计一条主线流程！");
+                }
+                byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
 
-    @Override
-    public List<ProcessDefinition> getProcessList() throws Exception {
-        return repositoryService.createProcessDefinitionQuery().list();
-    }
-
-    @Override
-    public void suspendProcess(String processDefinitionId) throws Exception {
-        repositoryService.suspendProcessDefinitionById(processDefinitionId, true, null);
-    }
-
-    @Override
-    public void activateProcess(String processDefinitionId) throws Exception {
-        repositoryService.activateProcessDefinitionById(processDefinitionId, true, null);
-    }
-
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void rollBackTask(String taskId, String uid, String reason, String groupId, int backNum) throws
-            Exception {
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        if (task == null) {
-            throw new Exception("流程未启动或已执行完成，无法撤回");
-        }
-        String applyUserId = getCurrentApplyUserId(task.getProcessInstanceId());
-        // 上一个task
-        HistoricTaskInstance preTask = getApplyUserTask(task.getProcessInstanceId(), backNum);
-        if (preTask == null || preTask.getId() == null) {
-            return;
-        }
-        String processDefinitionId = preTask.getProcessDefinitionId();
-        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
-        //变量
-        HistoricActivityInstance myActivity = getCurrentApplyActivity(task.getExecutionId(), preTask.getId());
-        String myActivityId = myActivity.getActivityId();
-
-        //得到流程节点
-        FlowNode targetNode = (FlowNode) bpmnModel.getMainProcess().getFlowElement(myActivityId);
-        Execution execution = runtimeService.createExecutionQuery().executionId(task.getExecutionId()).singleResult();
-        String activityId = execution.getActivityId();
-        logger.warn("------->> activityId:" + activityId);
-        FlowNode sourceNode = (FlowNode) bpmnModel.getMainProcess().getFlowElement(activityId);
-        // 记录原来方向
-        List<SequenceFlow> oriSequenceFlowList = new ArrayList<>();
-        oriSequenceFlowList.addAll(sourceNode.getOutgoingFlows());
-        //清理活动方向
-        sourceNode.getOutgoingFlows().clear();
-        //建立新方向
-        taskService.setVariableLocal(task.getId(), "reason", reason);
-        taskService.setVariableLocal(task.getId(), "auditGroupId", groupId);
-        buildNewFlowNode(task, applyUserId, targetNode, sourceNode, uid, reason);
-        //记录原活动方向，恢复原方向
-        sourceNode.setOutgoingFlows(oriSequenceFlowList);
-        // 设置任务候选人
-        setAssigneeUser(task, preTask.getAssignee());
-    }
-
-    /**
-     * 新任务设置候选人
-     *
-     * @param task
-     * @param applyUserId
-     */
-    private void setAssigneeUser(Task task, String applyUserId) {
-        Task newTask = queryTaskByProcessId(task.getProcessInstanceId());
-        taskService.setAssignee(newTask.getId(), applyUserId);
-    }
-
-    /**
-     * 建立新方向
-     *
-     * @param task
-     * @param applyUserId
-     * @param targetNode
-     * @param sourceNode
-     */
-    private void buildNewFlowNode(Task task, String applyUserId, FlowNode targetNode, FlowNode sourceNode, String
-            uid, String reason) {
-
-    }
-
-    /**
-     * 获取当前流程的申请人
-     *
-     * @param processId
-     * @return
-     */
-    private String getCurrentApplyUserId(String processId) {
-        return null;
-    }
-
-    /**
-     * 获取当前任务的历史活动实例
-     *
-     * @param excutionId 任务执行id
-     * @param taskId     任务id
-     * @return
-     */
-    private HistoricActivityInstance getCurrentApplyActivity(String excutionId, String taskId) {
-        HistoricActivityInstance myActivity = null;
-        List<HistoricActivityInstance> haiList = historyService.createHistoricActivityInstanceQuery().executionId
-                (excutionId).finished().list();
-        for (HistoricActivityInstance hai : haiList) {
-            if (taskId.equals(hai.getTaskId())) {
-                myActivity = hai;
-                break;
+                //发布流程
+                String processName = modelData.getName() + ".bpmn20.xml";
+                Deployment deployment = repositoryService.createDeployment()
+                        .name(modelData.getName())
+                        .addString(processName, new String(bpmnBytes, "UTF-8"))
+                        .deploy();
+                modelData.setDeploymentId(deployment.getId());
+                repositoryService.saveModel(modelData);
+                return ResultVo.success();
+            }catch (Exception e){
+                e.printStackTrace();
+                return ResultVo.fail();
             }
         }
-        return myActivity;
+        return ResultVo.fail("模型ID不能为空！");
     }
 
-    /**
-     * 得到申请流程用户的任务
-     *
-     * @param processInstanceId 流程实例id
-     * @param backNum           回退节点数
-     * @return
-     */
-    private HistoricTaskInstance getApplyUserTask(String processInstanceId, int backNum) {
-        List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
-                .processInstanceId(processInstanceId).finished().orderByTaskCreateTime().asc().list();
-        // 如果返回数有误，直接返回空
-        if (backNum <= 0 || taskInstanceList.size() < backNum) {
-            return null;
-        }
-        return taskInstanceList.get(taskInstanceList.size() - backNum);
-    }
+
 }

@@ -104,8 +104,7 @@ public class ActivitiModelController {
             editorNode.put("id", "canvas");
             editorNode.put("resourceId", "canvas");
             ObjectNode stencilSetNode = objectMapper.createObjectNode();
-            stencilSetNode.put("namespace",
-                    "http://b3mn.org/stencilset/bpmn2.0#");
+            stencilSetNode.put("namespace","http://b3mn.org/stencilset/bpmn2.0#");
             editorNode.put("stencilset", stencilSetNode);
             repositoryService.addModelEditorSource(id, editorNode.toString().getBytes("utf-8"));
 
