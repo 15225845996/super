@@ -3,13 +3,16 @@ package com.zs.admin.service.controller.activiti;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.zs.admin.api.service.IActivitiService;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +22,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.ObjectOutput;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -33,6 +38,10 @@ public class ActivitiModelController {
 
     @Autowired
     private RepositoryService repositoryService;
+    @Autowired
+    private TaskService taskService;
+    @Autowired
+    private IActivitiService activitiService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -46,6 +55,24 @@ public class ActivitiModelController {
             model.addAttribute("info",info);
         }
         return "model/list";
+    }
+
+    @RequestMapping("/taskList")
+    public String taskList(org.springframework.ui.Model model,HttpServletRequest request){
+        LOGGER.info("-------------列表页-------------");
+        List<Task> list = taskService.createTaskQuery().list();
+        model.addAttribute("list",list);
+        return "task/list";
+    }
+
+    @RequestMapping("/getImg")
+    public void getImg(org.springframework.ui.Model model,HttpServletRequest request,HttpServletResponse response,String processId) throws Exception{
+        LOGGER.info("-------------列表页-------------");
+        byte[] processImage = activitiService.getProcessImage(processId);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(processImage);
+        outputStream.flush();
+        outputStream.close();
     }
 
     @RequestMapping("/create")

@@ -31,9 +31,9 @@ public class ActivitiModelController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ActivitiModelController.class);
 
-    @Autowired
+   /* @Autowired*/
     private RepositoryService repositoryService;
-    @Autowired
+    /*@Autowired*/
     private ObjectMapper objectMapper;
 
     @RequestMapping("/modelList")

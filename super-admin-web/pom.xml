@@ -47,11 +47,11 @@
 
 
 		<!-- activiti相关依赖：start-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring-boot-starter-basic</artifactId>
 			<version>6.0.0</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-json-converter</artifactId>
@@ -85,6 +85,25 @@
 			<version>1.7</version>
 		</dependency>
 		<!-- activiti相关依赖：end-->
+
+		<!-- Dubbo依赖 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>2.5.5</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--zookeeper的客户端依赖-->
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>0.10</version>
+		</dependency>
 
 	</dependencies>
 

@@ -10,6 +10,15 @@
           <element id="archive" name="super-admin-api-1.0-SNAPSHOT.jar">
             <element id="module-output" name="super-admin-api" />
           </element>
+          <element id="library" level="project" name="Maven: org.activiti:activiti-engine:5.21.0" />
+          <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-converter:5.21.0" />
+          <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-model:5.21.0" />
+          <element id="library" level="project" name="Maven: org.activiti:activiti-process-validation:5.21.0" />
+          <element id="library" level="project" name="Maven: org.activiti:activiti-image-generator:5.21.0" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-email:1.4" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1.1" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.3.0" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.1.7.RELEASE" />
@@ -41,38 +50,11 @@
           <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.3.2.Final" />
           <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.4.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-spring-boot-starter-basic:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-engine:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-converter:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-model:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-process-validation:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-image-generator:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-dmn-api:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-dmn-model:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-form-model:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-form-api:6.0.0" />
-          <element id="library" level="project" name="Maven: org.apache.commons:commons-email:1.4" />
-          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
-          <element id="library" level="project" name="Maven: javax.activation:activation:1.1.1" />
-          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.4.2" />
-          <element id="library" level="project" name="Maven: de.odysseus.juel:juel-api:2.2.7" />
-          <element id="library" level="project" name="Maven: de.odysseus.juel:juel-impl:2.2.7" />
-          <element id="library" level="project" name="Maven: de.odysseus.juel:juel-spi:2.2.7" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-spring:6.0.0" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-orm:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
-          <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.6" />
-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.1.7.RELEASE" />
-          <element id="library" level="project" name="Maven: com.zaxxer:HikariCP:3.2.0" />
           <element id="library" level="project" name="Maven: org.activiti:activiti-json-converter:6.0.0" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.8.1" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.9" />
@@ -107,6 +89,17 @@
           <element id="library" level="project" name="Maven: org.apache.xmlgraphics:batik-dom:1.7" />
           <element id="library" level="project" name="Maven: org.apache.xmlgraphics:batik-parser:1.7" />
           <element id="library" level="project" name="Maven: org.apache.xmlgraphics:batik-svggen:1.7" />
+          <element id="library" level="project" name="Maven: com.alibaba:dubbo:2.5.5" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.1.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.1.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.javassist:javassist:3.20.0-GA" />
+          <element id="library" level="project" name="Maven: org.jboss.netty:netty:3.2.5.Final" />
+          <element id="library" level="project" name="Maven: com.101tec:zkclient:0.10" />
+          <element id="library" level="project" name="Maven: org.apache.zookeeper:zookeeper:3.4.8" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.26" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.16" />
+          <element id="library" level="project" name="Maven: jline:jline:0.9.94" />
+          <element id="library" level="project" name="Maven: io.netty:netty:3.7.0.Final" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -19,9 +19,9 @@ import java.util.Map;
 @RequestMapping("/process")
 public class ActivitiProcessController {
 
-    @Autowired
+    /*@Autowired*/
     private IActivitiService activitiService;
-    @Autowired
+    /*@Autowired*/
     private ProcessEngine processEngine;
 
     @RequestMapping("/start/{id}")

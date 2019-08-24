@@ -10,6 +10,15 @@
           <element id="archive" name="super-admin-api-1.0-SNAPSHOT.jar">
             <element id="module-output" name="super-admin-api" />
           </element>
+          <element id="library" level="project" name="Maven: org.activiti:activiti-engine:5.21.0" />
+          <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-converter:5.21.0" />
+          <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-model:5.21.0" />
+          <element id="library" level="project" name="Maven: org.activiti:activiti-process-validation:5.21.0" />
+          <element id="library" level="project" name="Maven: org.activiti:activiti-image-generator:5.21.0" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-email:1.4" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1.1" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.3.0" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.1.7.RELEASE" />
@@ -44,7 +53,6 @@
           <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-core:3.1.2" />
           <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-annotation:3.1.2" />
           <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:1.2" />
-          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.1" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:2.0.1" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.1.7.RELEASE" />
@@ -55,21 +63,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.activiti:activiti-spring-boot-starter-basic:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-engine:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-converter:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-model:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-process-validation:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-image-generator:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-dmn-api:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-dmn-model:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-form-model:6.0.0" />
-          <element id="library" level="project" name="Maven: org.activiti:activiti-form-api:6.0.0" />
-          <element id="library" level="project" name="Maven: org.apache.commons:commons-email:1.4" />
-          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
-          <element id="library" level="project" name="Maven: javax.activation:activation:1.1.1" />
-          <element id="library" level="project" name="Maven: de.odysseus.juel:juel-api:2.2.7" />
-          <element id="library" level="project" name="Maven: de.odysseus.juel:juel-impl:2.2.7" />
-          <element id="library" level="project" name="Maven: de.odysseus.juel:juel-spi:2.2.7" />
           <element id="library" level="project" name="Maven: org.activiti:activiti-spring:6.0.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-orm:5.1.9.RELEASE" />

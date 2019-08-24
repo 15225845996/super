@@ -40,10 +40,10 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
   
   protected static final Logger LOGGER = LoggerFactory.getLogger(ModelSaveRestResource.class);
 
-  @Autowired
+  /*@Autowired*/
   private RepositoryService repositoryService;
   
-  @Autowired
+  /*@Autowired*/
   private ObjectMapper objectMapper;
 
   @RequestMapping(value="/model/{modelId}/save", method = RequestMethod.PUT)

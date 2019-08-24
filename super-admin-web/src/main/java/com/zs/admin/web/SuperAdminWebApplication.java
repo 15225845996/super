@@ -6,7 +6,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ImportResource;
 
-@SpringBootApplication
+@SpringBootApplication()
 @ImportResource("classpath:applicationContext-base.xml")
 public class SuperAdminWebApplication extends SpringBootServletInitializer {
 

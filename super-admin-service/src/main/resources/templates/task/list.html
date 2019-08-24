@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>流程列表</title>
+  <script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js">
+  </script>
+
+  <script th:inline="javascript">
+    $(function () {
+        $(".loadProcessImg").click(function () {
+            var processId = $(this).attr("processId")
+            $(".processImg").attr("src","/models/getImg?processId="+processId);
+        })
+    })
+  </script>
+</head>
+<body>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>当前节点名</th>
+    <th>受理人</th>
+    <th>实例ID</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:if="${list != null}" th:each="data : ${list}">
+    <td th:text="${data.id}"></td>
+    <td th:text="${data.name}"></td>
+    <td th:text="${data.assignee}"></td>
+    <td th:text="${data.processInstanceId}"></td>
+    <td>
+      <span class="loadProcessImg" th:attr="processId=${data.processInstanceId}">获取流程图</span>
+    </td>
+
+  </tr>
+  </tbody>
+</table>
+<br>
+<img class="processImg" src=""></body>
+</body>
+</html>

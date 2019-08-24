@@ -26,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -199,7 +196,8 @@ public class ActivitiServiceImpl implements IActivitiService {
             // 获取流程图图像字符流
             BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinition.getId());
             DefaultProcessDiagramGenerator generator = new DefaultProcessDiagramGenerator();
-            InputStream imageStream = generator.generateDiagram(bpmnModel, "png", executedActivityIdList);
+            //注意要设置字体否则图片中文会出现乱码
+            InputStream imageStream = generator.generateDiagram(bpmnModel, "png", executedActivityIdList, Collections.<String>emptyList(), "宋体", "宋体", "宋体", null, 1.0);
             byte[] buffer = new byte[imageStream.available()];
             imageStream.read(buffer);
             imageStream.close();
@@ -344,24 +342,7 @@ public class ActivitiServiceImpl implements IActivitiService {
      */
     private void buildNewFlowNode(Task task, String applyUserId, FlowNode targetNode, FlowNode sourceNode, String
             uid, String reason) {
-        List<SequenceFlow> newSequenceFlowList = new ArrayList<>();
-        SequenceFlow newSequenceFlow = new SequenceFlow();
-        newSequenceFlow.setId("newSequenceFlowId");
-        newSequenceFlow.setSourceFlowElement(sourceNode);
-        newSequenceFlow.setTargetFlowElement(targetNode);
-        newSequenceFlowList.add(0, newSequenceFlow);
-        sourceNode.setOutgoingFlows(newSequenceFlowList);
-        identityService.setAuthenticatedUserId(applyUserId);
-        taskService.addComment(task.getId(), task.getProcessInstanceId(), "驳回");
-        //添加代理
-        taskService.setAssignee(task.getId(), uid);
-        //完成任务
-        task.setCategory("refuse");
-        taskService.setVariableLocal(task.getId(), "reson", reason);
-        complete(task.getId());
-        Task t =
-                taskService.createTaskQuery().active().processInstanceId(task.getProcessInstanceId()).singleResult();
-        taskService.setVariableLocal(t.getId(), "reason", reason);
+
     }
 
     /**
@@ -371,10 +352,7 @@ public class ActivitiServiceImpl implements IActivitiService {
      * @return
      */
     private String getCurrentApplyUserId(String processId) {
-        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processId)
-                .singleResult();
-        String applyUserId = processInstance.getStartUserId();
-        return applyUserId;
+        return null;
     }
 
     /**
