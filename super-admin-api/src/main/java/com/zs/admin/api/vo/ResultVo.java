@@ -4,13 +4,15 @@ package com.zs.admin.api.vo;
 import com.zs.admin.api.constant.Constant;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Auther: zs
  * @Date: 2019/8/24 11:59
  * @Description:
  */
 @Data
-public class ResultVo {
+public class ResultVo implements Serializable {
     private Long code;
     private String msg;
     private Object data;

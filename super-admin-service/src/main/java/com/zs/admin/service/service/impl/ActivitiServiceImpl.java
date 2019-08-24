@@ -27,6 +27,9 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -153,7 +158,47 @@ public class ActivitiServiceImpl implements IActivitiService {
     }
 
     @Override
+    public Model findModel(String modelId) {
+        if(StringUtils.isNotBlank(modelId)){
+            return repositoryService.getModel(modelId);
+        }
+        return null;
+    }
+
+    @Override
+    public void saveModel(Model model) {
+        repositoryService.saveModel(model);
+    }
+
+    @Override
+    public void addModelEditorSource(String modelId, byte[] bytes) {
+        repositoryService.addModelEditorSource(modelId, bytes);
+    }
+
+    @Override
+    public byte[] getModelEditorSource(String modelId) {
+        if(StringUtils.isNotBlank(modelId)){
+            return repositoryService.getModelEditorSource(modelId);
+        }
+        return null;
+    }
+
+    @Override
+    public void addModelEditorSourceExtra(String modelId, byte[] bytes) {
+        repositoryService.addModelEditorSourceExtra(modelId, bytes);
+    }
+
+    @Override
     public Model createModel(String modelName, String modelKey, String description) {
+        if(!StringUtils.isNotBlank(modelName)){
+            modelName = "俺该叫个啥呢？";
+        }
+        if(!StringUtils.isNotBlank(modelKey)){
+            modelKey = UUID.randomUUID().toString();
+        }
+        if(!StringUtils.isNotBlank(description)){
+            description = "俺是谁？俺在那？俺要干啥？";
+        }
         //初始化一个空模型
         Model model = repositoryService.newModel();
         ObjectNode modelNode = objectMapper.createObjectNode();

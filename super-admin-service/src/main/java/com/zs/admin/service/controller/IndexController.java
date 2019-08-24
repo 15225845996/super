@@ -14,6 +14,6 @@ public class IndexController {
 
     @RequestMapping(path={"/","/index"})
     public String index(){
-        return "forward:models/modelList";
+        return "hello";
     }
 }

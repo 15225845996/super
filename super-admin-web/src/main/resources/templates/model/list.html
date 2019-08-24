@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>流程列表</title>
+  <script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js">
+  </script>
+
+  <script th:inline="javascript">
+      function deployment(obj){
+          var id=obj.attributes['objectid'].nodeValue;
+          $.ajax({
+              url:"/activiti/deployment/"+id,
+              type:"GET",
+              success:function(res){
+                  alert(res);
+              }
+          });
+
+      }
+
+      function deleteProcess(obj){
+          var id=obj.attributes['objectid'].nodeValue;
+          $.ajax({
+              url:"/activiti/delete/"+id,
+              type:"GET",
+              success:function(res){
+                  alert(res);
+              }
+
+          });
+
+      }
+  </script>
+</head>
+<body>
+<h3><a href="/activiti/create">新建</a></h3>
+<table class="table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>模型名称</th>
+    <th>key</th>
+    <th>版本</th>
+    <th>部署ID</th>
+    <th>创建时间</th>
+    <th>最后更新时间</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="data : ${models}">
+    <td th:text="${data.id}"></td>
+    <td><a th:href="@{/modeler.html(modelId=${data.id})}" class="font-blue" th:text="${data.name}"></a>
+    </td>
+    <td th:text="${data.key}"></td>
+    <td th:text="${data.version}"></td>
+    <td th:text="${data.deploymentId}"></td>
+    <td th:text="${data.createTime}"> 2018-02-25 17:28:35</td>
+    <td th:text="${data.lastUpdateTime}"> 2018-02-25 17:28:35</td>
+    <td><a href="javascript:void(0);" onclick="deployment(this);" th:attrappend="objectId=${data.id}" lass="font-blue deployBtn">发布</a>
+      <a th:if="${data.deploymentId != null}" th:href="${'/process/start/'+data.deploymentId}" th:attrappend="objectId=${data.id}" lass="font-blue deployBtn">发起流程</a>
+      <a th:href="@{/crm/model/export/{modelId}(modelId=${data.id})}" class="font-blue">导出</a>
+      <a href="javascript:void(0);" onclick="deleteProcess(this);" th:attrappend="objectId=${data.id}" class="font-blue delBtn">删除</a></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -41,6 +41,16 @@ public interface IActivitiService {
 
     List<Model> findModels();
 
+    Model findModel(String modelId);
+
+    void saveModel(Model model);
+
+    void addModelEditorSource(String modelId ,byte[] bytes);
+
+    byte[] getModelEditorSource(String modelId);
+
+    void addModelEditorSourceExtra(String modelId,byte[] bytes);
+
     /**
      * 创建模型
      * @param modelName  名字
@@ -49,6 +59,7 @@ public interface IActivitiService {
      * @return
      */
     Model createModel(String modelName,String modelKey,String description);
+
 
     /**
      * 根据id删除流程模型
