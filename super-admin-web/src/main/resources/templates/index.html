@@ -86,12 +86,12 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="login">
-                            <form class="form-signin" id="loginForm" action="/login">
+                            <form class="form-signin" id="loginForm" >
                                 <h2 style="color: #dddddd;">用户登录</h2>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon" >账号</span>
-                                        <input type="text" class="form-control" name="loginAccount" placeholder="请输入账号/用户名" aria-describedby="basic-addon1">
+                                        <input type="text" class="form-control" name="account" placeholder="请输入账号/用户名" aria-describedby="basic-addon1">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -101,7 +101,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <button class="btn btn-lg btn-primary btn-block" type="submit" >登录</button>
+                                <button class="btn btn-lg btn-primary btn-block loginBut" type="button" >登录</button>
                                 <br>
                             </form>
                         </div>
@@ -162,7 +162,7 @@
                                         </div>
 
                                         <br>
-                                        <button class="btn btn-lg btn-primary btn-block" type="submit" >提交</button>
+                                        <button class="btn btn-lg btn-primary btn-block regionBut" type="button" >提交</button>
                                         <br>
                                     </div>
                             </form>
@@ -181,12 +181,30 @@
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<script src="//cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
+
 <script>
     $(function () {
+        layer.msg("恁好！")
         $(".sexLi").click(function () {
             var sex = $(this).find("a").text();
             $('input[name=sex]').val(sex)
         })
+
+        $(".loginBut").click(function () {
+            var account = $("#loginForm input[name=account]").val();
+            var password = $("#loginForm input[name=password]").val();
+            if("" != account && "" != password){
+                $.ajax({
+                    url:"/login",
+                    data:{account:account,password:password},
+                    success:function (rst) {
+                        layer.msg(rst.msg)
+                    }
+                })
+            }
+        })
+
     })
 </script>
 </html>
