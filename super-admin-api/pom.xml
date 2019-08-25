@@ -39,11 +39,12 @@
             <artifactId>activiti-engine</artifactId>
             <version>6.0.0</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring-boot-starter-basic</artifactId>
-            <version>6.0.0</version>
-        </dependency>-->
+        <!--mybatis-plus 实体类上会用到mybatis-plus的注解-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.1.2</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

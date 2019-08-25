@@ -14,12 +14,5 @@ import java.util.List;
 @SpringBootTest
 public class SuperAdminServiceApplicationTests {
 
-	@Autowired
-	private SysAccountMapper sysAccountMapper;
-	@Test
-	public void contextLoads() {
-		List<SysAccount> sysAccounts = sysAccountMapper.selectList(null);
-		sysAccounts.forEach(System.out::println);
-	}
 
 }

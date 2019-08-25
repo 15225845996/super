@@ -26,10 +26,21 @@
           <element id="library" level="project" name="Maven: de.odysseus.juel:juel-api:2.2.7" />
           <element id="library" level="project" name="Maven: de.odysseus.juel:juel-impl:2.2.7" />
           <element id="library" level="project" name="Maven: de.odysseus.juel:juel-spi:2.2.7" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-boot-starter:3.1.2" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus:3.1.2" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-extension:3.1.2" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-core:3.1.2" />
+          <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-annotation:3.1.2" />
+          <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:1.2" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:2.0.1" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.1.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.1.7.RELEASE" />
+          <element id="library" level="project" name="Maven: com.zaxxer:HikariCP:3.2.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.1.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.1.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.3" />
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.2.3" />

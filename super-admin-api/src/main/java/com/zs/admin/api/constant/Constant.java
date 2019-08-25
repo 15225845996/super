@@ -24,4 +24,15 @@ public class Constant {
      * 注册流程key
      */
     public static final String REGISTER_PROCESS_KEY = "registerProcess";
+
+
+    /**
+     * 未删除
+     */
+    public static final Boolean DATA_DELETED = true;
+
+    /**
+     * 已删除
+     */
+    public static final boolean DATA_NOT_DELETED = false;
 }

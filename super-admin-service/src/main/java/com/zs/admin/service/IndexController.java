@@ -1,4 +1,4 @@
-package com.zs.admin.service.controller;
+package com.zs.admin.service;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
