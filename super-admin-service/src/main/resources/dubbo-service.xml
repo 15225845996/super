@@ -11,4 +11,7 @@
     <!--process-->
     <dubbo:service interface="com.zs.admin.api.service.activiti.IActivitiService" version="${dubbo.version}" ref="activitiService"/>
 
+    <!--sys-->
+    <dubbo:service interface="com.zs.admin.api.service.sys.ISysAccountService" version="${dubbo.version}" ref="sysAccountServiceImpl"/>
+
 </beans>
