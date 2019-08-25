@@ -1,6 +1,5 @@
 package com.zs.admin.api.constant;
 
-import jdk.nashorn.internal.objects.annotations.Function;
 
 /**
  * @Auther: zs
@@ -35,4 +34,10 @@ public class Constant {
      * 已删除
      */
     public static final boolean DATA_NOT_DELETED = false;
+
+    /**
+     * 发起流程的用户表示key
+     */
+    public static final String START_PROCESS_KEY = "subUser";
+
 }

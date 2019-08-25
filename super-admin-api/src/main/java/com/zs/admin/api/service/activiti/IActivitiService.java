@@ -1,12 +1,8 @@
-package com.zs.admin.api.service;
+package com.zs.admin.api.service.activiti;
 
 import com.zs.admin.api.vo.ResultVo;
-import org.activiti.engine.impl.persistence.entity.HistoricProcessInstanceEntity;
-import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,5 +69,9 @@ public interface IActivitiService {
      */
     ResultVo deploymentModel(String modelId);
 
+    /**
+     * 查找流程是否已经部署
+     */
+    boolean isDeploymentByKey(String key);
 
 }

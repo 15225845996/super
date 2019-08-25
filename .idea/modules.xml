@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/super-admin-api/super-admin-api.iml" filepath="$PROJECT_DIR$/super-admin-api/super-admin-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/super-admin-service/super-admin-service.iml" filepath="$PROJECT_DIR$/super-admin-service/super-admin-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/super-admin-web/super-admin-web.iml" filepath="$PROJECT_DIR$/super-admin-web/super-admin-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/super-utils/super-utils.iml" filepath="$PROJECT_DIR$/super-utils/super-utils.iml" />
     </modules>
   </component>
 </project>

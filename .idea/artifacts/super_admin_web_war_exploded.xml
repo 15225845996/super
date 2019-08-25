@@ -10,6 +10,9 @@
           <element id="archive" name="super-admin-api-1.0-SNAPSHOT.jar">
             <element id="module-output" name="super-admin-api" />
           </element>
+          <element id="archive" name="super-utils-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="super-utils" />
+          </element>
           <element id="library" level="project" name="Maven: org.activiti:activiti-engine:6.0.0" />
           <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-converter:6.0.0" />
           <element id="library" level="project" name="Maven: org.activiti:activiti-bpmn-model:6.0.0" />
@@ -38,6 +41,7 @@
           <element id="library" level="project" name="Maven: com.zaxxer:HikariCP:3.2.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.8" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.1.7.RELEASE" />
@@ -71,7 +75,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.8" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.activiti:activiti-json-converter:6.0.0" />

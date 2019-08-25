@@ -1,4 +1,4 @@
-package com.zs.admin.service.impl;
+package com.zs.admin.service.impl.activiti;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;

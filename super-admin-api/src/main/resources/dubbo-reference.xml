@@ -9,5 +9,5 @@
 
 
     <!--process-->
-    <dubbo:reference interface="com.zs.admin.api.service.IActivitiService" version="${dubbo.version}" id="activitiService"/>
+    <dubbo:reference interface="com.zs.admin.api.service.activiti.IActivitiService" version="${dubbo.version}" id="activitiService"/>
 </beans>

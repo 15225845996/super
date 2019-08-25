@@ -1,10 +1,10 @@
-package com.zs.admin.service.impl;
+package com.zs.admin.service.impl.activiti;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.zs.admin.api.constant.Constant;
-import com.zs.admin.api.service.IActivitiService;
+import com.zs.admin.api.service.activiti.IActivitiService;
 import com.zs.admin.api.vo.ResultVo;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
@@ -255,6 +255,17 @@ public class ActivitiServiceImpl implements IActivitiService {
             }
         }
         return ResultVo.fail("模型ID不能为空！");
+    }
+
+    @Override
+    public boolean isDeploymentByKey(String key) {
+        if(StringUtils.isNotBlank(key)){
+            List<Deployment> list = repositoryService.createDeploymentQuery().deploymentKey(key).list();
+            if(list != null && list.size() > 0){
+                return true;
+            }
+        }
+        return false;
     }
 
 

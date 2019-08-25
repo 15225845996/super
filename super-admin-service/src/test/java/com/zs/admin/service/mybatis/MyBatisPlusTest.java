@@ -1,6 +1,8 @@
 package com.zs.admin.service.mybatis;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zs.admin.api.entry.SysAccount;
+import com.zs.admin.api.service.sys.ISysAccountService;
 import com.zs.admin.service.SuperAdminServiceApplicationTests;
 import com.zs.admin.service.mapper.SysAccountMapper;
 import org.junit.Test;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zs
@@ -18,6 +21,8 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
 
     @Autowired
     private SysAccountMapper sysAccountMapper;
+    @Autowired
+    private ISysAccountService sysAccountService;
     @Test
     public void contextLoads() {
         List<SysAccount> sysAccounts = sysAccountMapper.selectList(null);
@@ -42,5 +47,22 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
        /* account.setCreateTime(new Date());*/
         int insert = sysAccountMapper.insert(account);
         System.out.println(insert);
+    }
+
+    @Test
+    public void service(){
+        int count = sysAccountService.count();
+        System.out.println(count);
+    }
+
+    @Test
+    public void query(){
+        QueryWrapper<SysAccount> query = new QueryWrapper<>();
+        /*query.lambda().eq(SysAccount::getName,"用户2").eq(SysAccount::getPassword,"123");*/
+        query.lambda().eq(SysAccount::getPassword,"123");
+        Map<String, Object> map = sysAccountService.getMap(query);
+        List<SysAccount> list = sysAccountService.list(query);
+        SysAccount one = sysAccountService.getOne(query);
+        System.out.println(map);
     }
 }
