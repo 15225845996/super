@@ -5,7 +5,7 @@ import com.zs.admin.api.entry.SysAccount;
 import com.zs.admin.api.service.activiti.IActivitiService;
 import com.zs.admin.api.service.sys.ISysAccountService;
 import com.zs.admin.api.vo.ResultVo;
-import com.zs.utils.MD5Utils;
+/*import com.zs.utils.MD5Utils;*/
 import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,8 @@ public class LoginController extends BaseController {
     @RequestMapping("/login")
     public ResultVo login(HttpServletRequest request, SysAccount account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
-            account = sysAccountService.findByAccountAndPassword(account.getAccount(), MD5Utils.getPassWord(account.getPassword()));
+            String password = "";
+            account = sysAccountService.findByAccountAndPassword(account.getAccount(), password);
             if(account != null){
                 return ResultVo.success();
             }
