@@ -10,4 +10,7 @@
 
     <!--process-->
     <dubbo:reference interface="com.zs.admin.api.service.activiti.IActivitiService" version="${dubbo.version}" id="activitiService"/>
+
+    <!--sys-->
+    <dubbo:reference interface="com.zs.admin.api.service.sys.ISysAccountService" version="${dubbo.version}" id="sysAccountService" />
 </beans>
