@@ -155,12 +155,12 @@ public class ActivitiController implements ModelDataJsonConstants {
         }
     }
 
-    @RequestMapping("/tasksByAccount")
+    @RequestMapping("/startTasksByAccount")
     @ResponseBody
-    public ResultVo tasksByAccount(HttpServletRequest request, HttpServletResponse response,String account,@RequestParam(value = "isEnd",defaultValue = "false")Boolean isEnd){
+    public ResultVo startTasksByAccount(HttpServletRequest request, HttpServletResponse response,String account,@RequestParam(value = "isEnd",defaultValue = "false")Boolean isEnd){
         if(StringUtils.isNotBlank(account)){
             //查询未结束的
-            List<HistoricProcessInstanceVo> list = activitiService.tasksByAccount(account,isEnd);
+            List<HistoricProcessInstanceVo> list = activitiService.startTasksByAccount(account,isEnd);
             return ResultVo.data(list);
         }
         return ResultVo.fail();

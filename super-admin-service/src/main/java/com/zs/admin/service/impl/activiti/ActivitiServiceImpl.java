@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author zs
@@ -80,8 +81,23 @@ public class ActivitiServiceImpl implements IActivitiService {
         //流程发起前设置发起人，记录在流程历史中
         identityService.setAuthenticatedUserId(starter);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(key, map);
+        //第一个流程为发起人流程，直接通过
+
         return processInstance == null?null:processInstance.getProcessInstanceId();
     }
+
+    @Override
+    public void complete(String taskId, Map<String, Object> paramsMap) {
+        Map<String, Object> filterMap = paramsMap.entrySet().stream().filter(map -> map.getValue() != null)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        // 存储下个节点权限组，以及当前审核说明
+        //设置任务完成时间
+        taskService.setVariableLocal(taskId, "reason", paramsMap.get("reason"));
+        taskService.setVariableLocal(taskId, "auditUserId", paramsMap.get("userId"));
+        taskService.setVariableLocal(taskId, "createDate", new Date());
+        taskService.complete(taskId, filterMap);
+    }
+
 
     /**
      * 查看 定义的流程图
@@ -285,7 +301,7 @@ public class ActivitiServiceImpl implements IActivitiService {
     }
 
     @Override
-    public List<HistoricProcessInstanceVo> tasksByAccount(String account,Boolean isEnd) {
+    public List<HistoricProcessInstanceVo> startTasksByAccount(String account,Boolean isEnd) {
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery()
                 .startedBy(account).orderByProcessInstanceStartTime().desc();
         if(isEnd != null){

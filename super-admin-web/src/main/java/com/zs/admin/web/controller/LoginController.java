@@ -52,7 +52,7 @@ public class LoginController extends BaseController {
             if(existAdmin){//存在管理员用户
                 boolean isDeployment = activitiService.isDeploymentByKey(Constant.REGISTER_PROCESS_KEY);
                 if(isDeployment){
-                    List<HistoricProcessInstanceVo> list = activitiService.tasksByAccount(account.getAccount(), false);
+                    List<HistoricProcessInstanceVo> list = activitiService.startTasksByAccount(account.getAccount(), false);
                     if(list != null && list.size() >0){
                         return ResultVo.fail("恁已注册，请耐心等待管理员审批！");
                     }

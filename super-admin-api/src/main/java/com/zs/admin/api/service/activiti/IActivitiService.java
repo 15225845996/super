@@ -17,6 +17,8 @@ public interface IActivitiService {
 
     String startByKey(String key,String starter,Map<String,Object> map);
 
+    void complete(String taskId, Map<String, Object> paramsMap);
+
     /**
      * 查看定义的流程图
      *
@@ -78,6 +80,6 @@ public interface IActivitiService {
      * 查找用户发起的流程
      * isEnd:是否已结束
      */
-    List<HistoricProcessInstanceVo> tasksByAccount(String account, Boolean isEnd);
+    List<HistoricProcessInstanceVo> startTasksByAccount(String account, Boolean isEnd);
 
 }

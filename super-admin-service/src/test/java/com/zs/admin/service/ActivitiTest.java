@@ -57,7 +57,7 @@ public class ActivitiTest extends SuperAdminServiceApplicationTests {
     @Test
     public void query(){
         /*7501*/
-        List<HistoricProcessInstanceVo> list = activitiService.tasksByAccount("15225845997", null);
+        List<HistoricProcessInstanceVo> list = activitiService.startTasksByAccount("15225845997", null);
         for (HistoricProcessInstanceVo historicProcessInstanceVo : list) {
             System.out.println(historicProcessInstanceVo);
         }
