@@ -86,7 +86,7 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="login">
-                            <form class="form-signin" id="loginForm" >
+                            <form class="form-signin" id="loginForm" action="/login" >
                                 <h2 style="color: #dddddd;">用户登录</h2>
                                 <div class="form-group">
                                     <div class="input-group">
@@ -101,7 +101,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <button class="btn btn-lg btn-primary btn-block loginBut" type="button" >登录</button>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit" >登录</button>
                                 <br>
                             </form>
                         </div>
@@ -117,13 +117,13 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <span class="input-group-addon" style="color: red" >账号</span>
+                                                <span class="input-group-addon" >账号</span>
                                                 <input type="number" class="form-control" name="account" placeholder="请输入登录账号" aria-describedby="basic-addon1">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <span class="input-group-addon" style="color: red" >密码</span>
+                                                <span class="input-group-addon">密码</span>
                                                 <input type="password" class="form-control" name="password" placeholder="请输入登录密码" aria-describedby="basic-addon1">
                                             </div>
                                         </div>
@@ -162,7 +162,7 @@
                                         </div>
 
                                         <br>
-                                        <button class="btn btn-lg btn-primary btn-block regionBut" type="button" >提交</button>
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit" >提交</button>
                                         <br>
                                     </div>
                             </form>
@@ -181,30 +181,206 @@
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script src="//cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
+<script src="https://cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
 
+<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 <script>
-    $(function () {
+
+    $(function() {
         layer.msg("恁好！")
         $(".sexLi").click(function () {
             var sex = $(this).find("a").text();
             $('input[name=sex]').val(sex)
         })
 
-        $(".loginBut").click(function () {
-            var account = $("#loginForm input[name=account]").val();
-            var password = $("#loginForm input[name=password]").val();
-            if("" != account && "" != password){
-                $.ajax({
-                    url:"/login",
-                    data:{account:account,password:password},
-                    success:function (rst) {
-                        layer.msg(rst.msg)
-                    }
-                })
-            }
-        })
 
-    })
+        $('#loginForm')//登录
+            .bootstrapValidator({
+                message: '登录校验',
+                feedbackIcons: {
+                    /*input状态样式图片*/
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    /*验证：规则*/
+                    account: {//验证input项：验证规则
+                        message: '登录账号验证',
+                        threshold : 2 , //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                        validators: {
+                            notEmpty: {//非空验证：提示消息
+                                message: '账号/用户名不能为空'
+                            },
+                            stringLength: {
+                                min: 2,
+                                max: 20,
+                                message: '账号/用户名长度必须在2到20之间'
+                            },
+                            remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
+                                url: '/checkAccount',//验证地址
+                                message: '用户不存在',//提示消息
+                                delay :  1000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置1秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                                type: 'POST',//请求方式
+                                data:function(){
+                                    return {
+                                        account: $("#loginForm input[name='account']").val()
+                                    }
+                                }
+                            },
+                            regexp: {
+                                regexp: /^[A-Za-z0-9\u4e00-\u9fa5]+$/,
+                                message: '账号/用户名由数字、字母、汉字组成'
+                            }
+                        }
+                    },
+                    password: {
+                        message: '密码无效',
+                        validators: {
+                            notEmpty: {
+                                message: '密码不能为空'
+                            },
+                            stringLength: {
+                                min: 5,
+                                max: 20,
+                                message: '用户名长度必须在5到20之间'
+                            },
+                            regexp: {
+                                regexp: /^[a-zA-Z0-9_\.]+$/,
+                                message: '密码由数字字母下划线和.组成'
+                            }
+                        }
+                    }
+                }
+            })
+            .on('success.form.bv', function (e) {//点击提交之后
+                // 终止重复提交
+                e.preventDefault();
+                // 得到form表单对象
+                var $form = $(e.target);
+                // 获得bootstrap验证对象
+                var bv = $form.data('bootstrapValidator');
+                // Use Ajax to submit form data 提交至form标签中的action，result自定义
+                $.post($form.attr('action'), $form.serialize(), function (data) {
+                    layer.msg(data.msg);
+                    if(data.code == 1){
+                        common.method.GoUrl("/page/base");
+                    }else{
+                        $('#loginForm button[type=submit]').attr("disabled",false);
+                    }
+                });
+            });
+
+
+
+
+        $('#regionForm')//注册
+            .bootstrapValidator({
+                message: '登录校验',
+                feedbackIcons: {/*input状态样式图片*/
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {/*验证：规则*/
+                    name: {//验证input项：验证规则
+                        message: '用户名异常',
+                        validators: {
+                            notEmpty: {//非空验证：提示消息
+                                message: '账号/用户名不能为空'
+                            },
+                            stringLength: {
+                                min: 2,
+                                max: 20,
+                                message: '用户名长度必须在2到20之间'
+                            },
+                            regexp: {
+                                regexp: /^[A-Za-z0-9\u4e00-\u9fa5]+$/,
+                                message: '用户名由数字、字母、汉字组成'
+                            }
+                        }
+                    },
+                    account: {//验证input项：验证规则
+                        message: '登录账号验证',
+                        threshold :  2 , //有2字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                        validators: {
+                            notEmpty: {//非空验证：提示消息
+                                message: '账号/用户名不能为空'
+                            },
+                            stringLength: {
+                                min: 2,
+                                max: 20,
+                                message: '账号/用户名长度必须在2到20之间'
+                            },
+                            remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
+                                url: '/checkAccount',//验证地址
+                                message: '用户已存在',//提示消息
+                                delay :  1000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置1秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                                type: 'POST',//请求方式
+                                data:function(){
+                                    return {
+                                        account: $("#regionForm input[name='account']").val(),
+                                        checkType:"region"
+                                    }
+                                }
+                            },
+                            regexp: {
+                                regexp: /^[A-Za-z0-9\u4e00-\u9fa5]+$/,
+                                message: '账号/用户名由数字、字母、汉字组成'
+                            }
+                        }
+                    },
+                    password: {
+                        message: '密码无效',
+                        validators: {
+                            notEmpty: {
+                                message: '密码不能为空'
+                            },
+                            stringLength: {
+                                min: 5,
+                                max: 20,
+                                message: '用户名长度必须在5到20之间'
+                            },
+                            different: {//不能和用户名相同
+                                field: 'account',//需要进行比较的input name值
+                                message: '不能和登录账号相同'
+                            },
+                            regexp: {
+                                regexp: /^[a-zA-Z0-9_\.]+$/,
+                                message: '密码由数字字母下划线和.组成'
+                            }
+                        }
+                    },
+                    age: {
+                        validators: {
+                            notEmpty: {
+                                message: '年龄不能为空'
+                            },
+                            regexp: {
+                                regexp: /^(?:[1-9][0-9]?|1[01][0-9]|120)$/,
+                                message: '年龄范围为1-120'
+                            }
+                        }
+                    }
+                }
+            })
+            .on('success.form.bv', function(e) {//点击提交之后
+                // 终止重复提交
+                e.preventDefault();
+                // 得到form表单对象
+                var $form = $(e.target);
+                // 获得bootstrap验证对象
+                var bv = $form.data('bootstrapValidator');
+                // Use Ajax to submit form data 提交至form标签中的action，result自定义
+                $.post($form.attr('action'), $form.serialize(), function(data) {
+                    if(data.code == "1"){//成功
+                        $("#loginModal").modal("hide");
+                    }
+                    layer.msg(data.msg);
+                });
+            });
+    });
+
+
 </script>
 </html>

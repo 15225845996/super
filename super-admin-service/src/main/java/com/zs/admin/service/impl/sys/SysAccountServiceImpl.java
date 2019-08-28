@@ -38,4 +38,15 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper,SysAccou
         int count = super.count(queryWrapper);
         return count > 0;
     }
+
+    @Override
+    public boolean isExistByAccount(String account) {
+        if(StringUtils.isNotBlank(account)){
+            QueryWrapper<SysAccount> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(SysAccount::getAccount,account);
+            int count = super.count(queryWrapper);
+            return count > 0;
+        }
+        return false;
+    }
 }

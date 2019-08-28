@@ -17,4 +17,10 @@ public interface ISysAccountService extends IService<SysAccount> {
      * @return
      */
     boolean isExistAdmin();
+
+
+    /**
+     * 账后是否已存在
+     */
+    boolean isExistByAccount(String account);
 }
