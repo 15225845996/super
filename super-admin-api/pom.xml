@@ -23,21 +23,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.zs</groupId>
-            <artifactId>super-utils</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
-        </dependency>
-        <!--工作流引擎，工作流服务接口会用到-->
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-engine</artifactId>
-            <version>6.0.0</version>
         </dependency>
         <!--mybatis-plus 实体类上会用到mybatis-plus的注解-->
         <dependency>

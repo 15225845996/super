@@ -1,8 +1,7 @@
 package com.zs.admin.api.service.activiti;
 
+import com.zs.admin.api.vo.ModelVo;
 import com.zs.admin.api.vo.ResultVo;
-import org.activiti.engine.repository.Model;
-import org.activiti.engine.runtime.ProcessInstance;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Map;
  */
 public interface IActivitiService {
 
-    ProcessInstance startByKey(String key,Map<String,Object> map);
+    String startByKey(String key,Map<String,Object> map);
 
     /**
      * 查看定义的流程图
@@ -35,11 +34,11 @@ public interface IActivitiService {
     byte[] getProcessImage(String pProcessInstanceId) throws Exception;
 
 
-    List<Model> findModels();
+    List<ModelVo> findModels();
 
-    Model findModel(String modelId);
+    ModelVo findModel(String modelId);
 
-    void saveModel(Model model);
+    void saveModel(ModelVo model);
 
     void addModelEditorSource(String modelId ,byte[] bytes);
 
@@ -54,7 +53,7 @@ public interface IActivitiService {
      * @param description  描述
      * @return
      */
-    Model createModel(String modelName,String modelKey,String description);
+    String createModel(String modelName,String modelKey,String description);
 
 
     /**

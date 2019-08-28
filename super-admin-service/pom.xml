@@ -24,12 +24,11 @@
 			<groupId>com.zs</groupId>
 			<artifactId>super-admin-api</artifactId>
 			<version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>activiti-engine</artifactId>
-					<groupId>org.activiti</groupId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.zs</groupId>
+			<artifactId>super-utils</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

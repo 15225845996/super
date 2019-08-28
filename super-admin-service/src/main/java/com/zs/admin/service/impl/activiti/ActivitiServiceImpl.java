@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.service.activiti.IActivitiService;
+import com.zs.admin.api.vo.ModelVo;
 import com.zs.admin.api.vo.ResultVo;
+import com.zs.utils.DozerUtils;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
@@ -71,9 +73,9 @@ public class ActivitiServiceImpl implements IActivitiService {
     }
 
     @Override
-    public ProcessInstance startByKey(String key, Map<String, Object> map) {
+    public String startByKey(String key, Map<String, Object> map) {
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(key, map);
-        return processInstance;
+        return processInstance == null?null:processInstance.getProcessInstanceId();
     }
 
     /**
@@ -139,21 +141,30 @@ public class ActivitiServiceImpl implements IActivitiService {
     }
 
     @Override
-    public List<Model> findModels() {
-        return repositoryService.createModelQuery().orderByCreateTime().desc().list();
-    }
-
-    @Override
-    public Model findModel(String modelId) {
-        if(StringUtils.isNotBlank(modelId)){
-            return repositoryService.getModel(modelId);
+    public List<ModelVo> findModels() {
+        List<Model> list = repositoryService.createModelQuery().orderByCreateTime().desc().list();
+        if(list != null){
+            return DozerUtils.dozer(list, ModelVo.class);
         }
         return null;
     }
 
     @Override
-    public void saveModel(Model model) {
-        repositoryService.saveModel(model);
+    public ModelVo findModel(String modelId) {
+        if(StringUtils.isNotBlank(modelId)){
+            return DozerUtils.dozer(repositoryService.getModel(modelId),ModelVo.class);
+        }
+        return null;
+    }
+
+    @Override
+    public void saveModel(ModelVo modelVo) {
+        if(modelVo != null && modelVo.getId() != null){
+            //获取到model信息，并跟新部分字段信息（modelVo中有的字段）
+            Model model = repositoryService.getModel(modelVo.getId());
+            DozerUtils.dozer(modelVo,model);
+            repositoryService.saveModel(model);
+        }
     }
 
     @Override
@@ -175,7 +186,7 @@ public class ActivitiServiceImpl implements IActivitiService {
     }
 
     @Override
-    public Model createModel(String modelName, String modelKey, String description) {
+    public String createModel(String modelName, String modelKey, String description) {
         if(!StringUtils.isNotBlank(modelName)){
             modelName = "俺该叫个啥呢？";
         }
@@ -206,7 +217,7 @@ public class ActivitiServiceImpl implements IActivitiService {
         editorNode.put("stencilset", stencilSetNode);
         try{
             repositoryService.addModelEditorSource(model.getId(), editorNode.toString().getBytes("utf-8"));
-            return repositoryService.createModelQuery().modelId(model.getId()).singleResult();
+            return repositoryService.createModelQuery().modelId(model.getId()).singleResult().getId();
         }catch (Exception e){
 
         }

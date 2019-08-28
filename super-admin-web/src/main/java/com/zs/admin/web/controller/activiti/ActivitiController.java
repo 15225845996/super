@@ -3,10 +3,9 @@ package com.zs.admin.web.controller.activiti;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.zs.admin.api.service.activiti.IActivitiService;
+import com.zs.admin.api.vo.ModelVo;
 import com.zs.admin.api.vo.ResultVo;
 import org.activiti.editor.constants.ModelDataJsonConstants;
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.repository.Model;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
@@ -43,8 +42,9 @@ public class ActivitiController implements ModelDataJsonConstants {
         try {
             return IOUtils.toString(stencilsetStream, "utf-8");
         } catch (Exception e) {
-            throw new ActivitiException("Error while loading stencil set", e);
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -63,7 +63,7 @@ public class ActivitiController implements ModelDataJsonConstants {
                           @RequestParam("description") String description) {//对接收参数进行了修改，修复400异常
         try {
 
-            Model model = activitiService.findModel(modelId);
+            ModelVo model = activitiService.findModel(modelId);
 
             ObjectNode modelJson = (ObjectNode) objectMapper.readTree(model.getMetaInfo());
 
@@ -92,7 +92,6 @@ public class ActivitiController implements ModelDataJsonConstants {
 
         } catch (Exception e) {
             LOGGER.error("Error saving model", e);
-            throw new ActivitiException("Error saving model", e);
         }
     }
 
@@ -101,7 +100,7 @@ public class ActivitiController implements ModelDataJsonConstants {
     public ObjectNode getEditorJson(@PathVariable String modelId) {
         ObjectNode modelNode = null;
 
-        Model model = activitiService.findModel(modelId);
+        ModelVo model = activitiService.findModel(modelId);
 
         if (model != null) {
             try {
@@ -118,7 +117,6 @@ public class ActivitiController implements ModelDataJsonConstants {
 
             } catch (Exception e) {
                 LOGGER.error("Error creating model JSON", e);
-                throw new ActivitiException("Error creating model JSON", e);
             }
         }
         return modelNode;
@@ -132,7 +130,7 @@ public class ActivitiController implements ModelDataJsonConstants {
      */
     @RequestMapping("/modelList")
     public String modelList(org.springframework.ui.Model model,HttpServletRequest request){
-        List<Model> models = activitiService.findModels();
+        List<ModelVo> models = activitiService.findModels();
         model.addAttribute("models",models);
         return "model/list";
     }
@@ -165,9 +163,9 @@ public class ActivitiController implements ModelDataJsonConstants {
      */
     @RequestMapping("/create")
     public void newModel(HttpServletRequest request, HttpServletResponse response,String modelName,String modelKey,String description) throws Exception {
-        Model model = activitiService.createModel(modelName, modelKey, description);
-        if(model != null){
-            response.sendRedirect(request.getContextPath() + "/modeler.html?modelId=" + model.getId());
+        String modelId = activitiService.createModel(modelName, modelKey, description);
+        if(modelId != null){
+            response.sendRedirect(request.getContextPath() + "/modeler.html?modelId=" + modelId);
         }
     }
 

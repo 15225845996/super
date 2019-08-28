@@ -19,13 +19,6 @@
     <!-- 使用zookeeper注册中心暴露服务地址 -->
     <dubbo:registry address="${dubbo.registry.address}" />
 
-    <!--&lt;!&ndash; 用dubbo协议在20880端口暴露服务 &ndash;&gt;
-    <dubbo:protocol name="dubbo" host="${dubbo.protocol.host}" port="${dubbo.protocol.port}"/>
-
-    &lt;!&ndash; 延迟到Spring初始化完成后，再暴露服务，服务调用超时设置为6秒，超时不重试 &ndash;&gt;
-    <dubbo:provider delay="-1" timeout="${dubbo.timeout}" retries="0" />-->
-
-
 
     <import resource="dubbo-reference.xml"/>
 </beans>
