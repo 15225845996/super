@@ -232,9 +232,10 @@
                             $("#regionInfoDiv").show();
                             $("#regionInfoStartTime").val(rst.data[0].startTime)
                             $("#regionTaskImg").attr("src","/activiti/taskImg?processId="+rst.data[0].processInstanceId);
-                        }/*else{
-                            $("#listInfo").hide();
-                        }*/
+                        }else{
+                            $("#regionInfoDiv").hide();
+                            layer.msg("没找到注册信息！")
+                        }
                     }
                 })
             }else{

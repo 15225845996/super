@@ -298,7 +298,6 @@ public class ActivitiServiceImpl implements IActivitiService {
         }
 
         List<HistoricProcessInstance> list = query.list();
-        String superProcessInstanceId = list.get(0).getSuperProcessInstanceId();
         return DozerUtils.dozer(list, HistoricProcessInstanceVo.class);
     }
 
