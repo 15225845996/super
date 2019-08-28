@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.service.activiti.IActivitiService;
-import com.zs.admin.api.vo.ModelVo;
+import com.zs.admin.api.vo.activiti.HistoricProcessInstanceVo;
+import com.zs.admin.api.vo.activiti.ModelVo;
 import com.zs.admin.api.vo.ResultVo;
 import com.zs.utils.DozerUtils;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
@@ -15,9 +16,11 @@ import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
@@ -73,7 +76,9 @@ public class ActivitiServiceImpl implements IActivitiService {
     }
 
     @Override
-    public String startByKey(String key, Map<String, Object> map) {
+    public String startByKey(String key,String starter, Map<String, Object> map) {
+        //流程发起前设置发起人，记录在流程历史中
+        identityService.setAuthenticatedUserId(starter);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(key, map);
         return processInstance == null?null:processInstance.getProcessInstanceId();
     }
@@ -85,7 +90,7 @@ public class ActivitiServiceImpl implements IActivitiService {
      * @return
      */
     @Override
-    public byte[] definitionImage(String processDefinitionId) throws IOException {
+    public byte[] defaultTaskImg(String processDefinitionId) throws IOException {
         BpmnModel model = repositoryService.getBpmnModel(processDefinitionId);
         if (model != null && model.getLocationMap().size() > 0) {
             ProcessDiagramGenerator generator = new DefaultProcessDiagramGenerator();
@@ -103,7 +108,7 @@ public class ActivitiServiceImpl implements IActivitiService {
      * 获取流程图像，已执行节点和流程线高亮显示
      */
     @Override
-    public byte[] getProcessImage(String processInstanceId) throws Exception {
+    public byte[] taskImg(String processInstanceId) throws Exception {
         //  获取历史流程实例
         HistoricProcessInstance historicProcessInstance = queryHistoricProcessInstance(processInstanceId);
         if (historicProcessInstance == null) {
@@ -271,12 +276,30 @@ public class ActivitiServiceImpl implements IActivitiService {
     @Override
     public boolean isDeploymentByKey(String key) {
         if(StringUtils.isNotBlank(key)){
-            List<Deployment> list = repositoryService.createDeploymentQuery().deploymentKey(key).list();
+            List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().processDefinitionKey(key).listPage(0,1);
             if(list != null && list.size() > 0){
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public List<HistoricProcessInstanceVo> tasksByAccount(String account,Boolean isEnd) {
+        HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery()
+                .startedBy(account).orderByProcessInstanceStartTime().desc();
+        if(isEnd != null){
+            if(isEnd){//已做完
+                query.finished();
+            }
+            if(!isEnd){//未做完
+                query.unfinished();
+            }
+        }
+
+        List<HistoricProcessInstance> list = query.list();
+        String superProcessInstanceId = list.get(0).getSuperProcessInstanceId();
+        return DozerUtils.dozer(list, HistoricProcessInstanceVo.class);
     }
 
 

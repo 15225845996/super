@@ -1,4 +1,4 @@
-package com.zs.admin.service.mybatis;
+package com.zs.admin.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zs.admin.api.entry.SysAccount;

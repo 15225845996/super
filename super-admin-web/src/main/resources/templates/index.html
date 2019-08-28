@@ -82,6 +82,7 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">账号登录</a></li>
                         <li role="presentation"><a href="#region" aria-controls="region" role="tab" data-toggle="tab">申请账号</a></li>
+                        <li role="presentation"><a href="#regionInfo" aria-controls="regionInfo" role="tab" data-toggle="tab">申请信息查询</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -167,6 +168,32 @@
                                     </div>
                             </form>
                         </div>
+
+                        <div role="tabpanel" class="tab-pane" id="regionInfo">
+                            <form class="form-signin" >
+                                <h2 style="color: #dddddd;">申请信息查询</h2>
+                                <div class="input-group">
+                                    <span class="input-group-addon"  >请输入查询账号</span>
+                                    <input type="text" class="form-control" id="searchRegionInfo" placeholder="请输入查询账号...">
+                                    <span class="input-group-btn"><button class="btn btn-default" id="searchRegionBut" type="button">搜索</button></span>
+                                </div>
+                                <br>
+                                <br>
+                                <div id="regionInfoDiv" style="display: none">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"  >发起时间</span>
+                                            <input type="text" id="regionInfoStartTime"  class="form-control" disabled="disabled" aria-describedby="basic-addon1">
+                                        </div>
+                                    </div>
+                                    <img id="regionTaskImg" width="100%"/>
+                                </div>
+                                <br>
+                                <br>
+                            </form>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -187,10 +214,32 @@
 <script>
 
     $(function() {
-        layer.msg("恁好！")
         $(".sexLi").click(function () {
             var sex = $(this).find("a").text();
             $('input[name=sex]').val(sex)
+        })
+
+
+
+        $("#searchRegionBut").click(function () {
+            var regionInfo = $("#searchRegionInfo").val().trim();
+            if(regionInfo != null && regionInfo != ""){
+                $.ajax({
+                    url:"/activiti/tasksByAccount",
+                    data:{account:regionInfo},
+                    success:function (rst) {
+                        if(rst.code == "1" && rst.data != null && rst.data.length > 0){
+                            $("#regionInfoDiv").show();
+                            $("#regionInfoStartTime").val(rst.data[0].startTime)
+                            $("#regionTaskImg").attr("src","/activiti/taskImg?processId="+rst.data[0].processInstanceId);
+                        }/*else{
+                            $("#listInfo").hide();
+                        }*/
+                    }
+                })
+            }else{
+                layer.msg("请输入要查询的注册账号！！！")
+            }
         })
 
 

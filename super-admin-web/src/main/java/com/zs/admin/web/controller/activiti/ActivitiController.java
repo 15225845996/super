@@ -3,7 +3,8 @@ package com.zs.admin.web.controller.activiti;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.zs.admin.api.service.activiti.IActivitiService;
-import com.zs.admin.api.vo.ModelVo;
+import com.zs.admin.api.vo.activiti.HistoricProcessInstanceVo;
+import com.zs.admin.api.vo.activiti.ModelVo;
 import com.zs.admin.api.vo.ResultVo;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.apache.batik.transcoder.TranscoderInput;
@@ -143,13 +144,26 @@ public class ActivitiController implements ModelDataJsonConstants {
      * @param processId
      * @throws Exception
      */
-    @RequestMapping("/getImg")
-    public void getImg(org.springframework.ui.Model model,HttpServletRequest request,HttpServletResponse response,String processId) throws Exception{
-        byte[] processImage = activitiService.getProcessImage(processId);
-        ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.write(processImage);
-        outputStream.flush();
-        outputStream.close();
+    @RequestMapping("/taskImg")
+    public void taskImg(org.springframework.ui.Model model,HttpServletRequest request,HttpServletResponse response,String processId) throws Exception{
+        if(StringUtils.isNotBlank(processId)){
+            byte[] processImage = activitiService.taskImg(processId);
+            ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(processImage);
+            outputStream.flush();
+            outputStream.close();
+        }
+    }
+
+    @RequestMapping("/tasksByAccount")
+    @ResponseBody
+    public ResultVo tasksByAccount(HttpServletRequest request, HttpServletResponse response,String account,@RequestParam(value = "isEnd",defaultValue = "false")Boolean isEnd){
+        if(StringUtils.isNotBlank(account)){
+            //查询未结束的
+            List<HistoricProcessInstanceVo> list = activitiService.tasksByAccount(account,isEnd);
+            return ResultVo.data(list);
+        }
+        return ResultVo.fail();
     }
 
     /**

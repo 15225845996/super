@@ -1,6 +1,7 @@
 package com.zs.admin.api.service.activiti;
 
-import com.zs.admin.api.vo.ModelVo;
+import com.zs.admin.api.vo.activiti.HistoricProcessInstanceVo;
+import com.zs.admin.api.vo.activiti.ModelVo;
 import com.zs.admin.api.vo.ResultVo;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 public interface IActivitiService {
 
-    String startByKey(String key,Map<String,Object> map);
+    String startByKey(String key,String starter,Map<String,Object> map);
 
     /**
      * 查看定义的流程图
@@ -22,16 +23,16 @@ public interface IActivitiService {
      * @param processDefinitionId
      * @return
      */
-    byte[] definitionImage(String processDefinitionId) throws IOException;
+    byte[] defaultTaskImg(String processDefinitionId) throws IOException;
 
     /**
      * 查看流程进度图
      *
-     * @param pProcessInstanceId
+     * @param processInstanceId
      * @return
      * @throws Exception
      */
-    byte[] getProcessImage(String pProcessInstanceId) throws Exception;
+    byte[] taskImg(String processInstanceId) throws Exception;
 
 
     List<ModelVo> findModels();
@@ -72,5 +73,11 @@ public interface IActivitiService {
      * 查找流程是否已经部署
      */
     boolean isDeploymentByKey(String key);
+
+    /**
+     * 查找用户发起的流程
+     * isEnd:是否已结束
+     */
+    List<HistoricProcessInstanceVo> tasksByAccount(String account, Boolean isEnd);
 
 }

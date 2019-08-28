@@ -1,4 +1,4 @@
-package com.zs.admin.api.vo;
+package com.zs.admin.api.vo.activiti;
 
 import lombok.Data;
 
