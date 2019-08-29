@@ -2,12 +2,12 @@ package com.zs.admin.web.controller;
 
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
-import com.zs.admin.api.entry.SysAccount;
+import com.zs.admin.api.entry.Account;
 import com.zs.admin.api.service.activiti.IActivitiService;
-import com.zs.admin.api.service.sys.ISysAccountService;
+import com.zs.admin.api.service.sys.IAccountService;
 import com.zs.admin.api.vo.ResultVo;
 import com.zs.admin.api.vo.activiti.HistoricProcessInstanceVo;
-import com.zs.admin.api.vo.sys.SysAccountVo;
+import com.zs.admin.api.vo.sys.AccountVo;
 import com.zs.utils.MD5Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +29,15 @@ import java.util.Map;
 public class LoginController extends BaseController {
 
     @Autowired
-    private ISysAccountService sysAccountService;
+    private IAccountService accountService;
     @Autowired
     private IActivitiService activitiService;
 
     @RequestMapping("/login")
-    public ResultVo login(HttpServletRequest request, SysAccount account){
+    public ResultVo login(HttpServletRequest request, Account account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
             String password = MD5Utils.getPassWord(account.getPassword());
-            account = sysAccountService.findByAccountAndPassword(account.getAccount(), password);
+            account = accountService.findByAccountAndPassword(account.getAccount(), password);
             if(account != null){
                 return ResultVo.success();
             }
@@ -46,9 +46,9 @@ public class LoginController extends BaseController {
     }
 
     @RequestMapping("/region")
-    public ResultVo region(HttpServletRequest request, SysAccountVo account){
+    public ResultVo region(HttpServletRequest request, AccountVo account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
-            boolean existAdmin = sysAccountService.isExistAdmin();
+            boolean existAdmin = accountService.isExistAdmin();
             if(existAdmin){//存在管理员用户
                 boolean isDeployment = activitiService.isDeploymentByKey(Constant.REGISTER_PROCESS_KEY);
                 if(isDeployment){
@@ -76,12 +76,12 @@ public class LoginController extends BaseController {
 
 
     @RequestMapping("/checkAccount")
-    public Map<String,Boolean> isExistByAccount(HttpServletRequest request, SysAccountVo account,@RequestParam(name = "checkType" , defaultValue = "login") String checkType){
+    public Map<String,Boolean> isExistByAccount(HttpServletRequest request, AccountVo account, @RequestParam(name = "checkType" , defaultValue = "login") String checkType){
         Map<String,Boolean> result = new HashMap<>();
         result.put("valid",false);
         if(StringUtils.isNotBlank(account.getAccount())){
             if(StringUtils.isNotBlank(account.getAccount())){
-                boolean isExist = sysAccountService.isExistByAccount(account.getAccount());
+                boolean isExist = accountService.isExistByAccount(account.getAccount());
                 switch (checkType){
                     case "login"://登录：查到为true
                         result.put("valid",isExist);
@@ -96,7 +96,7 @@ public class LoginController extends BaseController {
     }
 
 
-    private ResultVo regionMethod(HttpServletRequest request, SysAccount account){
+    private ResultVo regionMethod(HttpServletRequest request, Account account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
             account.setPassword(MD5Utils.getPassWord(account.getPassword()));
             account.setCategoryId(AccountCategoryEnum.ADMIN.getCategoryId());
@@ -104,7 +104,7 @@ public class LoginController extends BaseController {
             if("".equals(account.getSex())){
                 account.setSex(null);
             }
-            boolean save = sysAccountService.save(account);
+            boolean save = accountService.save(account);
             if(save){
                 return ResultVo.success("注册成功！");
             }

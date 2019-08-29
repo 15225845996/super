@@ -1,16 +1,19 @@
 package com.zs.admin.api.service.sys;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.zs.admin.api.entry.SysAccount;
+import com.zs.admin.api.entry.Account;
 
 /**
- * @Auther: zs
- * @Date: 2019/8/25 15:47
- * @Description:
+ * <p>
+ *  服务类
+ * </p>
+ *
+ * @author zs
+ * @since 2019-08-29
  */
-public interface ISysAccountService extends IService<SysAccount> {
+public interface IAccountService extends IService<Account> {
 
-    SysAccount findByAccountAndPassword(String account,String password);
+    Account findByAccountAndPassword(String account,String password);
 
     /**
      * 是否存在管理员

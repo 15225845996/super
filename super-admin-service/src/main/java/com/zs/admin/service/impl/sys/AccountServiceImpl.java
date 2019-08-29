@@ -3,29 +3,31 @@ package com.zs.admin.service.impl.sys;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
-import com.zs.admin.api.entry.SysAccount;
-import com.zs.admin.api.service.sys.ISysAccountService;
-import com.zs.admin.service.mapper.SysAccountMapper;
+import com.zs.admin.api.entry.Account;
+import com.zs.admin.api.service.sys.IAccountService;
+import com.zs.admin.service.mapper.AccountMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @Auther: zs
- * @Date: 2019/8/25 15:50
- * @Description:
+ * <p>
+ *  服务实现类
+ * </p>
+ *
+ * @author zs
+ * @since 2019-08-29
  */
 @Service
-public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper,SysAccount> implements ISysAccountService {
-
+public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> implements IAccountService {
     @Autowired
-    private SysAccountMapper sysAccountMapper;
+    private AccountMapper accountMapper;
 
     @Override
-    public SysAccount findByAccountAndPassword(String account, String password) {
+    public Account findByAccountAndPassword(String account, String password) {
         if(StringUtils.isNotBlank(account) && StringUtils.isNotBlank(password)){
-            QueryWrapper<SysAccount> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(SysAccount::getAccount,account).eq(SysAccount::getPassword,password);
+            QueryWrapper<Account> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(Account::getAccount,account).eq(Account::getPassword,password);
             return super.getOne(queryWrapper);
         }
         return null;
@@ -33,8 +35,8 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper,SysAccou
 
     @Override
     public boolean isExistAdmin() {
-        QueryWrapper<SysAccount> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(SysAccount::getCategoryId, AccountCategoryEnum.ADMIN.getCategoryId());
+        QueryWrapper<Account> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Account::getCategoryId, AccountCategoryEnum.ADMIN.getCategoryId());
         int count = super.count(queryWrapper);
         return count > 0;
     }
@@ -42,8 +44,8 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper,SysAccou
     @Override
     public boolean isExistByAccount(String account) {
         if(StringUtils.isNotBlank(account)){
-            QueryWrapper<SysAccount> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(SysAccount::getAccount,account);
+            QueryWrapper<Account> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(Account::getAccount,account);
             int count = super.count(queryWrapper);
             return count > 0;
         }

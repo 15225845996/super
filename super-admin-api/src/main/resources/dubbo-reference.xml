@@ -12,5 +12,9 @@
     <dubbo:reference interface="com.zs.admin.api.service.activiti.IActivitiService" version="${dubbo.version}" id="activitiService"/>
 
     <!--sys-->
-    <dubbo:reference interface="com.zs.admin.api.service.sys.ISysAccountService" version="${dubbo.version}" id="sysAccountService" />
+    <dubbo:reference interface="com.zs.admin.api.service.sys.IAccountService" version="${dubbo.version}" id="accountService" />
+    <dubbo:reference interface="com.zs.admin.api.service.sys.IAccountRoleService" version="${dubbo.version}" id="accountRoleService" />
+    <dubbo:reference interface="com.zs.admin.api.service.sys.IResourceService" version="${dubbo.version}" id="resourceService" />
+    <dubbo:reference interface="com.zs.admin.api.service.sys.IRoleSourceService" version="${dubbo.version}" id="roleSourceService" />
+    <dubbo:reference interface="com.zs.admin.api.service.sys.IRoleService" version="${dubbo.version}" id="roleService" />
 </beans>

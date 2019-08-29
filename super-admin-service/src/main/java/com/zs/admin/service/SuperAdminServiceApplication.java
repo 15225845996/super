@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication(scanBasePackages = {"com.zs"},
 		exclude = {SecurityAutoConfiguration.class})
 @ImportResource("classpath:applicationContext-base.xml")
-@MapperScan("com.zs.admin.service.mapper")
+@MapperScan("com/zs/admin/service/mapper")
 public class SuperAdminServiceApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {

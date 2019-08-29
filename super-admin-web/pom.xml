@@ -3,21 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.7.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<artifactId>super</artifactId>
+		<groupId>com.zs</groupId>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.zs</groupId>
 	<artifactId>super-admin-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>super-admin-web</name>
-	<description>Demo project for Spring Boot</description>
 	<packaging>war</packaging>
-
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -49,7 +41,7 @@
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-json-converter</artifactId>
-			<version>6.0.0</version>
+			<version>${activiti}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.activiti</groupId>
@@ -61,22 +53,22 @@
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-codec</artifactId>
-			<version>1.7</version>
+			<version>${xmlgraphics}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-css</artifactId>
-			<version>1.7</version>
+			<version>${xmlgraphics}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-svg-dom</artifactId>
-			<version>1.7</version>
+			<version>${xmlgraphics}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-svggen</artifactId>
-			<version>1.7</version>
+			<version>${xmlgraphics}</version>
 		</dependency>
 		<!-- activiti相关依赖：end-->
 
@@ -84,7 +76,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
-			<version>2.5.5</version>
+			<version>${dubbo}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>log4j</groupId>
@@ -96,7 +88,7 @@
 		<dependency>
 			<groupId>com.101tec</groupId>
 			<artifactId>zkclient</artifactId>
-			<version>0.10</version>
+			<version>${zkclient}</version>
 		</dependency>
 
 	</dependencies>

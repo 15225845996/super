@@ -3,20 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.7.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<artifactId>super</artifactId>
+		<groupId>com.zs</groupId>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.zs</groupId>
 	<artifactId>super-admin-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>super-admin-service</name>
-	<description>Demo project for Spring Boot</description>
 	<packaging>war</packaging>
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
 
 	<dependencies>
 		<!--admin-api-->
@@ -24,6 +17,12 @@
 			<groupId>com.zs</groupId>
 			<artifactId>super-admin-api</artifactId>
 			<version>1.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.baomidou</groupId>
+					<artifactId>mybatis-plus</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.zs</groupId>
@@ -39,11 +38,23 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!--mybatis-plus-->
+		<!--mybatis-plus 整合包-->
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
-			<version>3.1.2</version>
+			<version>${mybatis-plus.version}</version>
+		</dependency>
+		<!--代码生成依赖-->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-generator</artifactId>
+			<version>${mybatis-plus.version}</version>
+		</dependency>
+		<!--mybatis-plus默认代码生成模板-->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>${velocity}</version>
 		</dependency>
 
 
@@ -70,7 +81,7 @@
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring-boot-starter-basic</artifactId>
-			<version>6.0.0</version>
+			<version>${activiti}</version>
 			<!--排除mybatis，防止工作流和mybatis-plus冲突-->
 			<exclusions>
 				<exclusion>
@@ -82,7 +93,7 @@
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-json-converter</artifactId>
-			<version>6.0.0</version>
+			<version>${activiti}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.activiti</groupId>
@@ -96,29 +107,29 @@
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-codec</artifactId>
-			<version>1.7</version>
+			<version>${xmlgraphics}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-css</artifactId>
-			<version>1.7</version>
+			<version>${xmlgraphics}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-svg-dom</artifactId>
-			<version>1.7</version>
+			<version>${xmlgraphics}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-svggen</artifactId>
-			<version>1.7</version>
+			<version>${xmlgraphics}</version>
 		</dependency>
 
 		<!-- Dubbo依赖 -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
-			<version>2.5.5</version>
+			<version>${dubbo}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>log4j</groupId>
@@ -131,7 +142,7 @@
 		<dependency>
 			<groupId>com.101tec</groupId>
 			<artifactId>zkclient</artifactId>
-			<version>0.10</version>
+			<version>${zkclient}</version>
 		</dependency>
 
 	</dependencies>
@@ -142,7 +153,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
 		</plugins>
 	</build>
 

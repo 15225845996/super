@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zs.admin.service.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zs.admin.api.entry.Role">
+    <result column="id" property="id" />
+    <result column="is_deleted" property="isDeleted" />
+    <result column="creator" property="creator" />
+    <result column="create_time" property="createTime" />
+    <result column="mender" property="mender" />
+    <result column="modify_time" property="modifyTime" />
+        <result column="role_name" property="roleName" />
+        <result column="role_descr" property="roleDescr" />
+        <result column="category_id" property="categoryId" />
+        <result column="category_name" property="categoryName" />
+        <result column="is_editable" property="isEditable" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        is_deleted,
+        creator,
+        create_time,
+        mender,
+        modify_time,
+        role_name, role_descr, category_id, category_name, is_editable
+    </sql>
+
+</mapper>

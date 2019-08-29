@@ -14,12 +14,12 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="a" target="1.5" />
-      <module name="super" target="1.5" />
-      <module name="super-admin-api" target="1.7" />
+      <module name="super" target="1.8" />
+      <module name="super-admin-api" target="1.8" />
       <module name="super-admin-service" target="1.8" />
       <module name="super-admin-web" target="1.8" />
       <module name="super-bean" target="1.5" />
-      <module name="super-utils" target="1.7" />
+      <module name="super-utils" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
