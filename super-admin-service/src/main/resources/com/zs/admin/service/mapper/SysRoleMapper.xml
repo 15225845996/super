@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zs.admin.service.mapper.RoleMapper">
+<mapper namespace="com.zs.admin.service.mapper.SysRoleMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.zs.admin.api.entry.Role">
+    <resultMap id="BaseResultMap" type="com.zs.admin.api.entry.SysRole">
     <result column="id" property="id" />
     <result column="is_deleted" property="isDeleted" />
     <result column="creator" property="creator" />

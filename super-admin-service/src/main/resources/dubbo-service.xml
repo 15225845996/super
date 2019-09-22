@@ -12,10 +12,10 @@
     <dubbo:service interface="com.zs.admin.api.service.activiti.IActivitiService" version="${dubbo.version}" ref="activitiService"/>
 
     <!--sys-->
-    <dubbo:service interface="com.zs.admin.api.service.sys.IAccountService" version="${dubbo.version}" ref="accountServiceImpl"/>
-    <dubbo:service interface="com.zs.admin.api.service.sys.IRoleService" version="${dubbo.version}" ref="roleServiceImpl"/>
-    <dubbo:service interface="com.zs.admin.api.service.sys.IResourceService" version="${dubbo.version}" ref="resourceServiceImpl"/>
-    <dubbo:service interface="com.zs.admin.api.service.sys.IAccountRoleService" version="${dubbo.version}" ref="accountRoleServiceImpl"/>
-    <dubbo:service interface="com.zs.admin.api.service.sys.IRoleSourceService" version="${dubbo.version}" ref="roleSourceServiceImpl"/>
+    <dubbo:service interface="com.zs.admin.api.service.sys.ISysAccountService" version="${dubbo.version}" ref="sysAccountServiceImpl"/>
+    <dubbo:service interface="com.zs.admin.api.service.sys.ISysRoleService" version="${dubbo.version}" ref="sysRoleServiceImpl"/>
+    <dubbo:service interface="com.zs.admin.api.service.sys.ISysResourceService" version="${dubbo.version}" ref="sysResourceServiceImpl"/>
+    <dubbo:service interface="com.zs.admin.api.service.sys.ISysAccountRoleService" version="${dubbo.version}" ref="sysAccountRoleServiceImpl"/>
+    <dubbo:service interface="com.zs.admin.api.service.sys.ISysRoleResourceService" version="${dubbo.version}" ref="sysRoleResourceServiceImpl"/>
 
 </beans>

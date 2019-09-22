@@ -1,8 +1,8 @@
 package com.zs.admin.service;
 
-import com.zs.admin.api.entry.Account;
-import com.zs.admin.api.service.sys.IAccountService;
-import com.zs.admin.service.mapper.AccountMapper;
+import com.zs.admin.api.entry.SysAccount;
+import com.zs.admin.api.service.sys.ISysAccountService;
+import com.zs.admin.service.mapper.SysAccountMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,25 +16,25 @@ import java.util.List;
 public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
 
     @Autowired
-    private AccountMapper accountMapper;
+    private SysAccountMapper accountMapper;
     @Autowired
-    private IAccountService accountService;
+    private ISysAccountService accountService;
     @Test
     public void contextLoads() {
-        List<Account> sysAccounts = accountMapper.selectList(null);
+        List<SysAccount> sysAccounts = accountMapper.selectList(null);
         sysAccounts.forEach(System.out::println);
     }
 
     @Test
     public void del(){
         int i = accountMapper.deleteById(5);
-        List<Account> sysAccounts = accountMapper.selectList(null);
+        List<SysAccount> sysAccounts = accountMapper.selectList(null);
         sysAccounts.forEach(System.out::println);
     }
 
     @Test
     public void add(){
-        Account account = new Account();
+        SysAccount account = new SysAccount();
         account.setAccount("123");
         account.setPassword("123");
         account.setCategoryId(1L);

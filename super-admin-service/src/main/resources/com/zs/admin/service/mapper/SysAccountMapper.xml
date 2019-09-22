@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zs.admin.service.mapper.ResourceMapper">
+<mapper namespace="com.zs.admin.service.mapper.SysAccountMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.zs.admin.api.entry.Resource">
+    <resultMap id="BaseResultMap" type="com.zs.admin.api.entry.SysAccount">
     <result column="id" property="id" />
     <result column="is_deleted" property="isDeleted" />
-    <result column="creator" property="creator" />
     <result column="create_time" property="createTime" />
+    <result column="creator" property="creator" />
     <result column="mender" property="mender" />
     <result column="modify_time" property="modifyTime" />
-        <result column="source_name" property="sourceName" />
-        <result column="source_descr" property="sourceDescr" />
+        <result column="name" property="name" />
+        <result column="account" property="account" />
+        <result column="password" property="password" />
         <result column="category_id" property="categoryId" />
         <result column="category_name" property="categoryName" />
-        <result column="is_parent" property="isParent" />
-        <result column="parent_source_id" property="parentSourceId" />
-        <result column="parent_source_name" property="parentSourceName" />
-        <result column="is_editable" property="isEditable" />
+        <result column="age" property="age" />
+        <result column="sex" property="sex" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
         is_deleted,
-        creator,
         create_time,
+        creator,
         mender,
         modify_time,
-        source_name, source_descr, category_id, category_name, is_parent, parent_source_id, parent_source_name, is_editable
+        name, account, password, category_id, category_name, age, sex
     </sql>
 
 </mapper>

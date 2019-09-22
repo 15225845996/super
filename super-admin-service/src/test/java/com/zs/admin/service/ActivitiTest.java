@@ -48,7 +48,7 @@ public class ActivitiTest extends SuperAdminServiceApplicationTests {
 
     @Test
     public void isDeploymentByKey(){
-        boolean deploymentByKey = activitiService.isDeploymentByKey(Constant.REGISTER_PROCESS_KEY);
+        boolean deploymentByKey = activitiService.isDeploymentByKey("");
         System.out.println(deploymentByKey);
     }
 

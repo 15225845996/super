@@ -1,7 +1,6 @@
 package com.zs.admin.service.mapper;
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zs.admin.api.entry.Resource;
+import com.zs.admin.api.entry.SysAccountRole;
 
 /**
  * <p>
@@ -9,8 +8,8 @@ import com.zs.admin.api.entry.Resource;
  * </p>
  *
  * @author zs
- * @since 2019-08-29
+ * @since 2019-08-30
  */
-public interface ResourceMapper extends BaseMapper<Resource> {
+public interface SysAccountRoleMapper extends BaseMapper<SysAccountRole> {
 
 }
