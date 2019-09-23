@@ -31,6 +31,9 @@
         <xmlgraphics>1.7</xmlgraphics>
         <dubbo>2.5.5</dubbo>
         <zkclient>0.10</zkclient>
+
+        <!--打包跳过测试-->
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
