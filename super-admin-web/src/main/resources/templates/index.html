@@ -56,9 +56,49 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3">
-            <div class="thumbnail cursor indexMenu">
+            <div class="thumbnail cursor indexMenu" category="0" skipUrl="/studio/index">
                 <div class="caption">
-                    <h3 class="overflow">菜单名</h3>
+                    <h3 class="overflow">后台</h3>
+                    <p class="overflow" title="系统管理、角色管理、权限管理、api管理。。。。。">系统管理、角色管理、权限管理、api管理。。。。。</p>
+                    <p class="overflow" style="font-size: 20px">
+                        <span>
+                            <span class="glyphicon glyphicon-bullhorn"></span> ：<font color="gray">持续开发中！！！</font>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="thumbnail cursor indexMenu" category="0" skipUrl="/activiti/modelList">
+                <div class="caption">
+                    <h3 class="overflow">流程</h3>
+                    <p class="overflow" title="流程部署、流程编辑、流程新增。。。。">流程部署、流程编辑、流程新增。。。。</p>
+                    <p class="overflow" style="font-size: 20px">
+                        <span>
+                            <span class="glyphicon glyphicon-bullhorn"></span> ：<font color="gray">持续开发中！！！</font>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="thumbnail cursor indexMenu" category="1" skipUrl="http://jenkins.zhangshan.top">
+                <div class="caption">
+                    <h3 class="overflow">jenkins</h3>
+                    <p class="overflow" title="优秀的持续集成工具，本项目用来打包并部署正在开发或维护的项目。">优秀的持续集成工具，本项目用来打包并部署正在开发或维护的项目。</p>
+                    <p class="overflow" style="font-size: 20px">
+                        <span>
+                            <span class="glyphicon glyphicon-bullhorn"></span> ：<font color="gray">service、web服务新增打包部署</font>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="thumbnail cursor indexMenu" category="1" skipUrl="/">
+                <div class="caption">
+                    <h3 class="overflow">菜单</h3>
                     <p class="overflow" title="应是天仙狂醉，乱把白云揉碎。">应是天仙狂醉，乱把白云揉碎。应是天仙狂醉，乱把白云揉碎。</p>
                     <p class="overflow" style="font-size: 20px">
                         <span>
@@ -217,6 +257,10 @@
         $(".sexLi").click(function () {
             var sex = $(this).find("a").text();
             $('input[name=sex]').val(sex)
+        })
+        
+        $(".indexMenu").click(function () {
+            location.href=$(this).attr("skipUrl")
         })
 
 
