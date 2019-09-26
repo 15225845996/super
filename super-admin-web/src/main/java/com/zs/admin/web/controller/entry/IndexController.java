@@ -12,6 +12,10 @@ import com.zs.admin.api.vo.ResultVo;
 import com.zs.admin.api.vo.activiti.HistoricProcessInstanceVo;
 import com.zs.admin.web.controller.BaseController;
 import com.zs.utils.MD5Utils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +35,7 @@ import java.util.stream.Collectors;
  * @Date: 2019/8/25 16:14
  * @Description:
  */
+@Api("系统首页功能接口")
 @Controller
 public class IndexController extends BaseController {
 
@@ -47,12 +52,15 @@ public class IndexController extends BaseController {
     @Autowired
     private ISysRoleResourceService roleResourceService;
 
-
+    @ApiOperation("系统首页")
     @RequestMapping(value = {"/","/index"})
     public String index(HttpServletRequest request, Model model){
         return "index";
     }
 
+    @ApiOperation("系统登录")
+    @ApiParam(name = "参数",value = "这是描述参数")
+    @ApiImplicitParam(name = "telephone", value = "电话号码", paramType = "query", required = true, dataType = "Integer")
     @RequestMapping("/login")
     @ResponseBody
     public ResultVo login(HttpServletRequest request,Model model, SysAccount account){
