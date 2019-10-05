@@ -16,4 +16,6 @@ import java.util.List;
 public interface ISysRoleResourceService extends IService<SysRoleResource> {
 
     List<SysRoleResource> findByRoleIds(List<Long> ids);
+
+    List<SysRoleResource> findByRoleId(Long id);
 }

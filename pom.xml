@@ -32,6 +32,7 @@
         <dubbo>2.5.5</dubbo>
         <zkclient>0.10</zkclient>
         <swagger2>2.6.1</swagger2>
+        <hutool>4.6.3</hutool>
 
         <!--打包跳过测试-->
         <skipTests>true</skipTests>
@@ -53,6 +54,12 @@
             <groupId>com.github.dozermapper</groupId>
             <artifactId>dozer-core</artifactId>
             <version>6.0.0</version>
+        </dependency>
+        <!--hutool工具类-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool}</version>
         </dependency>
     </dependencies>
 

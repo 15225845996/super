@@ -17,5 +17,6 @@ public class Menu {
     private String href;
     private String icon;
     private String target;
+    private Long ordinal;
     private List<Menu> child;
 }

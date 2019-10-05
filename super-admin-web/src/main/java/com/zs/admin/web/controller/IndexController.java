@@ -1,5 +1,7 @@
 package com.zs.admin.web.controller;
 
+import com.baomidou.mybatisplus.extension.api.R;
+import com.sun.xml.internal.ws.api.model.MEP;
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
 import com.zs.admin.api.constant.sys.SourcesCategoryEnum;
@@ -30,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Auther: zs
@@ -124,7 +127,11 @@ public class IndexController extends BaseController {
                 if(resources != null){
                     List<Menu> menuInfo = getMenuInfo(resources, null);
                     if(menuInfo != null){
-                        initMenu.setMenuInfo(menuInfo.stream().collect(Collectors.toMap(i -> i.getTitle(), i -> i)));
+                        //map排序
+                        Map<String,Menu> linked = new LinkedHashMap<>();
+                        menuInfo.stream().collect(Collectors.toMap(i -> i.getTitle(), i -> i)).entrySet().stream().sorted(Comparator.comparing(i -> i.getValue().getOrdinal()))
+                                .forEachOrdered(e -> linked.put(e.getKey(), e.getValue()));
+                        initMenu.setMenuInfo(linked);
                     }
                 }
             }
@@ -160,6 +167,10 @@ public class IndexController extends BaseController {
         if(menuCategorys != null && menuCategorys.size() > 0){
             menuCategorys.stream().forEach(m -> {
                 List<Menu> menuInfo = getMenuInfo(resources, m.getId());
+                if(menuInfo != null){
+                    //list排序
+                    menuInfo.sort((s1,s2) -> s1.getOrdinal().compareTo(s2.getOrdinal()));
+                }
                 m.setChild(menuInfo);
             });
             return menuCategorys;

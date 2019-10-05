@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>编辑角色</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        .layui-form-item {
+            width: auto;
+            padding-right: 10px;
+            line-height: 38px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <fieldset class="layui-elem-field layuimini-search">
+        <legend>
+             <span class="layui-breadcrumb" lay-separator=">">
+                  <a href="/page/role/list">角色权限</a>
+                  <a><cite class="addOrEdit">编辑</cite></a>
+            </span>
+        </legend>
+        <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline" style="float: right">
+                        <a href="/page/role/list" class="layui-btn">返回</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+    <div class="layuimini-main">
+        <div class="layui-form layuimini-form">
+            <input type="tel" name="id" style="display: none;">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">角色名称</label>
+                <div class="layui-input-inline">
+                    <input name="roleName" lay-verify="required" lay-reqtext="角色名称不能为空" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色描述</label>
+                <div class="layui-input-inline">
+                    <input name="roleDescr" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否可编辑</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="isEditable" value="true" title="可编辑" checked="">
+                    <input type="radio" name="isEditable" value="false" title="不可编辑">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色类型</label>
+                <div class="layui-input-inline">
+                    <select name="categoryId" lay-filter="modifyCategory">
+                        <option value="">请选择</option>
+                    </select>
+                    <input name="categoryName" hidden="hidden"/>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">拥有的权限</label>
+                <div class="layui-input-inline">
+                    <div id="permission" class="demo-tree"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    //加载角色id
+    var id = [[${id}]]
+    layui.use(['form', 'element', 'tree'], function () {
+        var $ = layui.jquery,
+            tree = layui.tree,
+            form = layui.form,
+            element = layui.element;
+        //重新渲染
+        function fromRender() {
+            form.render();
+        }
+        //监听提交
+        form.on('submit(saveBtn)', function (param) {
+            //获得选中的节点
+            var data = param.field;
+            data['sourcesInfo'] = JSON.stringify(tree.getChecked('roleSourceIds'));
+            $.ajax({
+                url: "/role/save",
+                type: "post",
+                data: data,
+                success: function (rst) {
+                    layer.msg(rst.msg);
+                    if (rst.code == 1) {
+                        setTimeout(function () {
+                            location.href = "/page/role/list";
+                        }, 2000);
+                    }
+                }
+            });
+            return false;
+        });
+        //便跟类型
+        form.on("select(modifyCategory)",function (param) {
+            var cateogry = $(param.elem).val();
+            if("" != cateogry){
+                var cateogryName = $(param.elem).find("option:selected").text();
+                $("input[name=categoryName]").val(cateogryName)
+            }else{
+                $("input[name=categoryName]").val(null)
+            }
+            console.log("===")
+        })
+
+        //获取角色信息
+        $.ajax({
+            url: "/api/role/addOrEdit",
+            type: "post",
+            data: {
+                "id": id
+            },
+            async:false,
+            success: function (rst) {
+                if(rst.code == 1 && rst.data != null){
+                    console.dir(rst)
+                    var result = rst.data;
+                    if(result.role != null){
+                        $("input[name=roleName]").val(result.role.roleName)
+                        $("input[name=id]").val(result.role.id)
+                        $("input[name=roleDescr]").val(result.role.roleDescr)
+                        $("select[name=categoryId]").val()
+                    }
+                    if(result.roleCategory != null){
+                        var roleCategory = $.parseJSON(result.roleCategory);
+                        $.each(roleCategory,function (i,t) {
+                            if(result.role != null && t.categoryId == result.role.categoryId){
+                                $("select[name=categoryId]").append('<option value="'+t.categoryId+'" selected="selected">'+t.categoryName+'</option>')
+                            }else{
+                                $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
+                            }
+                        })
+                    }
+                    if(result.trees != null){
+                        tree.render({
+                            elem: '#permission',
+                            data: result.trees,
+                            id: 'roleSourceIds',
+                            showCheckbox: true
+                        });
+                        //选中已有的权限
+                        if(result.roleSourceIds != null && result.roleSourceIds.length > 0){
+                            tree.setChecked('roleSourceIds', result.roleSourceIds);
+                        }
+                    }
+                    //重新渲染
+                    fromRender();
+                }else{
+                    layer.mag(rst.msg);
+                }
+            }
+        });
+
+        if(id == null){
+            $(".addOrEdit").text("新增")
+        }
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

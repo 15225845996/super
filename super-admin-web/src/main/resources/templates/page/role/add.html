@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>新增角色</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        .layui-form-item {
+            width: auto;
+            padding-right: 10px;
+            line-height: 38px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <fieldset class="layui-elem-field layuimini-search">
+        <legend>
+             <span class="layui-breadcrumb" lay-separator=">">
+                  <a href="/admin/setting/rolePermission/list">角色权限</a>
+                  <a><cite>新增</cite></a>
+            </span>
+        </legend>
+        <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline" style="float: right">
+                        <a href="/admin/setting/rolePermission/list" class="layui-btn">返回</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+    <div class="layuimini-main">
+        <div class="layui-form layuimini-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">角色名称</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="name" lay-verify="required" lay-reqtext="角色名称不能为空" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色排序</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="ordinal" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色描述</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="note" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">拥有的权限</label>
+                <div class="layui-input-inline">
+                    <div id="permission" class="demo-tree"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'element', 'tree'], function () {
+        var $ = layui.jquery,
+            tree = layui.tree,
+            form = layui.form,
+            element = layui.element;
+        //监听提交
+        form.on('submit(saveBtn)', function (param) {
+            //获得选中的节点
+            var data = param.field;
+            data['rolePermissionStr'] = JSON.stringify(tree.getChecked('addPermission'));
+            $.ajax({
+                url: "/api/admin/setting/rolePermission/confirm/add",
+                type: "post",
+                data: data,
+                success: function (rst) {
+                    layer.msg(rst.msg);
+                    if (rst.code == 1) {
+                        setTimeout(function () {
+                            location.href = "/admin/setting/rolePermission/list";
+                        }, 2000);
+                    }
+                }
+            });
+            return false;
+        });
+        // 加载权限树
+        $.ajax({
+            url: "/api/admin/setting/rolePermission/addPermission",
+            type: "get",
+            success: function (rst) {
+                tree.render({
+                    elem: '#permission',
+                    data: rst,
+                    id: 'addPermission',
+                    showCheckbox: true
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

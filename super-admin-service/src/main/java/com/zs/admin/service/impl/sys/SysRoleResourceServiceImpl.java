@@ -7,6 +7,7 @@ import com.zs.admin.api.service.sys.ISysRoleResourceService;
 import com.zs.admin.service.mapper.SysRoleResourceMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,16 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
             QueryWrapper<SysRoleResource> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().in(SysRoleResource::getRoleId,ids);
             return super.list(queryWrapper);
+        }
+        return null;
+    }
+
+    @Override
+    public List<SysRoleResource> findByRoleId(Long id) {
+        if(id != null){
+            List<Long> ids = new ArrayList<>();
+            ids.add(id);
+            return this.findByRoleIds(ids);
         }
         return null;
     }
