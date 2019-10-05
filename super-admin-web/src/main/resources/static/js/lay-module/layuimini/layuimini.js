@@ -135,19 +135,20 @@ layui.define(["element", "jquery"], function (exports) {
             window.menuParameId = 1;
 
             $.each(data, function (key, val) {
+                debugger;
                 headerMenuHtml += '<li class="layui-nav-item ' + headerMenuCheckDefault + '" id="' + key + 'HeaderId" data-menu="' + key + '"> <a href="javascript:;"><i class="' + val.icon + '"></i> ' + val.title + '</a> </li>\n';
                 headerMobileMenuHtml += '<dd><a href="javascript:;" id="' + key + 'HeaderId" data-menu="' + key + '"><i class="' + val.icon + '"></i> ' + val.title + '</a></dd>\n';
                 leftMenuHtml += '<ul class="layui-nav layui-nav-tree layui-left-nav-tree ' + leftMenuCheckDefault + '" id="' + key + '">\n';
                 var menuList = val.child;
                 $.each(menuList, function (index, menu) {
                     leftMenuHtml += '<li class="layui-nav-item">\n';
-                    if (menu.child != undefined && menu.child != []) {
+                    if (menu.child != undefined && menu.child != null && menu.child.length > 0) {
                         leftMenuHtml += '<a href="javascript:;" class="layui-menu-tips" ><i class="' + menu.icon + '"></i><span class="layui-left-nav"> ' + menu.title + '</span> </a>';
                         var buildChildHtml = function (html, child, menuParameId) {
                             html += '<dl class="layui-nav-child">\n';
                             $.each(child, function (childIndex, childMenu) {
                                 html += '<dd>\n';
-                                if (childMenu.child != undefined && childMenu.child != []) {
+                                if (childMenu.child != undefined && childMenu.child != null && childMenu.child.length > 0) {
                                     html += '<a href="javascript:;" class="layui-menu-tips" ><i class="' + childMenu.icon + '"></i><span class="layui-left-nav"> ' + childMenu.title + '</span></a>';
                                     html = buildChildHtml(html, childMenu.child, menuParameId);
                                 } else {

@@ -1,29 +1,30 @@
-package com.zs.admin.web.controller.entry;
+package com.zs.admin.web.controller;
 
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
+import com.zs.admin.api.constant.sys.SourcesCategoryEnum;
 import com.zs.admin.api.entry.SysAccount;
 import com.zs.admin.api.entry.SysAccountRole;
-import com.zs.admin.api.entry.SysRole;
+import com.zs.admin.api.entry.SysResource;
 import com.zs.admin.api.entry.SysRoleResource;
 import com.zs.admin.api.service.activiti.IActivitiService;
 import com.zs.admin.api.service.sys.*;
 import com.zs.admin.api.vo.ResultVo;
-import com.zs.admin.api.vo.activiti.HistoricProcessInstanceVo;
-import com.zs.admin.web.controller.BaseController;
+import com.zs.admin.param.HomeInfo;
+import com.zs.admin.param.InitMenu;
+import com.zs.admin.param.Menu;
+import com.zs.utils.DozerUtils;
 import com.zs.utils.MD5Utils;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
  * @Date: 2019/8/25 16:14
  * @Description:
  */
-@Api("系统首页功能接口")
+@Api("系统登录注册页面")
 @Controller
 public class IndexController extends BaseController {
 
@@ -52,16 +53,14 @@ public class IndexController extends BaseController {
     @Autowired
     private ISysRoleResourceService roleResourceService;
 
-    @ApiOperation("系统首页")
-    @RequestMapping(value = {"/","/index"})
+    @ApiOperation("登录注册页面")
+    @GetMapping(value = {"/"})
     public String index(HttpServletRequest request, Model model){
         return "index";
     }
 
-    @ApiOperation("系统登录")
-    @ApiParam(name = "参数",value = "这是描述参数")
-    @ApiImplicitParam(name = "telephone", value = "电话号码", paramType = "query", required = true, dataType = "Integer")
-    @RequestMapping("/login")
+    @ApiOperation("登录")
+    @PostMapping("/login")
     @ResponseBody
     public ResultVo login(HttpServletRequest request,Model model, SysAccount account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
@@ -72,9 +71,10 @@ public class IndexController extends BaseController {
         return ResultVo.fail("信息异常！");
     }
 
-    @RequestMapping("/region")
+    @ApiOperation("注册")
+    @PostMapping("/register")
     @ResponseBody
-    public ResultVo region(HttpServletRequest request,Model model, SysAccount account){
+    public ResultVo register(HttpServletRequest request,Model model, SysAccount account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
             boolean existAdmin = accountService.isExistAdmin();
             if(existAdmin){//存在管理员用户
@@ -84,31 +84,17 @@ public class IndexController extends BaseController {
                 account.setCategoryId(AccountCategoryEnum.ADMIN.getCategoryId());
                 account.setCategoryName(AccountCategoryEnum.ADMIN.getCategoryName());
             }
-            return regionMethod(request,account);
+            return registerMethod(request, account);
         }
         return ResultVo.fail("注册失败！");
     }
 
 
-    @RequestMapping("/checkAccount")
+    @GetMapping("/accountIsExist/{account}")
     @ResponseBody
-    public Map<String,Boolean> isExistByAccount(HttpServletRequest request, SysAccount account, @RequestParam(name = "checkType" , defaultValue = "login") String checkType){
-        Map<String,Boolean> result = new HashMap<>();
-        result.put("valid",false);
-        if(StringUtils.isNotBlank(account.getAccount())){
-            if(StringUtils.isNotBlank(account.getAccount())){
-                boolean isExist = accountService.isExistByAccount(account.getAccount());
-                switch (checkType){
-                    case "login"://登录：查到为true
-                        result.put("valid",isExist);
-                        break;
-                    case "region"://注册：查不到为true
-                        result.put("valid",!isExist);
-                        break;
-                }
-            }
-        }
-        return result;
+    public ResultVo accountIsExist(HttpServletRequest request, @PathVariable("account") String account){
+        boolean isExist = accountService.isExistByAccount(account);
+        return ResultVo.data(isExist);
     }
 
     private ResultVo loginMethod(HttpServletRequest request, SysAccount account){
@@ -116,28 +102,45 @@ public class IndexController extends BaseController {
             //获取用户角色id
             List<SysAccountRole> roles = accountRoleService.findByAccount(account.getAccount());
             List<Long> roleIds = roles.stream().map(r -> r.getId()).distinct().collect(Collectors.toList());
-            List<SysRoleResource> resources = null;
+            List<SysResource> resources = null;
+            List<SysRoleResource> roleResources = null;
+            //封装菜单信息
+            InitMenu initMenu = new InitMenu();
             if(roleIds != null && roleIds.size() > 0){
                 //获取角色信息
                 roles = (List)roleService.listByIds(roleIds);
-                resources = roleResourceService.findByRoleIds(roleIds);
-                List<Long> sourceIds = resources.stream().map(r -> r.getSourceId()).distinct().collect(Collectors.toList());
+                roleResources = roleResourceService.findByRoleIds(roleIds);
+                List<Long> sourceIds = roleResources.stream().map(r -> r.getSourceId()).distinct().collect(Collectors.toList());
                 if(sourceIds != null && sourceIds.size() > 0){
                     //获取资源信息
                     resources = (List)resourceService.listByIds(sourceIds);
                 }
-
+                //获取home页面
+                SysResource home = resourceService.getById(Constant.BACKSTAGE_HOME_ID);
+                if(home != null){
+                    initMenu.setHomeInfo(DozerUtils.dozer(home,HomeInfo.class));
+                }
+                //菜单信息
+                if(resources != null){
+                    List<Menu> menuInfo = getMenuInfo(resources, null);
+                    if(menuInfo != null){
+                        Map<String,Map<String, Menu>> resultMenu = new HashMap<>();
+                        resultMenu.put(Constant.INIT_MENU_INFO_KEY,menuInfo.stream().collect(Collectors.toMap(i -> i.getTitle(), i -> i)));
+                        initMenu.setMenu(resultMenu);
+                    }
+                }
             }
             HttpSession session = request.getSession();
-            session.setAttribute(Constant.CURRENT_USER_INFO_KEY,account);
-            session.setAttribute(Constant.CURRENT_USER_ROLES_KEY,roles);
-            session.setAttribute(Constant.CURRENT_USER_SOURCES_KEY,resources);
-            return ResultVo.success();
+            session.setAttribute(Constant.USER_INFO_KEY,account);
+            session.setAttribute(Constant.USER_ROLES_KEY,roles);
+            session.setAttribute(Constant.USER_SOURCES_KEY,resources);
+            session.setAttribute(Constant.USER_SOURCES_MENU_KEY,initMenu);
+            return ResultVo.data(Constant.BACKSTAGE_INDEX_PAGE);
         }
         return ResultVo.fail("登录失败！");
     }
 
-    private ResultVo regionMethod(HttpServletRequest request, SysAccount account){
+    private ResultVo registerMethod(HttpServletRequest request, SysAccount account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
             account.setPassword(MD5Utils.getPassWord(account.getPassword()));
             boolean save = accountService.save(account);
@@ -146,5 +149,23 @@ public class IndexController extends BaseController {
             }
         }
         return ResultVo.fail("注册失败！");
+    }
+
+    protected List<Menu> getMenuInfo(List<SysResource> resources,Long parentId){
+        Long pId = parentId == null?0L:parentId;
+        List<SysResource> collect = resources.stream()
+                .filter(i -> SourcesCategoryEnum.NAV.getCategoryId().equals(i.getCategoryId()))
+                .filter(i -> pId.equals(i.getParentId()))
+                .collect(Collectors.toList());
+
+        List<Menu> menuCategorys = DozerUtils.dozer(collect, Menu.class);
+        if(menuCategorys != null && menuCategorys.size() > 0){
+            menuCategorys.stream().forEach(m -> {
+                List<Menu> menuInfo = getMenuInfo(resources, m.getId());
+                m.setChild(menuInfo);
+            });
+            return menuCategorys;
+        }
+        return new ArrayList<>();
     }
 }

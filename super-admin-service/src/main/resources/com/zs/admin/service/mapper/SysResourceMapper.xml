@@ -10,14 +10,18 @@
     <result column="create_time" property="createTime" />
     <result column="mender" property="mender" />
     <result column="modify_time" property="modifyTime" />
-        <result column="source_name" property="sourceName" />
-        <result column="source_descr" property="sourceDescr" />
+        <result column="title" property="title" />
+        <result column="href" property="href" />
+        <result column="icon" property="icon" />
+        <result column="target" property="target" />
+        <result column="descr" property="descr" />
         <result column="category_id" property="categoryId" />
         <result column="category_name" property="categoryName" />
         <result column="is_parent" property="isParent" />
-        <result column="parent_source_id" property="parentSourceId" />
-        <result column="parent_source_name" property="parentSourceName" />
+        <result column="parent_id" property="parentId" />
+        <result column="parent_title" property="parentTitle" />
         <result column="is_editable" property="isEditable" />
+        <result column="ordinal" property="ordinal" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -28,7 +32,7 @@
         create_time,
         mender,
         modify_time,
-        source_name, source_descr, category_id, category_name, is_parent, parent_source_id, parent_source_name, is_editable
+        title, href, icon, target, descr, category_id, category_name, is_parent, parent_id, parent_title, is_editable,ordinal
     </sql>
 
 </mapper>

@@ -1,11 +1,11 @@
 package com.zs.admin.api.entry;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zs
- * @since 2019-08-30
+ * @since 2019-10-04
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -26,21 +26,62 @@ public class SysResource extends BaseEntity<SysResource> {
     /**
      * 资源名
      */
-    private String sourceName;
+    private String title;
 
-    private String sourceDescr;
+    /**
+     * 链接地址
+     */
+    private String href;
 
+    /**
+     * 图标
+     */
+    private String icon;
+
+    /**
+     * 跳转类型
+     */
+    private String target;
+
+    /**
+     * 描述
+     */
+    private String descr;
+
+    /**
+     * 资源类型
+     */
     private Long categoryId;
 
+    /**
+     * 类型名
+     */
     private String categoryName;
 
+    /**
+     * 是否父节点
+     */
     private Boolean isParent;
 
-    private Long parentSourceId;
+    /**
+     * 父节点id
+     */
+    private Long parentId;
 
-    private String parentSourceName;
+    /**
+     * 父节点标题
+     */
+    private String parentTitle;
 
+    /**
+     * 是否可编辑
+     */
     private Boolean isEditable;
+
+    /**
+     * 排序
+     */
+    private Long ordinal;
 
 
     @Override

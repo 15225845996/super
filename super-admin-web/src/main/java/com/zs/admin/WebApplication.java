@@ -1,4 +1,4 @@
-package com.zs.admin.web;
+package com.zs.admin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,14 +9,14 @@ import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @ImportResource("classpath:applicationContext-base.xml")
-public class SuperAdminWebApplication extends SpringBootServletInitializer {
+public class WebApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SuperAdminWebApplication.class, args);
+		SpringApplication.run(WebApplication.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder.sources(SuperAdminWebApplication.class);
+		return builder.sources(WebApplication.class);
 	}
 }
