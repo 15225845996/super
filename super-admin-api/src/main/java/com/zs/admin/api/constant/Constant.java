@@ -70,9 +70,5 @@ public class Constant {
     public static final String LOGO_IMG = "/images/logo.png";
     public static final String LOGO_HREF = "";
 
-    /**
-     * 菜单json 中 menu的key（固定）
-     */
-    public static final String INIT_MENU_INFO_KEY = "menuInfo";
 
 }

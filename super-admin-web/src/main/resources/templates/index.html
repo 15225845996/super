@@ -201,14 +201,12 @@
         // 密码登录
         form.on('submit(login)', function (data) {
             $.post("/login", data.field, function (rst) {
-                debugger;
                 if (rst.code == 1) {
                     window.location = rst.data;
                 }else{
                     layer.msg(rst.msg);
                 }
             }).fail(function () {
-                debugger;
                 layer.msg('登录接口有误');
             });
             return false;

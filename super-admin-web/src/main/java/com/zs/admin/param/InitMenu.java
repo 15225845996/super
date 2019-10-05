@@ -20,7 +20,10 @@ public class InitMenu implements Serializable {
     private ClearInfo clearInfo = new ClearInfo(Constant.CLEAR_URL);
     private LogoInfo logoInfo = new LogoInfo(Constant.LOGO_TITLE,Constant.LOGO_IMG,Constant.LOGO_HREF);
     private HomeInfo homeInfo;
-    private Map<String,Map<String,Menu>> menu;
+    /**
+     * 名字适配json，不能乱改
+     */
+    private Map<String,Menu> menuInfo;
 
     /**
      * 请缓存配置

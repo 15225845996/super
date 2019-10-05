@@ -124,9 +124,7 @@ public class IndexController extends BaseController {
                 if(resources != null){
                     List<Menu> menuInfo = getMenuInfo(resources, null);
                     if(menuInfo != null){
-                        Map<String,Map<String, Menu>> resultMenu = new HashMap<>();
-                        resultMenu.put(Constant.INIT_MENU_INFO_KEY,menuInfo.stream().collect(Collectors.toMap(i -> i.getTitle(), i -> i)));
-                        initMenu.setMenu(resultMenu);
+                        initMenu.setMenuInfo(menuInfo.stream().collect(Collectors.toMap(i -> i.getTitle(), i -> i)));
                     }
                 }
             }
