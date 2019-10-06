@@ -1,7 +1,8 @@
 package com.zs.admin.api.constant.sys;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 /**
@@ -12,10 +13,22 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum  SourcesCategoryEnum {
-    NAV(1L,"导航菜单"),
-    OTHER(2L,"其他"),
+    MENU(1L,"菜单"),
+    BUTTON(2L,"按钮"),
+    OTHER(3L,"其他")
             ;
 
     private Long categoryId;
     private String categoryName;
+
+    public static String toJson(){
+        JSONArray jsonArray = new JSONArray();
+        for (SourcesCategoryEnum e : SourcesCategoryEnum.values()) {
+            JSONObject object = new JSONObject();
+            object.put("categoryId", e.getCategoryId());
+            object.put("categoryName", e.getCategoryName());
+            jsonArray.add(object);
+        }
+        return jsonArray.toString();
+    }
 }

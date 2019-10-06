@@ -20,4 +20,13 @@ import java.util.List;
 @Service
 public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysResource> implements ISysResourceService {
 
+    @Override
+    public List<SysResource> getByParentId(Long parentId) {
+        if(parentId != null){
+            QueryWrapper<SysResource> query = new QueryWrapper<>();
+            query.lambda().eq(SysResource::getParentId,parentId);
+            return super.list(query);
+        }
+        return null;
+    }
 }

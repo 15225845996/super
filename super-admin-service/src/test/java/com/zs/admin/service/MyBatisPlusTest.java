@@ -1,7 +1,9 @@
 package com.zs.admin.service;
 
 import com.zs.admin.api.entry.SysAccount;
+import com.zs.admin.api.entry.SysResource;
 import com.zs.admin.api.service.sys.ISysAccountService;
+import com.zs.admin.api.service.sys.ISysResourceService;
 import com.zs.admin.service.mapper.SysAccountMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,15 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
     private SysAccountMapper accountMapper;
     @Autowired
     private ISysAccountService accountService;
+    @Autowired
+    private ISysResourceService resourceService;
+
+    @Test
+    public void query1(){
+        List<SysResource> byParentId = resourceService.getByParentId(13L);
+        byParentId.forEach(System.out::println);
+    }
+
     @Test
     public void contextLoads() {
         List<SysAccount> sysAccounts = accountMapper.selectList(null);

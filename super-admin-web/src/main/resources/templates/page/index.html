@@ -110,9 +110,18 @@
         layuimini.init('/api/menu');
 
         $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
-                window.location = '/page/login-1.html';
+            $.post("/logout", function (rst) {
+                if (rst.code == 1) {
+                    layer.msg('退出登录成功', function () {
+                        window.location = '/';
+                    });
+                }else{
+                    layer.msg(rst.msg);
+                }
+            }).fail(function () {
+                layer.msg('接口有误');
             });
+
         });
     });
 </script>

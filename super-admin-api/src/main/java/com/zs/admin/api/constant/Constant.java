@@ -38,6 +38,8 @@ public class Constant {
      */
     public static final String USER_SOURCES_KEY = "USER_SOURCES_KEY";
 
+    public static final String USER_SOURCES_HREF = "USER_SOURCES_HREF";
+
     /**
      * 用户左侧菜单key
      */

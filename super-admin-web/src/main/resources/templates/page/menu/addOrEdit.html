@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>编辑权限</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        .layui-form-item {
+            width: auto;
+            padding-right: 10px;
+            line-height: 38px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-form layuimini-form" id="addOrEditMenu">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">权限名称</label>
+                <div class="layui-input-inline">
+                    <input name="title" lay-verify="required" lay-reqtext="权限名称不能为空" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限描述</label>
+                <div class="layui-input-inline">
+                    <input name="descr" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">链接地址</label>
+                <div class="layui-input-inline">
+                    <input name="href" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">跳转类型</label>
+                <div class="layui-input-inline">
+                    <input name="target" class="layui-input" value="_self">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否可编辑</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="isEditable" value="true" title="可编辑" checked="">
+                    <input type="radio" name="isEditable" value="false" title="不可编辑">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限类型</label>
+                <div class="layui-input-inline">
+                    <select name="categoryId" lay-filter="modifyCategory">
+                        <option value="">请选择</option>
+                    </select>
+                    <input name="categoryName" hidden="hidden"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">父节点</label>
+                <div class="layui-input-inline">
+                    <input name="parentTitle" class="layui-input" placeholder="默认为最顶层菜单" disabled="">
+                    <input name="parentId" hidden="">
+                </div>
+                <div class="layui-input-inline">
+                    <div id="tree" ></div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    //加载角色id
+    var id = [[${id}]]
+
+    layui.use(['form', 'element','tree'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            tree = layui.tree,
+            element = layui.element;
+        //重新渲染
+        function fromRender() {
+            form.render();
+        }
+
+        //树形下拉框初始化
+        // 加载权限树
+        $.ajax({
+            url: "/api/resource/tree",
+            data:{"isSpread":false},
+            async:false,
+            type: "post",
+            success: function (rst) {
+                tree.render({
+                    elem: '#tree',
+                    data: rst,
+                    id: 'resources',
+                    showCheckbox: false,
+                    onlyIconControl: true,
+                    click: function(obj){
+                        $("input[name=parentTitle]").val(obj.data.title)
+                        $("input[name=parentId]").val(obj.data.id)
+                    }
+                });
+            }
+        });
+
+        //获取角色信息
+        $.ajax({
+            url: "/api/resource/addOrEdit",
+            type: "post",
+            data: {
+                "id": id
+            },
+            async:false,
+            success: function (rst) {
+                if(rst.code == 1 && rst.data != null){
+                    console.dir(rst)
+                    var result = rst.data;
+                    if(result.resource != null){
+                        form.val({
+                            'title': result.resource.title,
+                        });
+
+                        //选中已有的权限
+                        /*if(result.resource.parentId != null){
+                            tree.setChecked('resources', result.resource.parentId);
+                        }*/
+                    }
+                    if(result.category != null){
+                        var category = $.parseJSON(result.category);
+                        $.each(category,function (i,t) {
+                            if(result.resource != null && t.categoryId == result.resource.categoryId){
+                                $("select[name=categoryId]").append('<option value="'+t.categoryId+'" selected="selected">'+t.categoryName+'</option>')
+                            }else{
+                                $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
+                            }
+                        })
+                    }
+                    //重新渲染
+                    fromRender();
+                }else{
+                    layer.mag(rst.msg);
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(saveBtn)', function (param) {
+            //获得选中的节点
+            var data = param.field;
+            $.ajax({
+                url: "/resource/save",
+                type: "post",
+                data: data,
+                success: function (rst) {
+                    if (rst.code == 1) {
+                        parent.layer.msg(rst.msg, {time: 300}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));
+                            //重新加载父页面
+                            parent.location.reload();
+                        });
+                    }else{
+                        layer.msg(rst.msg);
+                    }
+                }
+            });
+            return false;
+        });
+
+
+        //便跟类型
+        form.on("select(modifyCategory)",function (param) {
+            var cateogry = $(param.elem).val();
+            if("" != cateogry){
+                var cateogryName = $(param.elem).find("option:selected").text();
+                $("input[name=categoryName]").val(cateogryName)
+            }else{
+                $("input[name=categoryName]").val(null)
+            }
+        })
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

@@ -92,6 +92,14 @@ public class IndexController extends BaseController {
         return ResultVo.fail("注册失败！");
     }
 
+    @ApiOperation("退出")
+    @PostMapping("/logout")
+    @ResponseBody
+    public ResultVo loginOut(HttpServletRequest request,Model model, SysAccount account){
+        request.getSession().invalidate();
+        return ResultVo.success("退出登录成功");
+    }
+
 
     @GetMapping("/accountIsExist/{account}")
     @ResponseBody
@@ -106,6 +114,7 @@ public class IndexController extends BaseController {
             List<SysAccountRole> roles = accountRoleService.findByAccount(account.getAccount());
             List<Long> roleIds = roles.stream().map(r -> r.getId()).distinct().collect(Collectors.toList());
             List<SysResource> resources = null;
+            List<String> urls = null;
             List<SysRoleResource> roleResources = null;
             //封装菜单信息
             InitMenu initMenu = new InitMenu();
@@ -125,6 +134,7 @@ public class IndexController extends BaseController {
                 }
                 //菜单信息
                 if(resources != null){
+                    urls = resources.stream().map(i -> i.getHref()).collect(Collectors.toList());
                     List<Menu> menuInfo = getMenuInfo(resources, null);
                     if(menuInfo != null){
                         //map排序
@@ -139,6 +149,7 @@ public class IndexController extends BaseController {
             session.setAttribute(Constant.USER_INFO_KEY,account);
             session.setAttribute(Constant.USER_ROLES_KEY,roles);
             session.setAttribute(Constant.USER_SOURCES_KEY,resources);
+            session.setAttribute(Constant.USER_SOURCES_HREF,urls);
             session.setAttribute(Constant.USER_SOURCES_MENU_KEY,initMenu);
             return ResultVo.data(Constant.BACKSTAGE_INDEX_PAGE);
         }
@@ -159,7 +170,9 @@ public class IndexController extends BaseController {
     protected List<Menu> getMenuInfo(List<SysResource> resources,Long parentId){
         Long pId = parentId == null?0L:parentId;
         List<SysResource> collect = resources.stream()
-                .filter(i -> SourcesCategoryEnum.NAV.getCategoryId().equals(i.getCategoryId()))
+                .filter(i -> (
+                        SourcesCategoryEnum.MENU.getCategoryId().equals(i.getCategoryId())
+                ))
                 .filter(i -> pId.equals(i.getParentId()))
                 .collect(Collectors.toList());
 

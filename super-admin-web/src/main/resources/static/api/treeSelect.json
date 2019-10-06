@@ -1,0 +1,73 @@
+[{
+  "name": "后台管理",
+  "id": 1,
+  "children": [{
+    "name": "控制台",
+    "id": 8,
+    "children": [{
+      "name": "角色管理",
+      "id": 10,
+      "children": [],
+      "href": "/page/role/list",
+      "spread": true,
+      "checked": null,
+      "disabled": null,
+      "ordinal": 0
+    }, {
+      "name": "菜单管理",
+      "id": 11,
+      "children": [],
+      "href": "/page/menu/menu",
+      "spread": true,
+      "checked": null,
+      "disabled": null,
+      "ordinal": 10
+    }],
+    "href": "/page/welcome-1",
+    "spread": true,
+    "checked": null,
+    "disabled": null,
+    "ordinal": 0
+  }, {
+    "name": "用户管理",
+    "id": 12,
+    "children": [],
+    "href": null,
+    "spread": true,
+    "checked": null,
+    "disabled": null,
+    "ordinal": 20
+  }, {
+    "name": "角色 / 菜单",
+    "id": 6,
+    "children": [{
+      "name": "角色管理",
+      "id": 10,
+      "children": [],
+      "href": "/page/role/list",
+      "spread": true,
+      "checked": null,
+      "disabled": null,
+      "ordinal": 0
+    }, {
+      "name": "菜单管理",
+      "id": 11,
+      "children": [],
+      "href": "/page/menu/menu",
+      "spread": true,
+      "checked": null,
+      "disabled": null,
+      "ordinal": 10
+    }],
+    "href": null,
+    "spread": true,
+    "checked": null,
+    "disabled": null,
+    "ordinal": 30
+  }],
+  "href": null,
+  "spread": true,
+  "checked": null,
+  "disabled": null,
+  "ordinal": 0
+}]

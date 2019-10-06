@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>menu</title>
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
+            height: 34px;
+            line-height: 34px;
+            padding: 0 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div>
+            <div class="layui-btn-group">
+                <button class="layui-btn" id="btn-expand">全部展开</button>
+                <button class="layui-btn" id="btn-fold">全部折叠</button>
+                <button class="layui-btn" id="btn-add">添加</button>
+            </div>
+            <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+        </div>
+    </div>
+</div>
+<!-- 操作列 -->
+<script type="text/html" id="jobBar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script src="/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use(['table', 'treetable'], function () {
+        var $ = layui.jquery;
+        var table = layui.table;
+        var treetable = layui.treetable;
+
+        // 渲染表格
+        layer.load(2);
+        treetable.render({
+            treeColIndex: 1,
+            treeSpid: 0,/*指定最上级父id*/
+            treeIdName: 'id',
+            treePidName: 'parentId',
+            elem: '#munu-table',
+            url: '/resource/list',
+            page: false,
+            cols: [
+                [
+                    {type: 'numbers'},
+                    {field: 'title', title: '菜单名称'},
+                    {field: 'id', title: 'Id', align: 'center', hide: true},
+                    {
+                        field: 'icon', align: 'center', templet: function (d) {
+                            var icon = d.icon;
+                            return '<i class="'+icon+'"></i>';
+                        }, title: '图标'
+                    },
+                    {field: 'href', title: '菜单URL', align: 'left'},
+                    {field: 'ordinal', title: '排序号', align: 'center'},
+                    {
+                        field: 'categoryId', align: 'center', templet: function (d) {
+                            if (d.categoryId == 1) {
+                                return '<span class="layui-badge layui-bg-gray">菜单</span>';
+                            } else if (d.categoryId == 2) {
+                                return '<span class="layui-badge layui-bg-blue">按钮</span>';
+                            } else if (d.categoryId == 3) {
+                                return '<span class="layui-badge-rim">其他</span>';
+                            }
+                        }, title: '类型'
+                    },
+                    {fixed: 'right', title: '操作', toolbar: '#jobBar', align: 'center'}
+            ]
+            ],
+            done: function () {
+                layer.closeAll('loading');
+            }
+        });
+
+
+        $('#btn-expand').click(function () {
+            treetable.expandAll('#munu-table');
+        });
+
+        $('#btn-fold').click(function () {
+            treetable.foldAll('#munu-table');
+        });
+
+        $('#btn-add').click(function () {
+            layer.open({
+                id: 'job-edit',
+                type: 2,
+                area: ['700px', '450px'],
+                fix: false,
+                maxmin: true,
+                shadeClose: false,
+                shade: 0.4,
+                title: "修改权限",
+                content: '/page/menu/addOrEdit'
+            });
+        });
+
+        //监听工具条
+        table.on('tool(munu-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'edit') {
+                layer.open({
+                    id: 'job-edit',
+                    type: 2,
+                    area: ['700px', '450px'],
+                    fix: false,
+                    maxmin: true,
+                    shadeClose: false,
+                    shade: 0.4,
+                    title: "修改权限",
+                    content: '/page/menu/addOrEdit?id=' + data.id
+                });
+            }else if(layEvent === "del"){
+                layer.confirm('确认删除？', function (index) {
+                    //向服务端发送删除指令
+                    $.ajax({
+                        url: "/resource/del/" + data.id,
+                        type: "DELETE",
+                        success: function (rst) {
+                            layer.msg(rst.msg);
+                            if (rst.code == 1) {
+                                location.reload();
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

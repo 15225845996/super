@@ -15,4 +15,5 @@ import java.util.List;
  */
 public interface ISysResourceService extends IService<SysResource> {
 
+    List<SysResource> getByParentId(Long parentId);
 }
