@@ -152,6 +152,8 @@
                     }
                     //已有的权限id
                     checkIds = result.roleSourceIds.toString();
+                    //重新渲染
+                    form.render();
                 }else{
                     layer.mag(rst.msg);
                 }

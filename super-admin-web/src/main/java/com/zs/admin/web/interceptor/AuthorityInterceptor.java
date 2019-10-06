@@ -24,6 +24,8 @@ public class AuthorityInterceptor implements HandlerInterceptor{
 
     private static final String[] PUBLIC_HREF = new String[]{"/page/index","/page/home"};
 
+    private static final String RESTFUL_SUFFIX = "*";
+
     /**
      * 前置拦截
      * @param request
@@ -42,10 +44,26 @@ public class AuthorityInterceptor implements HandlerInterceptor{
         if (userVo != null) {
             List<String> urls = request.getSession().getAttribute(Constant.USER_SOURCES_HREF) == null?
                     null:(List<String>)request.getSession().getAttribute(Constant.USER_SOURCES_HREF);
+            //api开头，指定的放行路径，已有的权限放行
             if(Arrays.asList(PUBLIC_HREF).contains(url) || url.startsWith(API_PATH_PREFIX) || (urls != null && urls.contains(url))){
                 flag = true;
-            }else{
-                flag = false;
+            }
+            if(!flag){//判断是否为restful格式请求配置
+                for (String s : urls) {
+                    if(s.indexOf(RESTFUL_SUFFIX) >= 0) {//restful请求格式，比对当前请求
+                        String[] hrefArr = s.split("/");
+                        String[] urlArr = url.split("/");
+                        if(hrefArr.length == urlArr.length){
+                            //比对 固定的请求前缀是否相同 如：/a/b/{id} 数据库为:/a/b/*  比对 /a/b/ == /a/b/
+                            String hrefSub = s.substring(0, s.indexOf("*"));
+                            String urlSub = url.substring(0, s.indexOf("*"));
+                            if(hrefSub.equals(urlSub)){
+                                flag = true;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         } else {
             response.sendRedirect("/");
