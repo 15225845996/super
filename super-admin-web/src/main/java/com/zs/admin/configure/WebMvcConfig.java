@@ -46,6 +46,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         List<String> patterns = new ArrayList<>();
         patterns.add("/");
         patterns.add("/login");
+        patterns.add("/logout");
         patterns.add("/register");
         patterns.add("/accountIsExist/**");
 
