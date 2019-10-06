@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
     <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <style>
         .layui-form-item {
             width: auto;
@@ -19,7 +20,8 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <div class="layui-form layuimini-form" id="addOrEditMenu">
+        <form class="layui-form" action="" lay-filter="example">
+            <input type="text" name="id" style="display: none;">
             <div class="layui-form-item">
                 <label class="layui-form-label required">权限名称</label>
                 <div class="layui-input-inline">
@@ -42,6 +44,18 @@
                 <label class="layui-form-label">跳转类型</label>
                 <div class="layui-input-inline">
                     <input name="target" class="layui-input" value="_self">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">序号</label>
+                <div class="layui-input-inline">
+                    <input name="ordinal" placeholder="排序（默认当前父节点下的第一个）" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">图标</label>
+                <div class="layui-input-inline">
+                    <input name="icon" class="layui-input" >
                 </div>
             </div>
             <div class="layui-form-item">
@@ -77,9 +91,11 @@
                     <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
+
+
 <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -91,10 +107,6 @@
             form = layui.form,
             tree = layui.tree,
             element = layui.element;
-        //重新渲染
-        function fromRender() {
-            form.render();
-        }
 
         //树形下拉框初始化
         // 加载权限树
@@ -130,28 +142,29 @@
                 if(rst.code == 1 && rst.data != null){
                     console.dir(rst)
                     var result = rst.data;
-                    if(result.resource != null){
-                        form.val({
-                            'title': result.resource.title,
-                        });
-
-                        //选中已有的权限
-                        /*if(result.resource.parentId != null){
-                            tree.setChecked('resources', result.resource.parentId);
-                        }*/
-                    }
                     if(result.category != null){
                         var category = $.parseJSON(result.category);
                         $.each(category,function (i,t) {
-                            if(result.resource != null && t.categoryId == result.resource.categoryId){
-                                $("select[name=categoryId]").append('<option value="'+t.categoryId+'" selected="selected">'+t.categoryName+'</option>')
-                            }else{
-                                $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
-                            }
+                            $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
                         })
                     }
-                    //重新渲染
-                    fromRender();
+
+                    if(result.resource != null){
+                        form.val('example', {
+                            "id": result.resource.id,
+                            "title": result.resource.title,
+                            "descr": result.resource.descr,
+                            "href": result.resource.href,
+                            "target": result.resource.target,
+                            "isEditable": result.resource.isEditable+'',
+                            "categoryId": result.resource.categoryId+'',
+                            "categoryName": result.resource.categoryName,
+                            "parentTitle": result.resource.parentTitle,
+                            "parentId": result.resource.parentId,
+                            "ordinal": result.resource.ordinal,
+                            "icon": result.resource.icon,
+                        })
+                    }
                 }else{
                     layer.mag(rst.msg);
                 }

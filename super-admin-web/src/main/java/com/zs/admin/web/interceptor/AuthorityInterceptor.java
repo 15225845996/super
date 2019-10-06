@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ import java.util.List;
 @Component
 public class AuthorityInterceptor implements HandlerInterceptor{
     private static final String API_PATH_PREFIX = "/api";
+
+    private static final String[] PUBLIC_HREF = new String[]{"/page/index","/page/home"};
 
     /**
      * 前置拦截
@@ -39,10 +42,10 @@ public class AuthorityInterceptor implements HandlerInterceptor{
         if (userVo != null) {
             List<String> urls = request.getSession().getAttribute(Constant.USER_SOURCES_HREF) == null?
                     null:(List<String>)request.getSession().getAttribute(Constant.USER_SOURCES_HREF);
-            if(url.startsWith(API_PATH_PREFIX) || (urls != null && urls.contains(urls))){
+            if(Arrays.asList(PUBLIC_HREF).contains(url) || url.startsWith(API_PATH_PREFIX) || (urls != null && urls.contains(url))){
                 flag = true;
             }else{
-                response.sendRedirect("/");
+                flag = false;
             }
         } else {
             response.sendRedirect("/");

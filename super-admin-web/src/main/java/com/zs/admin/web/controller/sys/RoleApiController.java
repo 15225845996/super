@@ -71,10 +71,6 @@ public class RoleApiController extends BaseController{
         }
         //获取角色类型
         result.put("roleCategory", RoleCategoryEnum.toJson());
-        //获取权限
-        List<SysResource> all = resourceService.list();
-        List<Tree> trees = sourceToTree(all, null, true,null);
-        result.put("trees",trees);
         result.put("roleSourceIds",roleSourceIds);
         return ResultVo.data(result);
     }

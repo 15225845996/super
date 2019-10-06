@@ -1,4 +1,4 @@
-package com.zs.admin.web.configure;
+package com.zs.admin.configure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

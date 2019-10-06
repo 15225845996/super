@@ -47,6 +47,8 @@ public class BaseController {
             List<Tree> menuCategorys = DozerUtils.dozer(collect, Tree.class);
             if(menuCategorys != null && menuCategorys.size() > 0){
                 menuCategorys.stream().forEach(m -> {
+                    //默认false，不选中
+                    m.setChecked(false);
                     //是否选中
                     if(checkIds != null){
                         if(checkIds.contains(m.getId())){

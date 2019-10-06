@@ -56,11 +56,11 @@ public class IndexController extends BaseController {
     @Autowired
     private ISysRoleResourceService roleResourceService;
 
-    @ApiOperation("登录注册页面")
+   /* @ApiOperation("登录注册页面")
     @GetMapping(value = {"/"})
     public String index(HttpServletRequest request, Model model){
         return "index";
-    }
+    }*/
 
     @ApiOperation("登录")
     @PostMapping("/login")

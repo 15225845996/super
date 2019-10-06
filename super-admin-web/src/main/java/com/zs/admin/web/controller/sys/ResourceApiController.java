@@ -36,7 +36,9 @@ public class ResourceApiController extends BaseController{
 
     @ApiOperation(value = "获取权限树")
     @PostMapping("/tree")
-    public Object tree(@RequestParam(defaultValue = "0") Long parentId,@RequestParam(defaultValue = "true") Boolean isSpread,@RequestParam(required = false) List<Long> checkIds){
+    public Object tree(@RequestParam(defaultValue = "0") Long parentId,
+                       @RequestParam(defaultValue = "true") Boolean isSpread,
+                       @RequestParam(required = false) List<Long> checkIds){
         List<Tree> trees = sourceToTree(resourceService.list(), parentId, isSpread, checkIds);
         return trees;
     }

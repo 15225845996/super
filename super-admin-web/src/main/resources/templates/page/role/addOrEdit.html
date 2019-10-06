@@ -36,7 +36,7 @@
         </div>
     </fieldset>
     <div class="layuimini-main">
-        <div class="layui-form layuimini-form">
+        <form class="layui-form" action="" lay-filter="example">
             <input type="tel" name="id" style="display: none;">
             <div class="layui-form-item">
                 <label class="layui-form-label required">角色名称</label>
@@ -79,7 +79,7 @@
                     <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
@@ -92,10 +92,6 @@
             tree = layui.tree,
             form = layui.form,
             element = layui.element;
-        //重新渲染
-        function fromRender() {
-            form.render();
-        }
         //监听提交
         form.on('submit(saveBtn)', function (param) {
             //获得选中的节点
@@ -125,8 +121,8 @@
             }else{
                 $("input[name=categoryName]").val(null)
             }
-            console.log("===")
         })
+        var checkIds;
 
         //获取角色信息
         $.ajax({
@@ -138,41 +134,43 @@
             async:false,
             success: function (rst) {
                 if(rst.code == 1 && rst.data != null){
-                    console.dir(rst)
                     var result = rst.data;
-                    if(result.role != null){
-                        $("input[name=roleName]").val(result.role.roleName)
-                        $("input[name=id]").val(result.role.id)
-                        $("input[name=roleDescr]").val(result.role.roleDescr)
-                        $("select[name=categoryId]").val()
-                    }
                     if(result.roleCategory != null){
                         var roleCategory = $.parseJSON(result.roleCategory);
                         $.each(roleCategory,function (i,t) {
-                            if(result.role != null && t.categoryId == result.role.categoryId){
-                                $("select[name=categoryId]").append('<option value="'+t.categoryId+'" selected="selected">'+t.categoryName+'</option>')
-                            }else{
-                                $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
-                            }
+                            $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
                         })
                     }
-                    if(result.trees != null){
-                        tree.render({
-                            elem: '#permission',
-                            data: result.trees,
-                            id: 'roleSourceIds',
-                            showCheckbox: true
-                        });
-                        //选中已有的权限
-                        if(result.roleSourceIds != null && result.roleSourceIds.length > 0){
-                            tree.setChecked('roleSourceIds', result.roleSourceIds);
-                        }
+                    if(result.role != null){
+                        form.val('example', {
+                            "id": result.role.id,
+                            "roleName": result.role.roleName,
+                            "roleDescr": result.role.roleDescr,
+                            "categoryId": result.role.categoryId,
+                            "categoryName": result.role.categoryName,
+                        })
                     }
-                    //重新渲染
-                    fromRender();
+                    //已有的权限id
+                    checkIds = result.roleSourceIds.toString();
                 }else{
                     layer.mag(rst.msg);
                 }
+            }
+        });
+
+        // 加载权限树
+        $.ajax({
+            url: "/api/resource/tree",
+            data:{"isSpread":true,'checkIds':checkIds},
+            async:false,
+            type: "post",
+            success: function (rst) {
+                tree.render({
+                    elem: '#permission',
+                    data: rst,
+                    id: 'roleSourceIds',
+                    showCheckbox: true
+                });
             }
         });
 
