@@ -68,7 +68,7 @@ public class Constant {
     /**
      * logo信息
      */
-    public static final String LOGO_TITLE = "LayuiMini";
+    public static final String LOGO_TITLE = "后台管理系统";
     public static final String LOGO_IMG = "/images/logo.png";
     public static final String LOGO_HREF = "";
 
