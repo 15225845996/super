@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
     <meta charset="utf-8">
     <title>LayuiMini - 基于Layui的后台管理系统前端模板</title>
     <meta name="renderer" content="webkit">
@@ -43,7 +43,7 @@
 
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item layuimini-setting">
-                <a href="javascript:;">admin</a>
+                <a href="javascript:;" class="userName">无</a>
                 <dl class="layui-nav-child">
                     <dd>
                         <a href="javascript:;" data-iframe-tab="page/user-setting.html" data-title="基本资料" data-icon="fa fa-gears">基本资料</a>
@@ -103,11 +103,19 @@
 
 <script src="/lib/layui-v2.5.4/layui.js?v=1.0.4" charset="utf-8"></script>
 <script src="/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
-<script>
+<script th:inline="javascript">
+    //用户信息
+    var user = [[${USER_INFO_KEY}]]
+
     layui.use(['element', 'layer', 'layuimini'], function () {
         var $ = layui.jquery,
             element = layui.element,
             layer = layui.layer;
+
+        if(user != null){
+            var userName = user.name == null?"猜猜俺是谁？":user.name;
+            $(".userName").text(userName);
+        }
 
         layuimini.init('/api/menu');
 

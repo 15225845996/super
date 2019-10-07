@@ -1,5 +1,6 @@
 package com.zs.admin.web.controller;
 
+import com.zs.admin.api.constant.Constant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
@@ -48,5 +49,6 @@ public class PageController extends BaseController{
                 }
             }
         }
+        model.addAttribute(Constant.USER_INFO_KEY,getLoginUser(request.getSession()));
     }
 }
