@@ -151,7 +151,9 @@
                         })
                     }
                     //已有的权限id
-                    checkIds = result.roleSourceIds.toString();
+                    if(result.roleSourceIds != null && result.roleSourceIds.length > 0){
+                        checkIds = result.roleSourceIds.toString();
+                    }
                     //重新渲染
                     form.render();
                 }else{

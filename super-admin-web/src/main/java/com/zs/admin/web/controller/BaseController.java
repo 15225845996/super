@@ -49,14 +49,16 @@ public class BaseController {
                 menuCategorys.stream().forEach(m -> {
                     //默认false，不选中
                     m.setChecked(false);
+                    //是否展开
+                    m.setSpread(isSpread);
+                    //是否禁用
+                    m.setDisabled(false);
                     //是否选中
                     if(checkIds != null){
                         if(checkIds.contains(m.getId())){
                             m.setChecked(true);
                         }
                     }
-                    //是否展开
-                    m.setSpread(isSpread);
                     List<Tree> menuInfo = sourceToTree(resources, m.getId(),isSpread,checkIds);
                     if(menuInfo != null){
                         //list排序
