@@ -44,7 +44,7 @@ public class RoleController extends BaseController{
     @GetMapping("/list")
     public Object list(){
         List<SysRole> list = roleService.list();
-        return PageVO.pageVO(list, (long) list.size());
+        return PageVO.page(list, (long) list.size());
     }
 
 

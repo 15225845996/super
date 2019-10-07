@@ -3,6 +3,7 @@ package com.zs.admin.api.vo;
 import com.zs.admin.api.constant.Constant;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * @Description:
  */
 @Data
-public class PageVO {
+public class PageVO implements Serializable {
     private Long code;
     private String msg;
     private Long count;
@@ -25,7 +26,7 @@ public class PageVO {
         this.data = list;
     }
 
-    public static PageVO pageVO(List list, Long count) {
+    public static PageVO page(List list, Long count) {
         return new PageVO(list, count);
     }
 }

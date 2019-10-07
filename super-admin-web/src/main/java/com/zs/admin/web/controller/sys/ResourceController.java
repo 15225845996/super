@@ -38,7 +38,7 @@ public class ResourceController extends BaseController{
     @GetMapping("/list")
     public Object list(){
         List<SysResource> list = resourceService.list();
-        return PageVO.pageVO(list, (long) list.size());
+        return PageVO.page(list, (long) list.size());
     }
 
     @ApiOperation(value = "保存权限信息")

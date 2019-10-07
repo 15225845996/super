@@ -2,6 +2,9 @@ package com.zs.admin.api.service.sys;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zs.admin.api.entry.SysAccount;
+import com.zs.admin.api.vo.PageVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -26,4 +29,8 @@ public interface ISysAccountService extends IService<SysAccount> {
      * 账后是否已存在
      */
     boolean isExistByAccount(String account);
+
+    List<SysAccount> query(SysAccount account);
+
+    PageVO page(SysAccount account,Integer pageNum,Integer pageSize);
 }

@@ -4,6 +4,7 @@ import com.zs.admin.api.entry.SysAccount;
 import com.zs.admin.api.entry.SysResource;
 import com.zs.admin.api.service.sys.ISysAccountService;
 import com.zs.admin.api.service.sys.ISysResourceService;
+import com.zs.admin.api.vo.PageVO;
 import com.zs.admin.service.mapper.SysAccountMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,14 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
     private ISysAccountService accountService;
     @Autowired
     private ISysResourceService resourceService;
+
+    @Test
+    public void page(){
+        PageVO page = accountService.page(null, 1, 20);
+        List<SysAccount> list = accountService.query(null);
+        System.out.println(page);
+    }
+
 
     @Test
     public void query1(){
