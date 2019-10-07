@@ -18,23 +18,6 @@
 </head>
 <body>
 <div class="layuimini-container">
-    <fieldset class="layui-elem-field layuimini-search">
-        <legend>
-             <span class="layui-breadcrumb" lay-separator=">">
-                  <a href="/page/role/list">角色权限</a>
-                  <a><cite class="addOrEdit">编辑</cite></a>
-            </span>
-        </legend>
-        <div style="margin: 10px 10px 10px 10px">
-            <form class="layui-form layui-form-pane" action="">
-                <div class="layui-form-item">
-                    <div class="layui-inline" style="float: right">
-                        <a href="/page/role/list" class="layui-btn">返回</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </fieldset>
     <div class="layuimini-main">
         <form class="layui-form" action="" lay-filter="example">
             <input type="tel" name="id" style="display: none;">
@@ -105,8 +88,11 @@
                     layer.msg(rst.msg);
                     if (rst.code == 1) {
                         setTimeout(function () {
-                            location.href = "/page/role/list";
-                        }, 2000);
+                            debugger;
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));
+                            //重新加载父页面
+                            parent.location.reload();
+                        }, 300);
                     }
                 }
             });
@@ -180,10 +166,6 @@
                 console.dir(tree.getChecked('resourceTree'));
             }
         });
-
-        if(id == null){
-            $(".addOrEdit").text("新增")
-        }
     });
     /*]]>*/
 </script>
