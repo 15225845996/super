@@ -65,7 +65,11 @@ public class AuthorityInterceptor implements HandlerInterceptor{
                     }
                 }
             }
-        } else {
+            //没有对应权限
+            if(!flag){
+                response.sendRedirect("/page/404");
+            }
+        } else {//没有登录
             response.sendRedirect("/");
         }
         return flag;
