@@ -1,7 +1,6 @@
 package com.zs.admin.web.interceptor;
 
 import com.zs.admin.api.constant.Constant;
-import io.swagger.models.HttpMethod;
 import lombok.val;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -10,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,7 +67,8 @@ public class AuthorityInterceptor implements HandlerInterceptor{
             }
             //没有对应权限
             if(!flag){
-                response.sendRedirect("/page/404");
+                String encode = URLEncoder.encode("唉！找不到了，恁说气人不气人.......", "UTF-8");
+                response.sendRedirect("/page/error?code=4,0,4&msg="+encode);
             }
         } else {//没有登录
             response.sendRedirect("/");

@@ -49,7 +49,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         patterns.add("/logout");
         patterns.add("/register");
         patterns.add("/accountIsExist/**");
-        patterns.add("/page/404");
+        patterns.add("/page/error");
 
         //静态资源
         patterns.add("/lib/**");
