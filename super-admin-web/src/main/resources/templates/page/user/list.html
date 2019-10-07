@@ -20,7 +20,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">用户帐号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="code" autocomplete="off" class="layui-input">
+                                <input type="text" name="account" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -37,16 +37,15 @@
         <table class="layui-hide" id="users" lay-filter="user"></table>
 
         <script type="text/html" id="userBar">
-            <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
             <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
 
-        <script type="text/html" id="checkboxTpl">
-            <input type="checkbox" value="{{d.id}}" name="isLocked" lay-skin="switch" lay-filter="locked"
-                   lay-text="已锁定|未锁定"
-                   title="锁定" {{ d.isLocked== 1 ? 'checked' : '' }}>
-        </script>
+       <!-- <script type="text/html" id="checkboxTpl">
+            <input type="checkbox" value="{{d.id}}" name="statusId" lay-skin="switch" lay-filter="locked"
+                   lay-text="正常|已锁定"  {{ d.statusId == 0 ? 'checked' : '' }}>
+        </script>-->
     </div>
 </div>
 </body>
@@ -66,28 +65,24 @@
             cols: [
                 [
                     {field: 'id', title: 'ID', align: 'center', sort: true, hide: true},
-                    {field: 'code', title: '帐号', align: 'center'},
+                    {field: 'account', title: '帐号', align: 'center'},
                     {field: 'name', title: '昵称', align: 'center'},
+                    {field: 'sex', title: '性别', align: 'center', width: 60},
                     {
-                        field: 'sex', title: '性别', align: 'center', width: 60, templet: function (item) {
-                        if (item.sex == '0') {
-                            return "女";
-                        } else if (item.sex == '1') {
-                            return "男";
-                        } else {
-                            return "";
-                        }
-                    }
-                    },
-                    {
-                        field: 'birthData',
+                        field: 'birthday',
                         title: '出生日期',
                         align: 'center',
-                        templet: '<div>{{ layui.util.toDateString(d.birthData, "yyyy-MM-dd ") }}</div>'
+                        templet: '<div>{{ layui.util.toDateString(d.birthday, "yyyy-MM-dd ") }}</div>'
                     },
-                    {field: 'email', title: '电子邮箱', align: 'center'},
-                    {field: 'isLocked', title: '是否锁定', templet: '#checkboxTpl', unresize: true, align: 'center'},
                     {field: 'loginCount', title: '登录次数', align: 'center', width: 90},
+//                    {field: 'isLocked', title: '是否锁定', templet: '#checkboxTpl', unresize: true, align: 'center'},
+                    {field: 'statusName', title: '状态', align: 'center',templet:function (d) {
+                        if(d.statusId == -1){//锁定
+                            return '<span style="color: grey">'+d.statusName+'</span>';
+                        }else{//正常
+                            return '<span style="color: green">'+d.statusName+'</span>';
+                        }
+                    }},
                     {fixed: 'right', title: '操作', toolbar: '#userBar', align: 'center', minWidth: 200}
                 ]
             ]

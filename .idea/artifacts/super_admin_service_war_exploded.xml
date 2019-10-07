@@ -10,6 +10,9 @@
           <element id="archive" name="super-admin-api-1.0-SNAPSHOT.jar">
             <element id="module-output" name="super-admin-api" />
           </element>
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.1.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.1.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.1.9.RELEASE" />
           <element id="archive" name="super-utils-1.0-SNAPSHOT.jar">
             <element id="module-output" name="super-utils" />
           </element>
@@ -39,8 +42,6 @@
           <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.4.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.1.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-boot-starter:3.1.2" />
           <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus:3.1.2" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.1.7.RELEASE" />
@@ -117,7 +118,6 @@
           <element id="library" level="project" name="Maven: org.apache.xmlgraphics:batik-parser:1.7" />
           <element id="library" level="project" name="Maven: org.apache.xmlgraphics:batik-svggen:1.7" />
           <element id="library" level="project" name="Maven: com.alibaba:dubbo:2.5.5" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.20.0-GA" />
           <element id="library" level="project" name="Maven: org.jboss.netty:netty:3.2.5.Final" />

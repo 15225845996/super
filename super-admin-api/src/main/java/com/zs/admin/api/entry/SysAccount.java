@@ -3,9 +3,12 @@ package com.zs.admin.api.entry;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -39,6 +42,10 @@ public class SysAccount extends BaseEntity<SysAccount> {
 
     private String categoryName;
 
+    private Long statusId;
+
+    private String statusName;
+
     /**
      * 年龄
      */
@@ -48,6 +55,15 @@ public class SysAccount extends BaseEntity<SysAccount> {
      * 性别
      */
     private String sex;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthday;
+
+
+
+    private String logo;
+    private Long loginCount;
+    private Date lastLoginTime;
 
 
     @Override

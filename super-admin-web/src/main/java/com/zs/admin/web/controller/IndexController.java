@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.sun.xml.internal.ws.api.model.MEP;
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
+import com.zs.admin.api.constant.sys.AccountStatusEnum;
 import com.zs.admin.api.constant.sys.SourcesCategoryEnum;
 import com.zs.admin.api.entry.SysAccount;
 import com.zs.admin.api.entry.SysAccountRole;
@@ -87,7 +88,13 @@ public class IndexController extends BaseController {
                 account.setCategoryId(AccountCategoryEnum.ADMIN.getCategoryId());
                 account.setCategoryName(AccountCategoryEnum.ADMIN.getCategoryName());
             }
-            return registerMethod(request, account);
+            account.setStatusId(AccountStatusEnum.NORMAL.getStatusId());
+            account.setStatusName(AccountStatusEnum.NORMAL.getStatusName());
+            account.setPassword(MD5Utils.getPassWord(account.getPassword()));
+            boolean save = accountService.save(account);
+            if(save){
+                return ResultVo.success("注册成功！");
+            }
         }
         return ResultVo.fail("注册失败！");
     }
@@ -154,17 +161,6 @@ public class IndexController extends BaseController {
             return ResultVo.data(Constant.BACKSTAGE_INDEX_PAGE);
         }
         return ResultVo.fail("登录失败！");
-    }
-
-    private ResultVo registerMethod(HttpServletRequest request, SysAccount account){
-        if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
-            account.setPassword(MD5Utils.getPassWord(account.getPassword()));
-            boolean save = accountService.save(account);
-            if(save){
-                return ResultVo.success("注册成功！");
-            }
-        }
-        return ResultVo.fail("注册失败！");
     }
 
     protected List<Menu> getMenuInfo(List<SysResource> resources,Long parentId){

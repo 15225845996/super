@@ -112,7 +112,7 @@
         layuimini.init('/api/menu');
 
         $('.login-out').on("click", function () {
-            $.post("/logout", function (rst) {
+            $.post("/logout", {time: 300}, function (rst) {
                 if (rst.code == 1) {
                     layer.msg('退出登录成功', function () {
                         window.location = '/';

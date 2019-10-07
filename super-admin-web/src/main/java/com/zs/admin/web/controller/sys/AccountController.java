@@ -30,6 +30,9 @@ public class AccountController extends BaseController {
     public Object list(HttpServletRequest request,SysAccount account,
                        @RequestParam(name = "page",defaultValue = "1")Integer pageNum,
                        @RequestParam(name = "limit",defaultValue = "10")Integer pageSize){
+        if("".equals(account.getAccount())){
+            account.setAccount(null);
+        }
         return accountService.page(account, pageNum, pageSize);
     }
 }

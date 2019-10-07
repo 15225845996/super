@@ -17,6 +17,13 @@
         <result column="category_name" property="categoryName" />
         <result column="age" property="age" />
         <result column="sex" property="sex" />
+
+        <result column="status_id" property="statusId" />
+        <result column="status_name" property="statusName" />
+        <result column="birthday" property="birthday" />
+        <result column="logo" property="logo" />
+        <result column="login_count" property="loginCount" />
+        <result column="last_login_time" property="lastLoginTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -27,6 +34,11 @@
         creator,
         mender,
         modify_time,
+        status_id,
+        birthday,
+        logo,
+        login_count,
+        last_login_time,
         name, account, password, category_id, category_name, age, sex
     </sql>
 
