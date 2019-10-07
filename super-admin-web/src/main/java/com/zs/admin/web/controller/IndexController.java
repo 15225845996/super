@@ -1,7 +1,5 @@
 package com.zs.admin.web.controller;
 
-import com.baomidou.mybatisplus.extension.api.R;
-import com.sun.xml.internal.ws.api.model.MEP;
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
 import com.zs.admin.api.constant.sys.AccountStatusEnum;
@@ -56,12 +54,6 @@ public class IndexController extends BaseController {
     private ISysResourceService resourceService;
     @Autowired
     private ISysRoleResourceService roleResourceService;
-
-   /* @ApiOperation("登录注册页面")
-    @GetMapping(value = {"/"})
-    public String index(HttpServletRequest request, Model model){
-        return "index";
-    }*/
 
     @ApiOperation("登录")
     @PostMapping("/login")
