@@ -16,8 +16,6 @@ public class Tree {
     private String title;
     @ApiModelProperty(value = "节点唯一索引，用于对指定节点进行各类操作")
     private Long id;
-    @ApiModelProperty(value = "子节点。支持设定选项同父节点")
-    private List<Tree> children;
     @ApiModelProperty(value = "点击节点弹出新窗口对应的 url。需开启 isJump 参数")
     private String href;
     @ApiModelProperty(value = "节点是否初始展开，默认 false")
@@ -26,6 +24,8 @@ public class Tree {
     private Boolean checked;
     @ApiModelProperty(value = "节点是否为禁用状态。默认 false")
     private Boolean disabled;
+    @ApiModelProperty(value = "子节点。支持设定选项同父节点")
+    private List<Tree> children;
 
     //排序
     private Long ordinal;

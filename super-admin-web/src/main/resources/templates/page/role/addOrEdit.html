@@ -96,7 +96,7 @@
         form.on('submit(saveBtn)', function (param) {
             //获得选中的节点
             var data = param.field;
-            data['sourcesInfo'] = JSON.stringify(tree.getChecked('roleSourceIds'));
+            data['sourcesInfo'] = JSON.stringify(tree.getChecked('resourceTree'));
             $.ajax({
                 url: "/role/save",
                 type: "post",
@@ -148,6 +148,7 @@
                             "roleDescr": result.role.roleDescr,
                             "categoryId": result.role.categoryId,
                             "categoryName": result.role.categoryName,
+                            "isEditable": result.role.isEditable+'',
                         })
                     }
                     //已有的权限id
@@ -169,12 +170,14 @@
             async:false,
             type: "post",
             success: function (rst) {
+                console.dir(rst);
                 tree.render({
                     elem: '#permission',
                     data: rst,
-                    id: 'roleSourceIds',
+                    id: 'resourceTree',
                     showCheckbox: true
                 });
+                console.dir(tree.getChecked('resourceTree'));
             }
         });
 
