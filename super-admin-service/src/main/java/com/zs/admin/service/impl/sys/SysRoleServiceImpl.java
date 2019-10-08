@@ -22,4 +22,9 @@ import java.util.List;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 
 
+    @Override
+    public SysRole saveOrUpdate2(SysRole role) {
+        boolean b = super.saveOrUpdate(role);
+        return b?role:null;
+    }
 }

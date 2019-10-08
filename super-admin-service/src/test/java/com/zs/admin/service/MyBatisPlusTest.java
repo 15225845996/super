@@ -2,10 +2,13 @@ package com.zs.admin.service;
 
 import com.zs.admin.api.entry.SysAccount;
 import com.zs.admin.api.entry.SysResource;
+import com.zs.admin.api.entry.SysRole;
 import com.zs.admin.api.service.sys.ISysAccountService;
 import com.zs.admin.api.service.sys.ISysResourceService;
+import com.zs.admin.api.service.sys.ISysRoleService;
 import com.zs.admin.api.vo.PageVO;
 import com.zs.admin.service.mapper.SysAccountMapper;
+import com.zs.admin.service.mapper.SysRoleMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +27,8 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
     private ISysAccountService accountService;
     @Autowired
     private ISysResourceService resourceService;
+    @Autowired
+    private ISysRoleService roleService;
 
     @Test
     public void page(){
@@ -63,6 +68,20 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
        /* account.setCreateTime(new Date());*/
         int insert = accountMapper.insert(account);
         System.out.println(insert);
+    }
+
+
+    @Test
+    public void addRole(){
+        SysRole role = new SysRole();
+        role.setCategoryId(1L);
+        role.setCategoryName("123");
+        role.setIsEditable(false);
+        /*account.setIsDeleted(false);*/
+       /* account.setCreateTime(new Date());*/
+        SysRole sysRole = roleService.saveOrUpdate2(role);
+        System.out.println(role.getId());
+        System.out.println(role);
     }
 
     @Test

@@ -62,7 +62,7 @@ public class RoleController extends BaseController{
             roleResourceService.removeByMap(removeMap);
         }
         // 更改角色信息
-        val rst = roleService.saveOrUpdate(sysRole);
+        sysRole = roleService.saveOrUpdate2(sysRole);
         // 跟新角色权限
         JSONArray array = JSONUtil.parseArray(sourcesInfo);
         List<Tree> roleResource = new ArrayList<>();

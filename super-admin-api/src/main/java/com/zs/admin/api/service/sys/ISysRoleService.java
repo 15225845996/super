@@ -15,4 +15,6 @@ import java.util.List;
  */
 public interface ISysRoleService extends IService<SysRole> {
 
+    SysRole saveOrUpdate2(SysRole role);
+
 }

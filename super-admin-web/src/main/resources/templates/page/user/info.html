@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>基本资料</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        .layui-form-item .layui-input-company {
+            width: auto;
+            padding-right: 10px;
+            line-height: 38px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layuimini-main">
+                <div class="layui-form layuimini-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required">姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="tel" name="name" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required">帐号</label>
+                        <div class="layui-input-inline">
+                            <input type="tel" name="code" lay-verify="required|phone" placeholder="请输入手机号"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="sex" value="男" title="男">
+                            <input type="radio" name="sex" value="女" title="女">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户类型</label>
+                        <div class="layui-input-inline">
+                            <select name="categoryId" lay-filter="modifyCategory">
+                                <option value="">请选择</option>
+                            </select>
+                            <input name="categoryName" hidden="hidden"/>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">出生日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="birthday" id="birthday" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色</label>
+                        <div class="layui-col-xs10">
+                            <input name="roles" type="checkbox" th:each="role:${roles}" th:title="${role.name}"
+                                   th:value="${role.id}">
+                        </div>
+                    </div>
+                    <div class="layui-col-xs6 layui-col-md-offset4">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script th:inline="javascript">
+
+    var method = [[${method}]]
+    var id = [[${id}]]
+
+    layui.use(['form', 'laydate', 'element'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            laydate = layui.laydate,
+            element = layui.element;
+        //日期
+        laydate.render({
+            elem: '#birthday'
+        });
+
+
+        //获取信息
+        $.ajax({
+            url: "/api/account/info",
+            type: "post",
+            data: {
+                "id": id,
+                "method":method
+            },
+            async:false,
+            success: function (rst) {
+                if(rst.code == 1 && rst.data != null){
+                    var result = rst.data;
+                    if(result.category != null){
+                        var category = $.parseJSON(result.category);
+                        $.each(category,function (i,t) {
+                            $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
+                        })
+                    }
+                    if(result.role != null){
+                        form.val('example', {
+                            "id": result.role.id,
+                            "roleName": result.role.roleName,
+                            "roleDescr": result.role.roleDescr,
+                            "categoryId": result.role.categoryId,
+                            "categoryName": result.role.categoryName,
+                            "isEditable": result.role.isEditable+'',
+                        })
+                    }
+                    //已有的权限id
+                    if(result.roleSourceIds != null && result.roleSourceIds.length > 0){
+                        checkIds = result.roleSourceIds.toString();
+                    }
+                    //重新渲染
+                    form.render();
+                }else{
+                    layer.mag(rst.msg);
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(saveBtn)', function (param) {
+            //获取checkbox[name='roles']的值
+            var arr = new Array();
+            $("input:checkbox[name='roles']:checked").each(function (i) {
+                arr[i] = $(this).val();
+            });
+            //将数组合并成字符串
+            param.field.roles = arr.join(",");
+            $.ajax({
+                url: "/api/admin/users/user/confirm/add",
+                type: "post",
+                data: param.field,
+                success: function (rst) {
+                    layer.msg(rst.msg);
+                    if (rst.code == 1) {
+                        setTimeout(function () {
+                            location.href = "/admin/users/user/list";
+                        }, 2000);
+                    }
+                }
+            });
+            return false;
+        });
+
+        //便跟类型
+        form.on("select(modifyCategory)",function (param) {
+            var cateogry = $(param.elem).val();
+            if("" != cateogry){
+                var cateogryName = $(param.elem).find("option:selected").text();
+                $("input[name=categoryName]").val(cateogryName)
+            }else{
+                $("input[name=categoryName]").val(null)
+            }
+        })
+    });
+</script>
+</body>
+</html>

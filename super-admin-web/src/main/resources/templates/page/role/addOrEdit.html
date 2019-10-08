@@ -43,7 +43,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">角色类型</label>
                 <div class="layui-input-inline">
-                    <select name="categoryId" lay-filter="modifyCategory">
+                    <select name="categoryId" lay-verify="required" lay-filter="modifyCategory">
                         <option value="">请选择</option>
                     </select>
                     <input name="categoryName" hidden="hidden"/>
