@@ -46,10 +46,10 @@
                 <a href="javascript:;" class="userName">无</a>
                 <dl class="layui-nav-child">
                     <dd>
-                        <a href="javascript:;" data-iframe-tab="page/user-setting.html" data-title="基本资料" data-icon="fa fa-gears">基本资料</a>
+                        <a href="javascript:;" data-iframe-tab="page/home" data-title="基本资料" data-icon="fa fa-gears" class="userInfoA">基本资料</a>
                     </dd>
                     <dd>
-                        <a href="javascript:;" data-iframe-tab="page/user-password.html" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
+                        <a href="javascript:;" data-iframe-tab="page/home" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
                     </dd>
                     <dd>
                         <a href="javascript:;" class="login-out">退出登录</a>
@@ -106,7 +106,6 @@
 <script th:inline="javascript">
     //用户信息
     var user = [[${USER_INFO_KEY}]]
-
     layui.use(['element', 'layer', 'layuimini'], function () {
         var $ = layui.jquery,
             element = layui.element,
@@ -115,6 +114,7 @@
         if(user != null){
             var userName = user.name == null?"猜猜俺是谁？":user.name;
             $(".userName").text(userName);
+            $(".userInfoA").attr("data-iframe-tab","/page/user/info?id="+user.id)
         }
 
         layuimini.init('/api/menu');

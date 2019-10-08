@@ -86,7 +86,9 @@
 <script th:inline="javascript">
     var method = [[${method}]]
     var id = [[${id}]]
-
+    if(method == null){
+        method = "info";
+    }
     layui.use(['form', 'element','util'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -188,7 +190,7 @@
         })
 
         //详情页面，隐藏提交按钮
-        if("view" == method){
+        if("info" == method){
             $(".saveBtn").remove();
         }
     });
