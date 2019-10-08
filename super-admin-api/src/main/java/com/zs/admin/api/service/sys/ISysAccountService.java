@@ -33,4 +33,6 @@ public interface ISysAccountService extends IService<SysAccount> {
     List<SysAccount> query(SysAccount account);
 
     PageVO page(SysAccount account,Integer pageNum,Integer pageSize);
+
+    SysAccount saveOrUpdate2(SysAccount account);
 }

@@ -67,9 +67,9 @@
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">权限类型</label>
+                <label class="layui-form-label required">权限类型</label>
                 <div class="layui-input-inline">
-                    <select name="categoryId" lay-filter="modifyCategory">
+                    <select name="categoryId" lay-filter="modifyCategory" lay-verify="required">
                         <option value="">请选择</option>
                     </select>
                     <input name="categoryName" hidden="hidden"/>

@@ -73,6 +73,12 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
         return PageVO.page(page.getRecords(), page.getTotal());
     }
 
+    @Override
+    public SysAccount saveOrUpdate2(SysAccount account) {
+        boolean b = super.saveOrUpdate(account);
+        return b?account:null;
+    }
+
     protected QueryWrapper getQuery(SysAccount account){
         QueryWrapper<SysAccount> quer = new QueryWrapper<>();
         if(account != null){

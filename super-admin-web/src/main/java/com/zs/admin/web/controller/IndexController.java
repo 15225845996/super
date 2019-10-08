@@ -112,7 +112,7 @@ public class IndexController extends BaseController {
         if(account != null && StringUtils.isNotBlank(account.getAccount())){
             //获取用户角色id
             List<SysAccountRole> roles = accountRoleService.findByAccount(account.getAccount());
-            List<Long> roleIds = roles.stream().map(r -> r.getId()).distinct().collect(Collectors.toList());
+            List<Long> roleIds = roles.stream().map(r -> r.getRoleId()).distinct().collect(Collectors.toList());
             List<SysResource> resources = null;
             List<String> urls = null;
             List<SysRoleResource> roleResources = null;

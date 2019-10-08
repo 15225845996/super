@@ -21,7 +21,8 @@
     <div class="layui-container">
         <div class="layui-row">
             <div class="layuimini-main">
-                <div class="layui-form layuimini-form">
+                <form class="layui-form" action="" lay-filter="example">
+                    <input type="tel" name="id" style="display: none;">
                     <div class="layui-form-item">
                         <label class="layui-form-label required">姓名</label>
                         <div class="layui-input-inline">
@@ -31,14 +32,14 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">帐号</label>
                         <div class="layui-input-inline">
-                            <input type="tel" name="code" lay-verify="required|phone" placeholder="请输入手机号"
+                            <input type="tel" name="account" lay-verify="required|phone" placeholder="请输入手机号"
                                    class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">性别</label>
                         <div class="layui-input-inline">
-                            <input type="radio" name="sex" value="男" title="男">
+                            <input type="radio" name="sex" value="男" title="男" checked="">
                             <input type="radio" name="sex" value="女" title="女">
                         </div>
                     </div>
@@ -54,41 +55,34 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">出生日期</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="birthday" id="birthday" class="layui-input">
+                            <input type="text" name="birthday" id="birthday" class="layui-input" disabled="">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">角色</label>
-                        <div class="layui-col-xs10">
-                            <input name="roles" type="checkbox" th:each="role:${roles}" th:title="${role.name}"
-                                   th:value="${role.id}">
+                        <div class="layui-input-block rolesDiv">
                         </div>
                     </div>
                     <div class="layui-col-xs6 layui-col-md-offset4">
                         <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+                            <button class="layui-btn saveBtn" lay-submit lay-filter="saveBtn">确认保存</button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
 <script th:inline="javascript">
-
     var method = [[${method}]]
     var id = [[${id}]]
 
-    layui.use(['form', 'laydate', 'element'], function () {
+    layui.use(['form', 'element','util'], function () {
         var $ = layui.jquery,
             form = layui.form,
-            laydate = layui.laydate,
+            util = layui.util,
             element = layui.element;
-        //日期
-        laydate.render({
-            elem: '#birthday'
-        });
 
 
         //获取信息
@@ -103,25 +97,34 @@
             success: function (rst) {
                 if(rst.code == 1 && rst.data != null){
                     var result = rst.data;
+                    //展示所有角色
+                    if(result.roles != null){
+                        $.each(result.roles,function (i,t) {
+                            $(".rolesDiv").append('<input name="roleIds" roleId="'+t.id+'" type="checkbox" title="'+t.roleName+'"\n' +
+                                '                                   th:value="'+t.id+'">');
+                        })
+                    }
                     if(result.category != null){
                         var category = $.parseJSON(result.category);
                         $.each(category,function (i,t) {
                             $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
                         })
                     }
-                    if(result.role != null){
-                        form.val('example', {
-                            "id": result.role.id,
-                            "roleName": result.role.roleName,
-                            "roleDescr": result.role.roleDescr,
-                            "categoryId": result.role.categoryId,
-                            "categoryName": result.role.categoryName,
-                            "isEditable": result.role.isEditable+'',
-                        })
+                    if(result.account != null){
+                        form.val('example', result.account)
+                        form.val('example', {'birthday':util.toDateString(result.account.birthday, "yyyy-MM-dd")})
                     }
-                    //已有的权限id
-                    if(result.roleSourceIds != null && result.roleSourceIds.length > 0){
-                        checkIds = result.roleSourceIds.toString();
+                    //回填当前角色
+                    if(result.accountRoles != null){
+                        var roleIds = {};
+                        $.each(result.accountRoles,function (i,t) {
+                            $.each($("input[name=roleIds]"),function (index,item) {
+                                var roleId = $(item).attr('roleId')
+                                if(t.roleId == roleId){
+                                    $(item).prop("checked", true);
+                                }
+                            })
+                        })
                     }
                     //重新渲染
                     form.render();
@@ -135,21 +138,23 @@
         form.on('submit(saveBtn)', function (param) {
             //获取checkbox[name='roles']的值
             var arr = new Array();
-            $("input:checkbox[name='roles']:checked").each(function (i) {
-                arr[i] = $(this).val();
+            $("input:checkbox[name='roleIds']:checked").each(function (i) {
+                arr[i] = $(this).attr("roleId");
             });
             //将数组合并成字符串
-            param.field.roles = arr.join(",");
+            param.field.roleIds = arr.join(",");
             $.ajax({
-                url: "/api/admin/users/user/confirm/add",
+                url: "/account/save",
                 type: "post",
                 data: param.field,
                 success: function (rst) {
                     layer.msg(rst.msg);
                     if (rst.code == 1) {
                         setTimeout(function () {
-                            location.href = "/admin/users/user/list";
-                        }, 2000);
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));
+                            //重新加载父页面
+                            parent.location.reload();
+                        }, 300);
                     }
                 }
             });
@@ -166,6 +171,11 @@
                 $("input[name=categoryName]").val(null)
             }
         })
+
+        //详情页面，隐藏提交按钮
+        if("view" == method){
+            $(".saveBtn").remove();
+        }
     });
 </script>
 </body>
