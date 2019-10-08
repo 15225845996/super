@@ -64,7 +64,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">出生日期</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="birthday" id="birthday" class="layui-input" disabled="">
+                            <input type="text" name="birthday" id="birthday" class="layui-input" autocomplete="off" readonly="readonly">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -89,12 +89,17 @@
     if(method == null){
         method = "info";
     }
-    layui.use(['form', 'element','util'], function () {
+    layui.use(['form', 'element','util','laydate'], function () {
         var $ = layui.jquery,
             form = layui.form,
+            laydate = layui.laydate,
             util = layui.util,
             element = layui.element;
-
+        //日期
+        laydate.render({
+            elem: '#birthday',
+            trigger: 'click'
+        });
 
         //获取信息
         $.ajax({
