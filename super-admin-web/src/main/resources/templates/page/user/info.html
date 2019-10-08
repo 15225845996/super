@@ -46,10 +46,19 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">用户类型</label>
                         <div class="layui-input-inline">
-                            <select name="categoryId" lay-filter="modifyCategory">
+                            <select name="categoryId" lay-filter="modifyCategory" lay-verify="required">
                                 <option value="">请选择</option>
                             </select>
                             <input name="categoryName" hidden="hidden"/>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户状态</label>
+                        <div class="layui-input-inline">
+                            <select name="statusId" lay-filter="modifyCategory" lay-verify="required">
+                                <option value="">请选择</option>
+                            </select>
+                            <input name="statusName" hidden="hidden"/>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -110,6 +119,12 @@
                             $("select[name=categoryId]").append('<option value="'+t.categoryId+'">'+t.categoryName+'</option>')
                         })
                     }
+                    if(result.status != null){
+                        var status = $.parseJSON(result.status);
+                        $.each(status,function (i,t) {
+                            $("select[name=statusId]").append('<option value="'+t.statusId+'">'+t.statusName+'</option>')
+                        })
+                    }
                     if(result.account != null){
                         form.val('example', result.account)
                         form.val('example', {'birthday':util.toDateString(result.account.birthday, "yyyy-MM-dd")})
@@ -164,11 +179,11 @@
         //便跟类型
         form.on("select(modifyCategory)",function (param) {
             var cateogry = $(param.elem).val();
+            var cateogryName = $(param.elem).find("option:selected").text();
             if("" != cateogry){
-                var cateogryName = $(param.elem).find("option:selected").text();
-                $("input[name=categoryName]").val(cateogryName)
+                $(param.elem).parent("div").children("input").val(cateogryName)
             }else{
-                $("input[name=categoryName]").val(null)
+                $(param.elem).parent("div").children("input").val(null)
             }
         })
 

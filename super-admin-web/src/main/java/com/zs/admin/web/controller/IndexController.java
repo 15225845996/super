@@ -110,6 +110,9 @@ public class IndexController extends BaseController {
 
     private ResultVo loginMethod(HttpServletRequest request, SysAccount account){
         if(account != null && StringUtils.isNotBlank(account.getAccount())){
+            if(AccountStatusEnum.LOCAKED.getStatusId().equals(account.getStatusId())){
+                return ResultVo.fail("账号已被锁定！");
+            }
             //获取用户角色id
             List<SysAccountRole> roles = accountRoleService.findByAccount(account.getAccount());
             List<Long> roleIds = roles.stream().map(r -> r.getRoleId()).distinct().collect(Collectors.toList());

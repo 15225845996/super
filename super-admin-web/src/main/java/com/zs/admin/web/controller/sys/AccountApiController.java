@@ -1,6 +1,7 @@
 package com.zs.admin.web.controller.sys;
 
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
+import com.zs.admin.api.constant.sys.AccountStatusEnum;
 import com.zs.admin.api.constant.sys.SourcesCategoryEnum;
 import com.zs.admin.api.entry.SysAccount;
 import com.zs.admin.api.entry.SysRole;
@@ -49,6 +50,7 @@ public class AccountApiController {
         }
         //获取权限类型
         result.put("category", AccountCategoryEnum.toJson());
+        result.put("status", AccountStatusEnum.toJson());
         //获取角色列表
         result.put("roles", roleService.list());
         //方法（详情、编辑、新增）
