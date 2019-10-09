@@ -133,7 +133,7 @@
                             <div class="layui-form-item">
                                 <label class="layui-icon layui-icon-username"></label>
                                 <input type="text" name="account" placeholder="请输入您的手机号"
-                                       lay-verify="required|phone" autocomplete="off" value="15225845996"
+                                       lay-verify="required|phone|account" autocomplete="off" value="15225845996"
                                        class="layui-input">
                             </div>
                             <div class="layui-form-item">
@@ -157,7 +157,7 @@
                             <div class="layui-form-item">
                                 <label class="layui-icon layui-icon-username"></label>
                                 <input type="text" name="account" placeholder="请输入您的手机号（用来登录）"
-                                       lay-verify="required|phone" autocomplete="off"
+                                       lay-verify="required|phone|notAccount" autocomplete="off"
                                        class="layui-input">
                             </div>
                             <div class="layui-form-item">
@@ -214,7 +214,35 @@
             pass: [
                 /^[\S]{6,12}$/
                 , '密码必须6到12位，且不能出现空格'
-            ]
+            ],
+            account:function (value) {
+                var msg;
+                $.ajax({
+                    url:'/accountIsExist/'+value,
+                    type:"get",
+                    async:false,
+                    success:function (data) {
+                        if(data.data != true){
+                            msg = "该账号不存在，请确认后再登录！";
+                        }
+                    }
+                })
+                return msg;
+            },
+            notAccount:function (value) {
+                var msg;
+                $.ajax({
+                    url:'/accountIsExist/'+value,
+                    type:"get",
+                    async:false,
+                    success:function (data) {
+                        if(data.data != false){
+                            msg = "该账号已存在！";
+                        }
+                    }
+                })
+                return msg;
+            }
         });
 
         // 密码登录

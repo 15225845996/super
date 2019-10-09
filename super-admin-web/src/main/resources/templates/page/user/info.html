@@ -32,7 +32,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">帐号</label>
                         <div class="layui-input-inline">
-                            <input type="tel" name="account" lay-verify="required|phone" placeholder="请输入手机号"
+                            <input type="tel" name="account" lay-verify="required|phone|notAccount" placeholder="请输入手机号"
                                    class="layui-input">
                         </div>
                     </div>
@@ -99,6 +99,26 @@
         laydate.render({
             elem: '#birthday',
             trigger: 'click'
+        });
+
+        //自定义验证规则
+        form.verify({
+            notAccount:function (value) {
+                var msg;
+                $.ajax({
+                    url:'/accountIsExist/'+value,
+                    type:"get",
+                    async:false,
+                    success:function (data) {
+                        if(data.data != false){
+                            if("add" == method){
+                                msg = "该账号已存在！";
+                            }
+                        }
+                    }
+                })
+                return msg;
+            }
         });
 
         //获取信息
@@ -197,6 +217,8 @@
         //详情页面，隐藏提交按钮
         if("info" == method){
             $(".saveBtn").remove();
+        }else if("edit" == method){
+            $("input[name=account]").attr("readonly",true);
         }
     });
 </script>
