@@ -1,14 +1,20 @@
 package com.zs.admin.configure;
 
 
+import cn.hutool.core.collection.CollUtil;
 import com.zs.admin.web.interceptor.AuthorityInterceptor;
+import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,6 +24,10 @@ import java.util.List;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Value("${allow.urls}")
+    private String allowUrls;
+
     @Autowired
     private AuthorityInterceptor authorityInterceptor;
 
@@ -29,7 +39,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authorityInterceptor).addPathPatterns("/**").excludePathPatterns(getExcludePath());
+        InterceptorRegistration interceptorRegistration = registry.addInterceptor(authorityInterceptor).addPathPatterns("/**");
+        List<String> excludePath = getExcludePath();
+        if(CollUtil.isNotEmpty(excludePath)){
+            interceptorRegistration.excludePathPatterns(excludePath);
+        }
     }
 
     @Override
@@ -43,22 +57,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * @return
      */
     private List<String> getExcludePath() {
-        List<String> patterns = new ArrayList<>();
-        patterns.add("/");
-        patterns.add("/login");
-        patterns.add("/logout");
-        patterns.add("/register");
-        patterns.add("/accountIsExist/**");
-        patterns.add("/page/error");
-
-        //静态资源
-        patterns.add("/lib/**");
-        patterns.add("/js/**");
-        patterns.add("/images/**");
-        patterns.add("/css/**");
-        patterns.add("/diagram-viewer/**");
-        patterns.add("/editor-app/**");
-        patterns.add("/modeler.html");
-        return patterns;
+        if (StringUtils.isNotBlank(allowUrls)) {
+            return Arrays.asList(allowUrls.split(","));
+        }
+        return null;
     }
 }

@@ -12,7 +12,6 @@ import com.zs.admin.api.entry.SysRoleResource;
 import com.zs.admin.api.service.activiti.IActivitiService;
 import com.zs.admin.api.service.sys.*;
 import com.zs.admin.api.vo.ResultVo;
-import com.zs.admin.param.HomeInfo;
 import com.zs.admin.param.InitMenu;
 import com.zs.admin.param.Menu;
 import com.zs.utils.DozerUtils;
@@ -129,11 +128,6 @@ public class IndexController extends BaseController {
                 if(sourceIds != null && sourceIds.size() > 0){
                     //获取资源信息
                     resources = (List)resourceService.listByIds(sourceIds);
-                }
-                //获取home页面
-                SysResource home = resourceService.getById(Constant.BACKSTAGE_HOME_ID);
-                if(home != null){
-                    initMenu.setHomeInfo(DozerUtils.dozer(home,HomeInfo.class));
                 }
                 //菜单信息
                 if(resources != null){

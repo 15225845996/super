@@ -19,7 +19,7 @@ public class InitMenu implements Serializable {
 
     private ClearInfo clearInfo = new ClearInfo(Constant.CLEAR_URL);
     private LogoInfo logoInfo = new LogoInfo(Constant.LOGO_TITLE,Constant.LOGO_IMG,Constant.LOGO_HREF);
-    private HomeInfo homeInfo;
+    private HomeInfo homeInfo = new HomeInfo(Constant.HOME_TITLE,Constant.HOME_ICON,Constant.HOME_HREF);
     /**
      * 名字适配json，不能乱改
      */
@@ -45,4 +45,13 @@ public class InitMenu implements Serializable {
         private String image;
         private String href;
     }
+
+    @Data
+    @AllArgsConstructor
+    public class HomeInfo {
+        private String title;
+        private String icon;
+        private String href;
+    }
+
 }

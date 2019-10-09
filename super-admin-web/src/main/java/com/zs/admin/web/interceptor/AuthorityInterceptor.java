@@ -22,7 +22,7 @@ import java.util.List;
 public class AuthorityInterceptor implements HandlerInterceptor{
     private static final String API_PATH_PREFIX = "/api";
 
-    private static final String[] PUBLIC_HREF = new String[]{"/page/index","/page/home"};
+    private static final String[] PUBLIC_HREF = new String[]{"/page/index",Constant.HOME_HREF};
 
     private static final String RESTFUL_SUFFIX = "*";
 

@@ -55,11 +55,6 @@ public class Constant {
     public static final String BACKSTAGE_INDEX_PAGE = "/page/index";
 
     /**
-     * 后台home页面请求资源id
-     */
-    public static final Long BACKSTAGE_HOME_ID = 8L;
-
-    /**
      * 清空缓存url
      */
     public static final String CLEAR_URL = "/api/clear.json";
@@ -70,6 +65,14 @@ public class Constant {
     public static final String LOGO_TITLE = "后台管理系统";
     public static final String LOGO_IMG = "/images/logo.png";
     public static final String LOGO_HREF = "";
+
+
+    /**
+     * HOME信息
+     */
+    public static final String HOME_TITLE = "控制台";
+    public static final String HOME_ICON = "fa fa-tachometer";
+    public static final String HOME_HREF = "/page/home";
 
 
 }
