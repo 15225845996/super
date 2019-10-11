@@ -18,4 +18,8 @@
     <dubbo:service interface="com.zs.admin.api.service.sys.ISysAccountRoleService" version="${dubbo.version}" ref="sysAccountRoleServiceImpl"/>
     <dubbo:service interface="com.zs.admin.api.service.sys.ISysRoleResourceService" version="${dubbo.version}" ref="sysRoleResourceServiceImpl"/>
 
+    <!--log-->
+    <dubbo:service interface="com.zs.admin.api.service.sys.ISysLogService" version="${dubbo.version}" ref="sysLogServiceImpl"/>
+    <dubbo:service interface="com.zs.admin.api.service.sys.ISysLogInfoService" version="${dubbo.version}" ref="sysLogInfoServiceImpl"/>
+
 </beans>

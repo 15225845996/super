@@ -1,6 +1,6 @@
 package com.zs.admin.web.controller;
 
-import cn.hutool.core.collection.CollUtil;
+import com.zs.admin.annotation.SysLog;
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
 import com.zs.admin.api.constant.sys.AccountStatusEnum;
@@ -12,6 +12,7 @@ import com.zs.admin.api.entry.SysRoleResource;
 import com.zs.admin.api.service.activiti.IActivitiService;
 import com.zs.admin.api.service.sys.*;
 import com.zs.admin.api.vo.ResultVo;
+import com.zs.admin.constant.SysLogCategoryEnum;
 import com.zs.admin.param.InitMenu;
 import com.zs.admin.param.Menu;
 import com.zs.utils.DozerUtils;
@@ -31,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @Auther: zs
@@ -58,6 +58,7 @@ public class IndexController extends BaseController {
     @ApiOperation("登录")
     @PostMapping("/login")
     @ResponseBody
+    @SysLog(desc = "密码登录",category = SysLogCategoryEnum.LOGIN)
     public ResultVo login(HttpServletRequest request,Model model, SysAccount account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
             String password = MD5Utils.getPassWord(account.getPassword());
@@ -70,6 +71,7 @@ public class IndexController extends BaseController {
     @ApiOperation("注册")
     @PostMapping("/register")
     @ResponseBody
+    @SysLog(desc = "注册",category = SysLogCategoryEnum.REGISTER)
     public ResultVo register(HttpServletRequest request,Model model, SysAccount account){
         if(StringUtils.isNotBlank(account.getAccount()) && StringUtils.isNotBlank(account.getPassword())){
             boolean existAdmin = accountService.isExistAdmin();
@@ -94,6 +96,7 @@ public class IndexController extends BaseController {
     @ApiOperation("退出")
     @PostMapping("/logout")
     @ResponseBody
+    @SysLog(desc = "退出",category = SysLogCategoryEnum.LOGOUT)
     public ResultVo loginOut(HttpServletRequest request,Model model, SysAccount account){
         request.getSession().invalidate();
         return ResultVo.success("退出登录成功");

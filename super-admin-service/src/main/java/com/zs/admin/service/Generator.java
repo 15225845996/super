@@ -29,7 +29,7 @@ public class Generator {
     //作者
     private static String authorName = "zs";
     //要生成的表名
-    private static String[] tables = {"sys_resource"};
+    private static String[] tables = {"sys_log","sys_log_info"};
     //table前缀(使用前缀后生成的vo名不包含前缀)
     private static String prefix = "";
 

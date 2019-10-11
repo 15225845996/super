@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zs.admin.service.mapper.SysLogInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zs.admin.api.entry.SysLogInfo">
+    <result column="id" property="id" />
+    <result column="is_deleted" property="isDeleted" />
+    <result column="create_time" property="createTime" />
+    <result column="creator" property="creator" />
+    <result column="mender" property="mender" />
+    <result column="modify_time" property="modifyTime" />
+        <result column="log_id" property="logId" />
+        <result column="isParam" property="isParam" />
+        <result column="key" property="key" />
+        <result column="value" property="value" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        is_deleted,
+        create_time,
+        creator,
+        mender,
+        modify_time,
+        log_id, isParam, key, value
+    </sql>
+
+</mapper>

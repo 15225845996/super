@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zs.admin.service.mapper.SysLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zs.admin.api.entry.SysLog">
+    <result column="id" property="id" />
+    <result column="is_deleted" property="isDeleted" />
+    <result column="create_time" property="createTime" />
+    <result column="creator" property="creator" />
+    <result column="mender" property="mender" />
+    <result column="modify_time" property="modifyTime" />
+        <result column="descr" property="descr" />
+        <result column="provious_url" property="proviousUrl" />
+        <result column="url" property="url" />
+        <result column="method" property="method" />
+        <result column="category_id" property="categoryId" />
+        <result column="category_name" property="categoryName" />
+        <result column="type_id" property="typeId" />
+        <result column="type_name" property="typeName" />
+        <result column="status_id" property="statusId" />
+        <result column="status_name" property="statusName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        is_deleted,
+        create_time,
+        creator,
+        mender,
+        modify_time,
+        descr, provious_url, url, method, category_id, category_name, type_id, type_name, status_id, status_name
+    </sql>
+
+</mapper>
