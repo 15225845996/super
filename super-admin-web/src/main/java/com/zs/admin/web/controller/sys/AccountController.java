@@ -15,6 +15,7 @@ import com.zs.admin.constant.SysLogTypeEnum;
 import com.zs.admin.web.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -89,5 +90,28 @@ public class AccountController extends BaseController {
             //添加新的角色信息
         }
         return ResultVo.success("成功！");
+    }
+
+
+    @ApiOperation(value = "删除用户信息")
+    @DeleteMapping("/del/{id}")
+    @SysLog(desc = "删除用户信息",type = SysLogTypeEnum.D)
+    public Object del(HttpSession session,@ApiParam(name = "id", value = "用户ID")@PathVariable(name = "id") Long id){
+        if(id != null){
+            SysAccount account = accountService.getById(id);
+            if(account != null){
+                boolean b = accountService.removeById(id);
+                if(b){
+                    // 删除角色信息
+                    Map<String, Object> removeMap = new HashMap<>();
+                    removeMap.put("account",account.getAccount());
+                    boolean b1 = accountRoleService.removeByMap(removeMap);
+                    return ResultVo.success("成功！");
+                }
+            }else{
+                return ResultVo.fail("ID异常！");
+            }
+        }
+        return ResultVo.fail("ID不能为空！");
     }
 }

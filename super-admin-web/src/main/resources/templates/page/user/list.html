@@ -112,14 +112,14 @@
                         "id": data.id
                     }
                     $.ajax({
-                        url: "/api/admin/users/user/confirm/delete/" + data.id,
+                        url: "/account/del/" + data.id,
                         type: "DELETE",
                         data: param,
                         success: function (rst) {
                             layer.msg(rst.msg);
                             if (rst.code == 1) {
                                 setTimeout(function () {
-                                    location.href = "/admin/users/user/list";
+                                    location.href = "/page/user/list";
                                 }, 2000);
                             }
                         }
