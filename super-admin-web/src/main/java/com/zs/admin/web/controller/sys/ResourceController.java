@@ -38,6 +38,7 @@ public class ResourceController extends BaseController{
     @GetMapping("/list")
     public Object list(){
         List<SysResource> list = resourceService.list();
+        list = sort(list,null);
         return PageVO.page(list, (long) list.size());
     }
 
