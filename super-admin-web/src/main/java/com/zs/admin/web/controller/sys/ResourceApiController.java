@@ -1,11 +1,13 @@
 package com.zs.admin.web.controller.sys;
 
+import com.zs.admin.annotation.SysLog;
 import com.zs.admin.api.constant.sys.RoleCategoryEnum;
 import com.zs.admin.api.constant.sys.SourcesCategoryEnum;
 import com.zs.admin.api.entry.SysResource;
 import com.zs.admin.api.entry.SysRoleResource;
 import com.zs.admin.api.service.sys.ISysResourceService;
 import com.zs.admin.api.vo.ResultVo;
+import com.zs.admin.constant.SysLogTypeEnum;
 import com.zs.admin.param.Tree;
 import com.zs.admin.web.controller.BaseController;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +38,7 @@ public class ResourceApiController extends BaseController{
 
     @ApiOperation(value = "获取权限树")
     @PostMapping("/tree")
+    @SysLog(desc = "获取权限树")
     public Object tree(@RequestParam(defaultValue = "0") Long parentId,
                        @RequestParam(defaultValue = "true") Boolean isSpread,
                        @RequestParam(required = false) List<Long> checkIds){
@@ -44,6 +47,7 @@ public class ResourceApiController extends BaseController{
     }
 
     @PostMapping("/addOrEdit")
+    @SysLog(desc = "添加或获取权限信息")
     public ResultVo addOrEdit(HttpServletRequest request, Long id){
         Map<String,Object> result = new HashMap<>();
         if(id != null){

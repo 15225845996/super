@@ -26,7 +26,6 @@ public class PageController extends BaseController{
 
     @ApiOperation("一级页面跳转")
     @GetMapping("/{page1}")
-    @SysLog(desc = "一级页面跳转")
     public String page(HttpServletRequest request,Model model,@PathVariable("page1")String page1){
         syncParam(model,request);
         return "/page/"+page1;
@@ -34,7 +33,6 @@ public class PageController extends BaseController{
 
     @ApiOperation("二级页面跳转")
     @GetMapping("/{page1}/{page2}")
-    @SysLog(desc = "二级页面跳转")
     public String page(HttpServletRequest request,Model model,@PathVariable("page1")String page1, @PathVariable("page2")String page2){
         syncParam(model,request);
         return "/page/"+page1+"/"+page2;

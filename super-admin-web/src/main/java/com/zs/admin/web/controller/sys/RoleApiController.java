@@ -3,6 +3,7 @@ package com.zs.admin.web.controller.sys;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
+import com.zs.admin.annotation.SysLog;
 import com.zs.admin.api.constant.Constant;
 import com.zs.admin.api.constant.sys.RoleCategoryEnum;
 import com.zs.admin.api.entry.SysResource;
@@ -12,6 +13,7 @@ import com.zs.admin.api.service.sys.ISysResourceService;
 import com.zs.admin.api.service.sys.ISysRoleResourceService;
 import com.zs.admin.api.service.sys.ISysRoleService;
 import com.zs.admin.api.vo.ResultVo;
+import com.zs.admin.constant.SysLogTypeEnum;
 import com.zs.admin.param.Tree;
 import com.zs.admin.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,7 @@ public class RoleApiController extends BaseController{
     private ISysRoleService roleService;
 
     @PostMapping("/sourcesById")
+    @SysLog(desc = "获取角色权限")
     public Object sourcesById(HttpServletRequest request,Long id){
         List<SysRoleResource> roleResource = roleResourceService.findByRoleId(id);
         if(roleResource != null){
@@ -57,6 +60,7 @@ public class RoleApiController extends BaseController{
     }
 
     @PostMapping("/addOrEdit")
+    @SysLog(desc = "添加或获取角色信息")
     public ResultVo addOrEdit(HttpServletRequest request,Long id){
         Map<String,Object> result = new HashMap<>();
         List<Long> roleSourceIds = null;

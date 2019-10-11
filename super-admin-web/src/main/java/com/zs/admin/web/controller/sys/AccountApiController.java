@@ -1,5 +1,6 @@
 package com.zs.admin.web.controller.sys;
 
+import com.zs.admin.annotation.SysLog;
 import com.zs.admin.api.constant.sys.AccountCategoryEnum;
 import com.zs.admin.api.constant.sys.AccountStatusEnum;
 import com.zs.admin.api.constant.sys.SourcesCategoryEnum;
@@ -39,6 +40,7 @@ public class AccountApiController {
     private ISysRoleService roleService;
 
     @PostMapping("/info")
+    @SysLog(desc = "账号信息")
     public ResultVo addOrEdit(HttpServletRequest request, Long id,@RequestParam(defaultValue = "info") String method){
         Map<String,Object> result = new HashMap<>();
         if(id != null){

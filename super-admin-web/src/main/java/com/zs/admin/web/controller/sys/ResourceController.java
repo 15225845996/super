@@ -3,11 +3,13 @@ package com.zs.admin.web.controller.sys;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.zs.admin.annotation.SysLog;
 import com.zs.admin.api.entry.SysResource;
 import com.zs.admin.api.entry.SysRole;
 import com.zs.admin.api.service.sys.ISysResourceService;
 import com.zs.admin.api.vo.PageVO;
 import com.zs.admin.api.vo.ResultVo;
+import com.zs.admin.constant.SysLogTypeEnum;
 import com.zs.admin.param.Tree;
 import com.zs.admin.web.controller.BaseController;
 import io.swagger.annotations.Api;
@@ -36,6 +38,7 @@ public class ResourceController extends BaseController{
 
     @ApiOperation(value = "获取权限列表")
     @GetMapping("/list")
+    @SysLog(desc = "获取权限列表")
     public Object list(){
         List<SysResource> list = resourceService.list();
         list = sort(list,null);
@@ -44,6 +47,7 @@ public class ResourceController extends BaseController{
 
     @ApiOperation(value = "保存权限信息")
     @PostMapping("/save")
+    @SysLog(desc = "保存权限信息",type = SysLogTypeEnum.U)
     public Object save(HttpSession session, SysResource resource){
         if(resource == null){
             return ResultVo.fail("信息不完整！");
@@ -96,6 +100,7 @@ public class ResourceController extends BaseController{
 
     @ApiOperation(value = "删除权限信息")
     @DeleteMapping("/del/{id}")
+    @SysLog(desc = "删除权限信息",type = SysLogTypeEnum.D)
     public Object del(HttpSession session,@ApiParam(name = "id", value = "权限ID")@PathVariable(name = "id") Long id){
         if(id == null){
             return ResultVo.fail("信息不完整！");

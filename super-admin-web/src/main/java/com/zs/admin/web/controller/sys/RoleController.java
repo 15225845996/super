@@ -3,12 +3,14 @@ package com.zs.admin.web.controller.sys;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.zs.admin.annotation.SysLog;
 import com.zs.admin.api.entry.SysRole;
 import com.zs.admin.api.entry.SysRoleResource;
 import com.zs.admin.api.service.sys.ISysRoleResourceService;
 import com.zs.admin.api.service.sys.ISysRoleService;
 import com.zs.admin.api.vo.PageVO;
 import com.zs.admin.api.vo.ResultVo;
+import com.zs.admin.constant.SysLogTypeEnum;
 import com.zs.admin.param.Tree;
 import com.zs.admin.web.controller.BaseController;
 import io.swagger.annotations.Api;
@@ -42,6 +44,7 @@ public class RoleController extends BaseController{
 
     @ApiOperation(value = "获取角色列表数据")
     @GetMapping("/list")
+    @SysLog(desc = "获取角色列表数据")
     public Object list(){
         List<SysRole> list = roleService.list();
         return PageVO.page(list, (long) list.size());
@@ -50,6 +53,7 @@ public class RoleController extends BaseController{
 
     @ApiOperation(value = "编辑角色信息")
     @PostMapping("/save")
+    @SysLog(desc = "保存角色信息",type = SysLogTypeEnum.U)
     public Object save(HttpSession session, SysRole sysRole,
                        @ApiParam(name = "sourcesInfo", value = "角色权限") String sourcesInfo){
         if(sysRole == null){
@@ -76,8 +80,9 @@ public class RoleController extends BaseController{
     }
 
 
-    @ApiOperation(value = "编辑角色信息")
+    @ApiOperation(value = "删除角色信息")
     @DeleteMapping("/delete/{id}")
+    @SysLog(desc = "删除角色信息",type = SysLogTypeEnum.D)
     public Object delete(HttpSession session, @PathVariable("id") Long id){
         if(id != null){
             boolean b = roleService.removeById(id);
