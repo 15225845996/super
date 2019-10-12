@@ -72,7 +72,6 @@
             LEFT JOIN sys_log_info info ON log.id = info.log_id
             WHERE
             log.is_deleted = 0
-            AND info.is_deleted = 0
             AND log.id = #{id}
         </if>
     </select>

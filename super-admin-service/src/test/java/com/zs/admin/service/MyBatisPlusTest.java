@@ -44,7 +44,8 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
 
     @Test
     public void query1(){
-        SysLog detail = logService.getDetail(724L);
+        SysLog detail = logService.getDetail(743L);
+        System.out.println(detail);
     }
 
     @Test
