@@ -81,8 +81,8 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
 
     protected QueryWrapper getQuery(SysAccount account){
         QueryWrapper<SysAccount> quer = new QueryWrapper<>();
+        LambdaQueryWrapper<SysAccount> lambda = quer.lambda().orderByDesc(SysAccount::getCreateTime);
         if(account != null){
-            LambdaQueryWrapper<SysAccount> lambda = quer.lambda();
             if(account.getAccount() != null){
                 lambda.eq(SysAccount::getAccount,account.getAccount());
             }

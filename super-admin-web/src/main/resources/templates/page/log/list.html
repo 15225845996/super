@@ -20,7 +20,39 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">描述</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="account" autocomplete="off" class="layui-input">
+                                <input type="text" name="descr" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">IP</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="ip" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">请求路径</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="url" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">请求方式</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="method" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">请求类型</label>
+                            <div class="layui-input-inline">
+                                <select name="categoryId">
+                                    <option value="">请选择</option>
+                                    <option value="1">密码登录</option>
+                                    <option value="2">用户注册</option>
+                                    <option value="3">退出</option>
+                                    <option value="4">敏感操作</option>
+                                    <option value="5">特殊操作</option>
+                                    <option value="-1">其他</option>
+                                </select>
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -36,11 +68,6 @@
         <script type="text/html" id="userBar">
             <a class="layui-btn layui-btn-xs" lay-event="params">请求参数</a>
         </script>
-
-       <!-- <script type="text/html" id="checkboxTpl">
-            <input type="checkbox" value="{{d.id}}" name="statusId" lay-skin="switch" lay-filter="locked"
-                   lay-text="正常|已锁定"  {{ d.statusId == 0 ? 'checked' : '' }}>
-        </script>-->
     </div>
 </div>
 </body>
@@ -93,6 +120,17 @@
                     content: '/page/log/view?id='+data.id
                 }))
             }
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            table.reload('logs', {
+                page: {
+                    curr: 1
+                }, where: data.field
+            }, 'data');
+            return false;
         });
     });
     /*]]>*/

@@ -87,8 +87,8 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 
     protected QueryWrapper getQuery(SysLog log){
         QueryWrapper<SysLog> quer = new QueryWrapper<>();
+        LambdaQueryWrapper<SysLog> lambda = quer.lambda().orderByDesc(SysLog::getCreateTime);
         if(log != null){
-            LambdaQueryWrapper<SysLog> lambda = quer.lambda();
             if(log.getCategoryId() != null){
                 lambda.eq(SysLog::getCategoryId,log.getCategoryId());
             }
