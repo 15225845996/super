@@ -23,6 +23,16 @@
         <result column="status_name" property="statusName" />
     </resultMap>
 
+    <resultMap id="detailMap" type="com.zs.admin.api.entry.SysLog" extends="BaseResultMap">
+        <collection property="logInfos" ofType="com.zs.admin.api.entry.SysLogInfo">
+            <result column="infoId" property="id" />
+            <result column="log_id" property="logId" />
+            <result column="is_param" property="isParam" />
+            <result column="key" property="key" />
+            <result column="value" property="value" />
+        </collection>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
@@ -33,5 +43,38 @@
         modify_time,
         descr,ip, provious_url, url, method, category_id, category_name, type_id, type_name, status_id, status_name
     </sql>
+
+
+
+
+    <select id="getDetail" resultMap="detailMap">
+        <if test="id != null">
+            SELECT
+            log.id,
+            log.descr,
+            log.ip,
+            log.provious_url,
+            log.url,
+            log.method,
+            log.category_id,
+            log.category_name,
+            log.type_id,
+            log.type_name,
+            log.status_id,
+            log.status_name,
+            info.id infoId,
+            info.log_id,
+            info.is_param,
+            info.`key`,
+            info.`value`
+            FROM
+            sys_log log
+            LEFT JOIN sys_log_info info ON log.id = info.log_id
+            WHERE
+            log.is_deleted = 0
+            AND info.is_deleted = 0
+            AND log.id = #{id}
+        </if>
+    </select>
 
 </mapper>

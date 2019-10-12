@@ -33,6 +33,8 @@ import java.util.List;
 public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> implements ISysLogService {
 
     @Autowired
+    private SysLogMapper logMapper;
+    @Autowired
     private ISysLogInfoService logInfoService;
 
     @Override
@@ -73,13 +75,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     @Override
     public SysLog getDetail(Long id) {
         if(id != null){
-            SysLog log = super.getById(id);
-            if(log != null){
-                QueryWrapper<SysLogInfo> logInfoQueryWrapper = new QueryWrapper<>();
-                logInfoQueryWrapper.lambda().eq(SysLogInfo::getLogId,log.getId());
-                List<SysLogInfo> logInfos = logInfoService.list(logInfoQueryWrapper);
-                return log.setLogInfos(logInfos);
-            }
+            return logMapper.getDetail(id);
         }
         return null;
     }

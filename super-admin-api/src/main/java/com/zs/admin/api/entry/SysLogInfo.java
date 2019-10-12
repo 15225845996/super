@@ -32,7 +32,7 @@ public class SysLogInfo extends BaseEntity<SysLogInfo> {
     /**
      * 是否请求参数
      */
-    @TableField("isParam")
+    @TableField("is_param")
     private Boolean isParam;
 
     /**

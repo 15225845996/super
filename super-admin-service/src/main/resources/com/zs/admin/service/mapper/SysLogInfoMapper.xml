@@ -11,7 +11,7 @@
     <result column="mender" property="mender" />
     <result column="modify_time" property="modifyTime" />
         <result column="log_id" property="logId" />
-        <result column="isParam" property="isParam" />
+        <result column="is_param" property="isParam" />
         <result column="key" property="key" />
         <result column="value" property="value" />
     </resultMap>

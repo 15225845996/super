@@ -2,6 +2,8 @@ package com.zs.admin.service.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zs.admin.api.entry.SysLog;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.zs.admin.api.entry.SysLog;
  */
 public interface SysLogMapper extends BaseMapper<SysLog> {
 
+    SysLog getDetail(@Param("id") Long id);
 }

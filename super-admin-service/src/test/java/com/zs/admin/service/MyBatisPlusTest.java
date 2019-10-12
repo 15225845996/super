@@ -1,9 +1,11 @@
 package com.zs.admin.service;
 
 import com.zs.admin.api.entry.SysAccount;
+import com.zs.admin.api.entry.SysLog;
 import com.zs.admin.api.entry.SysResource;
 import com.zs.admin.api.entry.SysRole;
 import com.zs.admin.api.service.sys.ISysAccountService;
+import com.zs.admin.api.service.sys.ISysLogService;
 import com.zs.admin.api.service.sys.ISysResourceService;
 import com.zs.admin.api.service.sys.ISysRoleService;
 import com.zs.admin.api.vo.PageVO;
@@ -29,6 +31,8 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
     private ISysResourceService resourceService;
     @Autowired
     private ISysRoleService roleService;
+    @Autowired
+    private ISysLogService logService;
 
     @Test
     public void page(){
@@ -40,8 +44,7 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
 
     @Test
     public void query1(){
-        List<SysResource> byParentId = resourceService.getByParentId(13L);
-        byParentId.forEach(System.out::println);
+        SysLog detail = logService.getDetail(724L);
     }
 
     @Test
