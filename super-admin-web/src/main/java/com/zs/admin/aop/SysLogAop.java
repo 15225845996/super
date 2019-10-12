@@ -7,6 +7,7 @@ import com.zs.admin.api.entry.SysLogInfo;
 import com.zs.admin.api.service.sys.ISysLogInfoService;
 import com.zs.admin.api.service.sys.ISysLogService;
 import com.zs.admin.api.vo.ResultVo;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -99,6 +100,7 @@ public class SysLogAop {
         sysLog.setTypeId(logEnum.type().getTypeId());
         sysLog.setTypeName(logEnum.type().getTypeName());
         sysLog.setDescr(logEnum.desc());
+        sysLog.setIp(getIp(request));
         sysLog.setLogInfos(logInfos);
         boolean save = logService.save2(sysLog);
         return obj;
@@ -126,5 +128,43 @@ public class SysLogAop {
         SysLog annotation = method
                 .getAnnotation(SysLog.class);
         return annotation;
+    }
+
+
+    protected String getIp(HttpServletRequest req){
+        String Xip = req.getHeader("X-Real-IP");
+        String XFor = req.getHeader("X-Forwarded-For");
+        if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+            //多次反向代理后会有多个ip值，第一个ip才是真实ip
+            int index = XFor.indexOf(",");
+            if(index != -1){
+                return XFor.substring(0,index);
+            }else{
+                return XFor;
+            }
+        }
+        XFor = Xip;
+        if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+            return XFor;
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = req.getHeader("Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = req.getHeader("WL-Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = req.getHeader("HTTP_CLIENT_IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = req.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = req.getRemoteAddr();
+        }
+        if(XFor != null && XFor.length() > 50){//ip地址最长50
+            XFor = XFor.substring(0,50);
+        }
+        return XFor;
     }
 }

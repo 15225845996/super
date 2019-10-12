@@ -30,6 +30,8 @@ public class SysLog extends BaseEntity<SysLog> {
      */
     private String descr;
 
+    private String ip;
+
     /**
      * 上一个url
      */

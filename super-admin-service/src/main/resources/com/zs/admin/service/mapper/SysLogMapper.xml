@@ -11,6 +11,7 @@
     <result column="mender" property="mender" />
     <result column="modify_time" property="modifyTime" />
         <result column="descr" property="descr" />
+        <result column="ip" property="ip" />
         <result column="provious_url" property="proviousUrl" />
         <result column="url" property="url" />
         <result column="method" property="method" />
@@ -30,7 +31,7 @@
         creator,
         mender,
         modify_time,
-        descr, provious_url, url, method, category_id, category_name, type_id, type_name, status_id, status_name
+        descr,ip, provious_url, url, method, category_id, category_name, type_id, type_name, status_id, status_name
     </sql>
 
 </mapper>

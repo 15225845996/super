@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="layui-elem-field layuimini-search">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">描述</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="account" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <table class="layui-hide" id="logs" lay-filter="logInfo"></table>
+
+        <script type="text/html" id="userBar">
+            <a class="layui-btn layui-btn-xs" lay-event="params">请求参数</a>
+        </script>
+
+       <!-- <script type="text/html" id="checkboxTpl">
+            <input type="checkbox" value="{{d.id}}" name="statusId" lay-skin="switch" lay-filter="locked"
+                   lay-text="正常|已锁定"  {{ d.statusId == 0 ? 'checked' : '' }}>
+        </script>-->
+    </div>
+</div>
+</body>
+<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    layui.use(['table', 'form', 'element'], function () {
+        var table = layui.table,
+            form = layui.form,
+            $ = layui.jquery,
+            element = layui.element;
+        // 表格
+        table.render({
+            elem: '#logs',
+            url: '/log/list',
+            limits: [30,50,100],
+            limit: 50,
+            page: true,
+            cols: [
+                [
+                    {field: 'descr', title: '描述', align: 'center'},
+                    {field:"ip",title: 'IP', align: 'center'},
+                    {field: 'url', title: '请求路径', align: 'left'},
+                    {field: 'proviousUrl', title: '上一个路径', align: 'left'},
+                    {field: 'method', title: '请求方式', align: 'center'},
+                    {field: 'categoryName', title: '请求类型', align: 'center',templet:function (d) {
+                        return d.categoryName+'['+d.typeName+']'
+                    }},
+                    {fixed: 'right', title: '操作', toolbar: '#userBar', align: 'center'}
+                ]
+            ]
+        });
+
+        //监听工具条
+        table.on('tool(logInfo)', function (obj) {
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+            if (layEvent === 'params') { //查看
+                layer.full(layer.open({
+                    id: 'job-edit',
+                    type: 2,
+                    area: ['700px', '450px'],
+                    fix: false,
+                    maxmin: true,
+                    shadeClose: false,
+                    shade: 0.4,
+                    title: "日志信息",
+                    content: '/page/log/view?id='+data.id
+                }))
+            }
+        });
+    });
+    /*]]>*/
+</script>
+</html>
