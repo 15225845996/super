@@ -3,10 +3,13 @@ package com.zs.admin.aop;
 
 import cn.hutool.json.JSONUtil;
 import com.zs.admin.annotation.SysLog;
+import com.zs.admin.api.constant.Constant;
+import com.zs.admin.api.entry.SysAccount;
 import com.zs.admin.api.entry.SysLogInfo;
 import com.zs.admin.api.service.sys.ISysLogInfoService;
 import com.zs.admin.api.service.sys.ISysLogService;
 import com.zs.admin.api.vo.ResultVo;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -62,6 +65,8 @@ public class SysLogAop {
         logger.info("环绕通知：前");
         Object obj = joinPoint.proceed();
         logger.info("环绕通知：后");
+        SysAccount user = request.getSession().getAttribute(Constant.USER_INFO_KEY) == null?
+                (null):((SysAccount)request.getSession().getAttribute(Constant.USER_INFO_KEY));
 
         List<SysLogInfo> logInfos = new ArrayList<>();
         SysLogInfo logInfo = new SysLogInfo();
@@ -102,6 +107,9 @@ public class SysLogAop {
         sysLog.setDescr(logEnum.desc());
         sysLog.setIp(getIp(request));
         sysLog.setLogInfos(logInfos);
+        if(user != null){
+            sysLog.setCreator(user.getName()+"("+user.getAccount()+")");
+        }
         boolean save = logService.save2(sysLog);
         return obj;
     }
