@@ -76,4 +76,11 @@
         </if>
     </select>
 
+
+
+    <select id="groupCount" resultType="com.zs.admin.api.entry.SysLog">
+        select category_id,any_value(category_name) category_name,date(create_time) create_time,COUNT(category_id) count from sys_log
+        where  date(create_time) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) GROUP BY date(create_time),category_id;
+    </select>
+
 </mapper>

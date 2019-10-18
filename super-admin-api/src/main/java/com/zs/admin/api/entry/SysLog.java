@@ -71,8 +71,17 @@ public class SysLog extends BaseEntity<SysLog> {
      */
     private String statusName;
 
+    /**
+     * 参数信息
+     */
     @TableField(exist = false)
     private List<SysLogInfo> logInfos;
+
+    /**
+     * 统计信息
+     */
+    @TableField(exist = false)
+    private Long count;
 
     @Override
     protected Serializable pkVal() {

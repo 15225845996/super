@@ -25,4 +25,6 @@ public interface ISysLogService extends IService<SysLog> {
 
     SysLog getDetail(Long id);
 
+    List<SysLog> groupCount();
+
 }

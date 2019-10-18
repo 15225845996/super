@@ -80,6 +80,11 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         return null;
     }
 
+    @Override
+    public List<SysLog> groupCount() {
+        return logMapper.groupCount();
+    }
+
 
     protected QueryWrapper getQuery(SysLog log){
         QueryWrapper<SysLog> quer = new QueryWrapper<>();

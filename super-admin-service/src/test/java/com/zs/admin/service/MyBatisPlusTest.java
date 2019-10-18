@@ -41,6 +41,14 @@ public class MyBatisPlusTest extends SuperAdminServiceApplicationTests {
         System.out.println(page);
     }
 
+    @Test
+    public void logGroupCount(){
+        List<SysLog> sysLogs = logService.groupCount();
+        sysLogs.forEach(i -> {
+            System.out.println(i);
+        });
+    }
+
 
     @Test
     public void query1(){

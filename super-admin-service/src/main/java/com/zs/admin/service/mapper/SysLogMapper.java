@@ -5,6 +5,8 @@ import com.zs.admin.api.entry.SysLog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -16,4 +18,6 @@ import org.apache.ibatis.annotations.Param;
 public interface SysLogMapper extends BaseMapper<SysLog> {
 
     SysLog getDetail(@Param("id") Long id);
+
+    List<SysLog> groupCount();
 }
